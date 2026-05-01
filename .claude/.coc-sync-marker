@@ -1,45 +1,36 @@
 # COC Sync Marker — kailash-coc-claude-py (legacy CC-only)
-timestamp: 2026-05-01T13:10:00Z
+timestamp: 2026-05-01T07:17:15Z
 source: loom/.claude
 loom_version: 2.14.0
-loom_sha: d4b4672
+loom_sha: 370d560
 variant: py
 clis: ["claude"]
 template: kailash-coc-claude-py
-template_version: 3.6.5
+template_version: 3.6.6
 stats:
-  updated: 1               # rules/deploy-hygiene.md (+ Rule 11, ~85 LOC)
+  updated: 1               # rules/zero-tolerance.md (Rule 1c added)
   created: 0
   unchanged: ~686
-  composed: 0              # no slot-keyed variant changes in 2.14.0
+  composed: 0              # no slot-keyed variant changes
   preserved: 1             # CLAUDE.md (template-owned; never overwritten)
-  use_excluded: 8          # +rules/loom-csq-boundary.md (NEW in 2.14.0); rules/cross-sdk-inspection.md, rules/documentation.md, skills/30-claude-code-patterns/sdk-upstream-donation.md, guides/co-setup/**, guides/deterministic-quality/**, guides/automated-maintenance.md, guides/rule-extracts/git.md, guides/rule-extracts/independence-rs.md
-  test_harness_excluded: true   # universal test-harness/** exclude honored (test-harness/README.md NOT shipped despite update in 2.14.0)
-  pre_existing_use_obsoleted_purged: []   # all 18 obsoleted+use_obsoleted paths already absent
+  use_excluded: 8          # rules/loom-csq-boundary.md, rules/cross-sdk-inspection.md, rules/documentation.md, skills/30-claude-code-patterns/sdk-upstream-donation.md, guides/co-setup/**, guides/deterministic-quality/**, guides/automated-maintenance.md, guides/rule-extracts/git.md, guides/rule-extracts/independence-rs.md
+  test_harness_excluded: true
+  pre_existing_use_obsoleted_purged: []
   baselines_emitted:
-    cc: 0                  # CLAUDE.md is preserved, not emitted (CC-only template)
-    codex: 0               # not in this template's clis list
-    gemini: 0              # not in this template's clis list
-  cli_artifacts:           # not applicable — CC-only template
-    codex: null
-    gemini: null
+    cc: 0
+    codex: 0
+    gemini: 0
+sdk_pin_updates:
+  kailash-dataflow: "2.7.0 → 2.7.1"
 verification:
   hook_integrity: 13/13
   dangling_refs: 0
   build_path_leaks: 0
   obsoleted_paths_absent: true
-  use_excluded_paths_absent: true
-  loom_csq_boundary_shipped: false   # CONFIRMED — use_exclude honored
-  test_harness_readme_shipped: false # CONFIRMED — universal exclude honored
-  deploy_hygiene_rule_11_present: true # CONFIRMED — file diff matches loom source byte-for-byte
-notes:
-  release_summary: |
-    Small release after 2.13.0. UPDATED rules/deploy-hygiene.md += MUST Rule 11
-    'Push-Triggered Deploy Workflows MUST Cancel In-Progress Runs' (concurrency.cancel-in-progress
-    + ssh keep-alive flags + non-idempotent exception clause); generalized from a downstream
-    surfacing per upstream-issue-hygiene.md anonymization protocol. Rule 11 is NOT a CRIT-baseline
-    rule — no cap-headroom impact. NEW rules/loom-csq-boundary.md (paired-rule mirror with csq's
-    csq-loom-boundary.md, csq H12) is loom-only meta-rule and excluded from USE templates via
-    use_exclude:; verified absent. UPDATED test-harness/README.md not shipped (universal exclude).
-    No new hooks, no new scaffolds, no settings.json change.
-  closes_issues: ["loom #21", "loom #23"]
+  rule_1c_present: true
+notes: |
+  Sync triggered by loom commit 370d560 (feat(coc): zero-tolerance Rule 1c).
+  Single-rule delta: zero-tolerance.md gains Rule 1c at lines 101-140.
+  SDK pin update: kailash-dataflow 2.7.0 → 2.7.1 (BUILD repo current state).
+  uv sync re-run; uv.lock regenerated with new pin.
+  CLAUDE.md preserved (template-owned).

@@ -2648,7 +2648,7 @@ all = [
 
 [[package]]
 name = "kailash-dataflow"
-version = "2.7.0"
+version = "2.7.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiomysql" },
@@ -2674,7 +2674,7 @@ dependencies = [
     { name = "uvicorn", extra = ["standard"] },
 ]
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/25/17/abcc5b9220c0112daaa5dc34a265b79193b1604395ae01be617b2ced30d2/kailash_dataflow-2.7.0-py3-none-any.whl", hash = "sha256:13bb2b065e6835ed56f210df815dffd4498e28088b123c976eb4e9492228360e", size = 1260167, upload-time = "2026-04-30T10:27:30.628Z" },
+    { url = "https://files.pythonhosted.org/packages/24/50/abda161548b6770f4f0895eefd05e44b7503d82da10fb7600e44671831e9/kailash_dataflow-2.7.1-py3-none-any.whl", hash = "sha256:d5a914a74d8c20d641ff9a21daa942644bc4890c9d1ff4a15e2f0c37d5c7eb1e", size = 1262225, upload-time = "2026-05-01T06:52:25.238Z" },
 ]
 
 [[package]]
@@ -3845,7 +3845,7 @@ requires-dist = [
     { name = "kailash", specifier = ">=2.13.1" },
     { name = "kailash-align", marker = "extra == 'align'", specifier = ">=0.7.0" },
     { name = "kailash-align", extras = ["all"], marker = "extra == 'all'", specifier = ">=0.7.0" },
-    { name = "kailash-dataflow", specifier = ">=2.7.0" },
+    { name = "kailash-dataflow", specifier = ">=2.7.1" },
     { name = "kailash-kaizen", specifier = ">=2.14.0" },
     { name = "kailash-mcp", specifier = ">=0.2.10" },
     { name = "kailash-ml", specifier = ">=1.7.1" },
