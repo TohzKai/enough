@@ -1,47 +1,45 @@
 # COC Sync Marker — kailash-coc-claude-py (legacy CC-only)
-timestamp: 2026-05-01T12:30:00Z
+timestamp: 2026-05-01T13:10:00Z
 source: loom/.claude
-loom_version: 2.13.0
-loom_sha: 36db224
+loom_version: 2.14.0
+loom_sha: d4b4672
 variant: py
 clis: ["claude"]
 template: kailash-coc-claude-py
-template_version: 3.6.4
+template_version: 3.6.5
 stats:
-  updated: 7
-  created: 2              # gitignored-claude-warn.js + pre-commit-branch-scope.js
-  unchanged: ~684
-  composed: 2             # rules/deployment.md + rules/ci-runners.md slot-keyed py overlays
-  preserved: 1            # CLAUDE.md (template-owned; never overwritten)
-  scaffold_created: 9     # workspaces/_template/ (8 phase dirs + README.md)
-  use_excluded: 7
-  pre_existing_use_obsoleted_purged:
-    - .claude/rules/documentation.md
-    - .claude/skills/30-claude-code-patterns/sdk-upstream-donation.md
-    - .claude/guides/co-setup/
-    - .claude/guides/deterministic-quality/
-    - .claude/guides/automated-maintenance.md
-    - .claude/guides/rule-extracts/git.md
-    - .claude/guides/rule-extracts/independence-rs.md
+  updated: 1               # rules/deploy-hygiene.md (+ Rule 11, ~85 LOC)
+  created: 0
+  unchanged: ~686
+  composed: 0              # no slot-keyed variant changes in 2.14.0
+  preserved: 1             # CLAUDE.md (template-owned; never overwritten)
+  use_excluded: 8          # +rules/loom-csq-boundary.md (NEW in 2.14.0); rules/cross-sdk-inspection.md, rules/documentation.md, skills/30-claude-code-patterns/sdk-upstream-donation.md, guides/co-setup/**, guides/deterministic-quality/**, guides/automated-maintenance.md, guides/rule-extracts/git.md, guides/rule-extracts/independence-rs.md
+  test_harness_excluded: true   # universal test-harness/** exclude honored (test-harness/README.md NOT shipped despite update in 2.14.0)
+  pre_existing_use_obsoleted_purged: []   # all 18 obsoleted+use_obsoleted paths already absent
   baselines_emitted:
-    cc: 0                 # CLAUDE.md preserved, not emitted
-    codex: 0              # legacy template is CC-only
-    gemini: 0
-  cli_artifacts: null     # legacy single-CLI; no .codex / .gemini trees
-sdk_pins:
-  kailash: "2.13.1"
-  kailash-dataflow: "2.7.0"
-  kailash-nexus: "2.6.0"
-  kailash-kaizen: "2.14.0"
-  kailash-mcp: "0.2.10"
-  kailash-pact: "0.11.0"
-  kailash-ml: "1.7.1"
-  kailash-align: "0.7.0"
-  kaizen-agents: "0.9.4"
-hooks_verified: 13/13
+    cc: 0                  # CLAUDE.md is preserved, not emitted (CC-only template)
+    codex: 0               # not in this template's clis list
+    gemini: 0              # not in this template's clis list
+  cli_artifacts:           # not applicable — CC-only template
+    codex: null
+    gemini: null
+verification:
+  hook_integrity: 13/13
+  dangling_refs: 0
+  build_path_leaks: 0
+  obsoleted_paths_absent: true
+  use_excluded_paths_absent: true
+  loom_csq_boundary_shipped: false   # CONFIRMED — use_exclude honored
+  test_harness_readme_shipped: false # CONFIRMED — universal exclude honored
+  deploy_hygiene_rule_11_present: true # CONFIRMED — file diff matches loom source byte-for-byte
 notes:
-  - "2.13.0 demotes cross-cli-parity.md (baseline → path-scoped)."
-  - "TWO NEW HOOKS land in .claude/hooks/: gitignored-claude-warn.js (PreToolUse Edit|Write) + pre-commit-branch-scope.js (advisory; spawned by validate-bash-command on git commit)."
-  - "workspaces/_template/ scaffold (9 paths) at repo root."
-  - "loom_sha rolled forward: cd53b65 (2.12.0) → 36db224 (2.13.0)."
-  - "SDK pins unchanged from 2.12.0 — all match BUILD-repo current state."
+  release_summary: |
+    Small release after 2.13.0. UPDATED rules/deploy-hygiene.md += MUST Rule 11
+    'Push-Triggered Deploy Workflows MUST Cancel In-Progress Runs' (concurrency.cancel-in-progress
+    + ssh keep-alive flags + non-idempotent exception clause); generalized from a downstream
+    surfacing per upstream-issue-hygiene.md anonymization protocol. Rule 11 is NOT a CRIT-baseline
+    rule — no cap-headroom impact. NEW rules/loom-csq-boundary.md (paired-rule mirror with csq's
+    csq-loom-boundary.md, csq H12) is loom-only meta-rule and excluded from USE templates via
+    use_exclude:; verified absent. UPDATED test-harness/README.md not shipped (universal exclude).
+    No new hooks, no new scaffolds, no settings.json change.
+  closes_issues: ["loom #21", "loom #23"]
