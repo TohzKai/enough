@@ -1,19 +1,19 @@
 # COC Sync Marker — kailash-coc-claude-py (legacy CC-only)
-timestamp: 2026-05-01T07:17:15Z
+timestamp: 2026-05-02T00:00:00Z
 source: loom/.claude
 loom_version: 2.14.0
-loom_sha: 370d560
+loom_sha: 897b6f9
 variant: py
 clis: ["claude"]
 template: kailash-coc-claude-py
-template_version: 3.6.6
+template_version: 3.6.7
 stats:
-  updated: 1               # rules/zero-tolerance.md (Rule 1c added)
+  updated: 2               # rules/git.md (Discipline bullet), rules/build-repo-release-discipline.md (Rule 2 paragraph)
   created: 0
-  unchanged: ~686
+  unchanged: ~685
   composed: 0              # no slot-keyed variant changes
   preserved: 1             # CLAUDE.md (template-owned; never overwritten)
-  use_excluded: 8          # rules/loom-csq-boundary.md, rules/cross-sdk-inspection.md, rules/documentation.md, skills/30-claude-code-patterns/sdk-upstream-donation.md, guides/co-setup/**, guides/deterministic-quality/**, guides/automated-maintenance.md, guides/rule-extracts/git.md, guides/rule-extracts/independence-rs.md
+  use_excluded: 9          # rules/loom-csq-boundary.md, rules/cross-sdk-inspection.md, rules/documentation.md, skills/30-claude-code-patterns/sdk-upstream-donation.md, guides/co-setup/**, guides/deterministic-quality/**, guides/automated-maintenance.md, guides/rule-extracts/git.md, guides/rule-extracts/independence-rs.md
   test_harness_excluded: true
   pre_existing_use_obsoleted_purged: []
   baselines_emitted:
@@ -21,16 +21,24 @@ stats:
     codex: 0
     gemini: 0
 sdk_pin_updates:
-  kailash-dataflow: "2.7.0 → 2.7.1"
+  kailash: "2.13.1 → 2.13.2"
+  kailash-dataflow: "2.7.1 → 2.7.3"
 verification:
-  hook_integrity: 13/13
+  hook_integrity: 16/16
   dangling_refs: 0
   build_path_leaks: 0
   obsoleted_paths_absent: true
+  scripts_hooks_refs_in_settings: 0
   rule_1c_present: true
 notes: |
-  Sync triggered by loom commit 370d560 (feat(coc): zero-tolerance Rule 1c).
-  Single-rule delta: zero-tolerance.md gains Rule 1c at lines 101-140.
-  SDK pin update: kailash-dataflow 2.7.0 → 2.7.1 (BUILD repo current state).
-  uv sync re-run; uv.lock regenerated with new pin.
+  Sync triggered by loom commit 897b6f9 (feat(coc): codify py-build /codify
+  proposal — pre-commit pygrep + uv --refresh).
+  Two-rule delta: rules/git.md § Discipline gains "Pre-commit comment-syntax
+  matchers" bullet; rules/build-repo-release-discipline.md § MUST Rule 2 gains
+  "uv index-cache override" paragraph. Both classified GLOBAL via /sync Gate 1
+  against kailash-py /codify proposal id pre-commit-comment-matcher-quirk +
+  uv-index-cache-refresh.
+  SDK pin updates: kailash 2.13.1 → 2.13.2; kailash-dataflow 2.7.1 → 2.7.3
+  (matches BUILD repo current state).
+  uv sync re-run; uv.lock regenerated with new pins.
   CLAUDE.md preserved (template-owned).

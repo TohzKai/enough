@@ -1,17 +1,17 @@
 {
-  "version": "3.6.6",
+  "version": "3.6.7",
   "type": "coc-use-template",
   "description": "COC USE template for Python SDK projects",
-  "released": "2026-05-01",
+  "released": "2026-05-02",
   "upstream": {
     "name": "kailash",
     "type": "coc-source",
     "version": "2.14.0",
-    "build_version": "2.13.1",
-    "synced_at": "2026-05-01T07:17:15Z",
+    "build_version": "2.13.2",
+    "synced_at": "2026-05-02T00:00:00Z",
     "sdk_packages": {
-      "kailash": "2.13.1",
-      "kailash-dataflow": "2.7.1",
+      "kailash": "2.13.2",
+      "kailash-dataflow": "2.7.3",
       "kailash-nexus": "2.6.0",
       "kailash-kaizen": "2.14.0",
       "kailash-pact": "0.11.0",
@@ -20,9 +20,21 @@
       "kailash-align": "0.7.0",
       "kaizen-agents": "0.9.4"
     },
-    "loom_sha": "370d560"
+    "loom_sha": "897b6f9"
   },
   "changelog": [
+    {
+      "version": "3.6.7",
+      "date": "2026-05-02",
+      "summary": "PATCH: sync loom commit 897b6f9 — codified two narrow tooling-quirk learnings from kailash-py /codify (PRs #769–771 cycle): pre-commit pygrep comment-matcher quirk + uv index-cache --refresh unblocker. Both classified GLOBAL via /sync Gate 1. (1) rules/git.md § Discipline += bullet on python-use-type-annotations regex matching `# type` (NOT `# type:`) per pre-commit-hooks pygrep — reword `# type` substrings (e.g. `# types.UnionType for PEP 604`) to avoid false positive; same class for any future pygrep hook missing trailing punctuation. ~407 B raw addition, ~250 B abridged — git.md is on per-rule budget (4400 B abridged), within tolerance. (2) rules/build-repo-release-discipline.md § MUST Rule 2 += paragraph on `uv pip install --refresh` to override uv's local index cache when pypi.org/.../json returns new metadata but uv reports `No solution found`; pip-direct path doesn't need flag (shorter TTL); body narrows scope to Python BUILD repos via python-environment.md Rule 1 reference. SDK pins bumped: kailash 2.13.1 → 2.13.2, kailash-dataflow 2.7.1 → 2.7.3 (matches BUILD repo current state).",
+      "changes": [
+        "RULE UPDATE: .claude/rules/git.md § Discipline += `Pre-commit comment-syntax matchers` bullet (~407 B). Lifted from kailash-py /codify proposal id pre-commit-comment-matcher-quirk. Classification: GLOBAL.",
+        "RULE UPDATE: .claude/rules/build-repo-release-discipline.md § MUST Rule 2 += `uv index-cache override` paragraph (~636 B). Lifted from kailash-py /codify proposal id uv-index-cache-refresh. Classification: GLOBAL.",
+        "SDK PIN: pyproject.toml kailash >= 2.13.1 → >= 2.13.2; kailash-dataflow >= 2.7.1 → >= 2.7.3 (matches BUILD repo current state).",
+        "VERSION: template 3.6.6 → 3.6.7; upstream loom version stays 2.14.0; loom_sha 370d560 → 897b6f9; sdk_packages.kailash 2.13.1 → 2.13.2, sdk_packages.kailash-dataflow 2.7.1 → 2.7.3.",
+        "DEPENDENCIES: uv sync re-run to regenerate uv.lock with new pins."
+      ]
+    },
     {
       "version": "3.6.6",
       "date": "2026-05-01",
