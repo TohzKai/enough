@@ -1,13 +1,13 @@
 # COC Sync Marker — kailash-coc-claude-py (legacy CC-only)
-timestamp: 2026-05-01T01:19:49Z
+timestamp: 2026-05-01T02:30:00Z
 source: loom/.claude
-loom_version: 2.11.2
-loom_sha: 25a0501
+loom_version: 2.12.0
+loom_sha: cd53b65
 variant: py
 clis: ["claude"]
 stats:
   updated: 0
-  created: 0
+  created: 2          # rules/spec-accuracy.md + guides/rule-extracts/spec-accuracy.md
   unchanged: 657
   composed: 2          # rules/deployment.md + rules/ci-runners.md slot-keyed py overlays
   preserved: 1         # CLAUDE.md (template-owned; never overwritten)
@@ -33,9 +33,10 @@ sdk_pins:
   kailash-kaizen: "2.14.0"
   kailash-mcp: "0.2.10"
   kailash-pact: "0.11.0"
-  kailash-ml: "1.7.0"          # bumped 1.6.0 → 1.7.0 (PyPI tip; BUILD at 1.7.1 not yet published per deployment.md PyPI-resolvable rule)
+  kailash-ml: "1.7.1"          # bumped 1.7.0 → 1.7.1 (PyPI tip)
   kailash-align: "0.7.0"
 notes:
-  - "2.11.2 sync content delivery committed previously at b775f25 (git.md trim, use_obsoleted purge, kailash/dataflow/nexus pin refresh)."
-  - "This sync iteration: kailash-ml pin 1.6.0 → 1.7.0 + marker freshness."
-  - "loom_sha rolled forward: 068415b (2.11.0) → 25a0501 (2.11.2)."
+  - "2.12.0 adds path-scoped rules/spec-accuracy.md + companion extract per loom #18."
+  - "Path-scoped (priority:10); zero baseline emission impact (CLAUDE.md preserved as template-owned)."
+  - "kailash-ml pin 1.7.0 → 1.7.1."
+  - "loom_sha rolled forward: 25a0501 (2.11.2) → cd53b65 (2.12.0)."

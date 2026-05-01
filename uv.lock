@@ -2731,7 +2731,7 @@ wheels = [
 
 [[package]]
 name = "kailash-ml"
-version = "1.7.0"
+version = "1.7.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx" },
@@ -2755,7 +2755,7 @@ dependencies = [
     { name = "xgboost" },
 ]
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f1/2b/8c3bd04e5dce10b4a4cefbb56ddf9acf31fb8e6c511fe05ab79f73467e72/kailash_ml-1.7.0-py3-none-any.whl", hash = "sha256:a1a20213fb22f1b510d8e67d6ffc43fbf86d45dbd941ab3693884e64e7dd6253", size = 667161, upload-time = "2026-04-30T17:29:44.331Z" },
+    { url = "https://files.pythonhosted.org/packages/62/ae/77c4ee2a59d364d62c0b27fcecda2832ab28258630b26f31273fd8b2eab5/kailash_ml-1.7.1-py3-none-any.whl", hash = "sha256:9e69fe3bf5aadc32a9f9bbd259a7fbd2fd28ac9816b2b0a9c301a0c8be2bdb00", size = 667230, upload-time = "2026-05-01T01:36:17.437Z" },
 ]
 
 [package.optional-dependencies]
@@ -3848,7 +3848,7 @@ requires-dist = [
     { name = "kailash-dataflow", specifier = ">=2.7.0" },
     { name = "kailash-kaizen", specifier = ">=2.14.0" },
     { name = "kailash-mcp", specifier = ">=0.2.10" },
-    { name = "kailash-ml", specifier = ">=1.7.0" },
+    { name = "kailash-ml", specifier = ">=1.7.1" },
     { name = "kailash-nexus", specifier = ">=2.6.0" },
     { name = "kailash-pact", specifier = ">=0.11.0" },
     { name = "kaizen-agents", specifier = ">=0.9.4" },

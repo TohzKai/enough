@@ -1,14 +1,14 @@
 {
-  "version": "3.6.2",
+  "version": "3.6.3",
   "type": "coc-use-template",
   "description": "COC USE template for Python SDK projects",
   "released": "2026-05-01",
   "upstream": {
     "name": "kailash",
     "type": "coc-source",
-    "version": "2.11.2",
+    "version": "2.12.0",
     "build_version": "2.13.1",
-    "synced_at": "2026-05-01T01:19:49Z",
+    "synced_at": "2026-05-01T02:30:00Z",
     "sdk_packages": {
       "kailash": "2.13.1",
       "kailash-dataflow": "2.7.0",
@@ -16,12 +16,24 @@
       "kailash-kaizen": "2.14.0",
       "kailash-pact": "0.11.0",
       "kailash-mcp": "0.2.10",
-      "kailash-ml": "1.7.0",
+      "kailash-ml": "1.7.1",
       "kailash-align": "0.7.0",
       "kaizen-agents": "0.9.4"
     }
   },
   "changelog": [
+    {
+      "version": "3.6.3",
+      "date": "2026-05-01",
+      "summary": "PATCH: sync loom 2.11.2 → 2.12.0. (1) NEW path-scoped rule `rules/spec-accuracy.md` (priority:10, paths: specs/**, workspaces/**/specs/**, 02-plans/**, briefs/**) — blocks phantom citations and Phase-1/Phase-2 framings in spec content per loom issue #18. Sister to specs-authority.md. Path-scoped means baseline emission unchanged (no AGENTS.md / CLAUDE.md size impact). (2) NEW companion `guides/rule-extracts/spec-accuracy.md` — full 2026-04-21 phantom-Databricks post-mortem, gap-tracker migration playbook, BLOCKED-rationalization list with Why per item, relationship-to-other-rules table, full 3-sweep audit protocol. (3) kailash-ml pin >=1.7.0 → >=1.7.1 (PyPI live). (4) `.claude/.coc-sync-marker` rolled forward to loom 2.11.2 → 2.12.0; loom_sha 25a0501 → cd53b65.",
+      "changes": [
+        "NEW RULE: .claude/rules/spec-accuracy.md (196 LOC, priority:10/path-scoped) — blocks phantom citations and split-state framings in spec content.",
+        "NEW EXTRACT: .claude/guides/rule-extracts/spec-accuracy.md — full post-mortem + migration playbook + audit protocol.",
+        "DEPENDENCY: pyproject.toml — kailash-ml>=1.7.0 → kailash-ml>=1.7.1.",
+        "MARKER: .claude/.coc-sync-marker rolled forward to loom 2.12.0 / SHA cd53b65.",
+        "VERSION: template 3.6.2 → 3.6.3; upstream.version 2.11.2 → 2.12.0; sdk_packages.kailash-ml 1.7.0 → 1.7.1."
+      ]
+    },
     {
       "version": "3.6.2",
       "date": "2026-05-01",
