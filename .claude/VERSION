@@ -1,18 +1,18 @@
 {
-  "version": "3.6.0",
+  "version": "3.6.1",
   "type": "coc-use-template",
   "description": "COC USE template for Python SDK projects",
-  "released": "2026-04-30",
+  "released": "2026-05-01",
   "upstream": {
     "name": "kailash",
     "type": "coc-source",
-    "version": "2.11.0",
-    "build_version": "2.13.0",
-    "synced_at": "2026-04-30T13:50:00Z",
+    "version": "2.11.2",
+    "build_version": "2.13.1",
+    "synced_at": "2026-05-01T00:00:00Z",
     "sdk_packages": {
-      "kailash": "2.13.0",
-      "kailash-dataflow": "2.6.0",
-      "kailash-nexus": "2.5.0",
+      "kailash": "2.13.1",
+      "kailash-dataflow": "2.7.0",
+      "kailash-nexus": "2.6.0",
       "kailash-kaizen": "2.14.0",
       "kailash-pact": "0.11.0",
       "kailash-mcp": "0.2.10",
@@ -22,6 +22,21 @@
     }
   },
   "changelog": [
+    {
+      "version": "3.6.1",
+      "date": "2026-05-01",
+      "summary": "PATCH: Sync loom 2.11.2 — trimmed rules/git.md (§ Discipline collapsed to bullet list; 8,673 → 7,098 B raw) + use_obsoleted: tier active-purge of 7 pre-existing BUILD-only artifacts. (1) rules/git.md trimmed: Issue Closure Discipline + Pre-Commit Hook Workarounds + Commit-Message Claim Accuracy collapsed into one tight `## Discipline` bullet list with combined Why; load-bearing MUST clauses preserved as bullets, full DO/DO NOT examples routed to guides/rule-extracts/git.md. (2) NEW manifest tier `use_obsoleted:` populated with 7 paths previously identified as pre-existing-in-USE-templates copies of newly-use_excluded BUILD-only artifacts; coc-sync agent Step 4.5 now UNIONS obsoleted: + use_obsoleted: for purge AND emits union to .coc-obsoleted (downstream consumers inherit purge contract). (3) Purged from this template: rules/documentation.md, skills/30-claude-code-patterns/sdk-upstream-donation.md, guides/co-setup/, guides/deterministic-quality/. The other three (guides/automated-maintenance.md, guides/rule-extracts/git.md, guides/rule-extracts/independence-rs.md) were already absent. .coc-obsoleted refreshed (13 → 20 entries). (4) SDK pins refreshed to BUILD/PyPI tips: kailash 2.13.0 → 2.13.1, kailash-dataflow 2.6.0 → 2.7.0, kailash-nexus 2.5.0 → 2.6.0. CC-only legacy template — no AGENTS.md / GEMINI.md regeneration.",
+      "changes": [
+        "RULE TRIM: .claude/rules/git.md — collapsed Issue Closure Discipline + Pre-Commit Hook Workarounds + Commit-Message Claim Accuracy into bullet-list `## Discipline` section with combined Why. 8,673 → 7,098 B raw.",
+        "PURGED via use_obsoleted: .claude/rules/documentation.md (BUILD-only; hardcoded terrene-foundation/kailash-py URLs).",
+        "PURGED via use_obsoleted: .claude/skills/30-claude-code-patterns/sdk-upstream-donation.md (BUILD-only; auto-cross-file maintainer playbook).",
+        "PURGED via use_obsoleted: .claude/guides/co-setup/ (10 files; BUILD-side artifact-flow internals).",
+        "PURGED via use_obsoleted: .claude/guides/deterministic-quality/ (10 files; BUILD-side rule-authoring + session-architecture guides).",
+        ".coc-obsoleted regenerated: 13 → 20 entries (UNION of obsoleted: + use_obsoleted:).",
+        "DEPENDENCY: pyproject.toml — kailash>=2.13.0 → 2.13.1; kailash-dataflow>=2.6.0 → 2.7.0; kailash-nexus>=2.5.0 → 2.6.0.",
+        "VERSION: template 3.6.0 → 3.6.1; upstream loom 2.11.0 → 2.11.2; build_version 2.13.0 → 2.13.1."
+      ]
+    },
     {
       "version": "3.6.0",
       "date": "2026-04-30",
