@@ -32,7 +32,7 @@ dependencies = [
     "kailash-pact>=0.11.0",
     # kailash-trust removed in 3.5.15 — yanked from PyPI ("not required as
     # kailash already exports it in production"). Functionality is in `kailash`.
-    "kailash-ml>=1.6.0",
+    "kailash-ml>=1.7.0",
     "kaizen-agents>=0.9.4",
     # Utilities
     "rich>=13.0.0",

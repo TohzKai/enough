@@ -1,36 +1,41 @@
 # COC Sync Marker — kailash-coc-claude-py (legacy CC-only)
-timestamp: 2026-04-30T13:50:00Z
+timestamp: 2026-05-01T01:19:49Z
 source: loom/.claude
-loom_version: 2.11.0
-loom_sha: 068415b
+loom_version: 2.11.2
+loom_sha: 25a0501
 variant: py
 clis: ["claude"]
 stats:
-  updated: 37
-  created: 1
-  unchanged: 611
-  composed: 2          # rules/deployment.md + rules/ci-runners.md slot-keyed py overlays (ci-runners stripped at use_exclude was NOT in canonical use_exclude — only the 8 listed; ci-runners synced as composed)
+  updated: 0
+  created: 0
+  unchanged: 657
+  composed: 2          # rules/deployment.md + rules/ci-runners.md slot-keyed py overlays
   preserved: 1         # CLAUDE.md (template-owned; never overwritten)
-  use_excluded: 26     # files that previously synced are now NOT propagated; pre-existing copies remain
-  pre_existing_use_excluded:
+  use_excluded: 26     # files use_excluded; pre-existing copies for use_obsoleted: paths purged in 2.11.2 commit b775f25
+  pre_existing_use_obsoleted_purged:
+    # All 7 use_obsoleted: paths verified absent at this sync.
     - .claude/rules/documentation.md
     - .claude/skills/30-claude-code-patterns/sdk-upstream-donation.md
     - .claude/guides/co-setup/
     - .claude/guides/deterministic-quality/
+    - .claude/guides/automated-maintenance.md
+    - .claude/guides/rule-extracts/git.md
+    - .claude/guides/rule-extracts/independence-rs.md
   baselines_emitted:
     cc: 0              # CLAUDE.md preserved, not emitted
     codex: 0           # legacy template is CC-only
     gemini: 0
   cli_artifacts: null  # legacy single-CLI; no .codex/.gemini trees
 sdk_pins:
-  kailash: "2.13.0"
-  kailash-dataflow: "2.6.0"
-  kailash-nexus: "2.5.0"
+  kailash: "2.13.1"
+  kailash-dataflow: "2.7.0"
+  kailash-nexus: "2.6.0"
   kailash-kaizen: "2.14.0"
   kailash-mcp: "0.2.10"
   kailash-pact: "0.11.0"
-  kailash-ml: "1.6.0"
+  kailash-ml: "1.7.0"          # bumped 1.6.0 → 1.7.0 (PyPI tip; BUILD at 1.7.1 not yet published per deployment.md PyPI-resolvable rule)
   kailash-align: "0.7.0"
 notes:
-  - "Pre-existing use_excluded files preserved per additive-merge semantics (Step 4 rule 5)."
-  - "User decision pending: convert use_excluded paths to obsoleted in future cycle for purge."
+  - "2.11.2 sync content delivery committed previously at b775f25 (git.md trim, use_obsoleted purge, kailash/dataflow/nexus pin refresh)."
+  - "This sync iteration: kailash-ml pin 1.6.0 → 1.7.0 + marker freshness."
+  - "loom_sha rolled forward: 068415b (2.11.0) → 25a0501 (2.11.2)."

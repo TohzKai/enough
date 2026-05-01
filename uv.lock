@@ -2731,7 +2731,7 @@ wheels = [
 
 [[package]]
 name = "kailash-ml"
-version = "1.6.0"
+version = "1.7.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx" },
@@ -2739,13 +2739,13 @@ dependencies = [
     { name = "kailash-dataflow" },
     { name = "kailash-nexus" },
     { name = "lightgbm" },
-    { name = "lightning" },
     { name = "numpy" },
     { name = "onnxmltools" },
     { name = "onnxruntime" },
     { name = "plotly" },
     { name = "polars" },
     { name = "pyarrow" },
+    { name = "pytorch-lightning" },
     { name = "pyyaml" },
     { name = "scikit-learn" },
     { name = "scipy" },
@@ -2755,14 +2755,14 @@ dependencies = [
     { name = "xgboost" },
 ]
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b1/d5/887a8f4d50d1bf71db01dfdf5a255d67a55260d5b670331f85a7ff195f21/kailash_ml-1.6.0-py3-none-any.whl", hash = "sha256:30718ec774df72ab707263958351e5eb2f789cb4cfe1f3106535527fa6d1c95d", size = 666856, upload-time = "2026-04-29T05:48:29.696Z" },
+    { url = "https://files.pythonhosted.org/packages/f1/2b/8c3bd04e5dce10b4a4cefbb56ddf9acf31fb8e6c511fe05ab79f73467e72/kailash_ml-1.7.0-py3-none-any.whl", hash = "sha256:a1a20213fb22f1b510d8e67d6ffc43fbf86d45dbd941ab3693884e64e7dd6253", size = 667161, upload-time = "2026-04-30T17:29:44.331Z" },
 ]
 
 [package.optional-dependencies]
 rl = [
     { name = "gymnasium" },
-    { name = "lightning" },
     { name = "plotly" },
+    { name = "pytorch-lightning" },
     { name = "sb3-contrib" },
     { name = "stable-baselines3" },
     { name = "timm" },
@@ -3025,26 +3025,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/64/41/4fbde2c3d29e25ee7c41d87df2f2e5eda65b431ee154d4d462c31041846c/lightgbm-4.6.0-py3-none-manylinux2014_aarch64.whl", hash = "sha256:4d68712bbd2b57a0b14390cbf9376c1d5ed773fa2e71e099cac588703b590336", size = 3454567, upload-time = "2025-02-15T04:02:56.443Z" },
     { url = "https://files.pythonhosted.org/packages/42/86/dabda8fbcb1b00bcfb0003c3776e8ade1aa7b413dff0a2c08f457dace22f/lightgbm-4.6.0-py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:cb19b5afea55b5b61cbb2131095f50538bd608a00655f23ad5d25ae3e3bf1c8d", size = 3569831, upload-time = "2025-02-15T04:02:58.925Z" },
     { url = "https://files.pythonhosted.org/packages/5e/23/f8b28ca248bb629b9e08f877dd2965d1994e1674a03d67cd10c5246da248/lightgbm-4.6.0-py3-none-win_amd64.whl", hash = "sha256:37089ee95664b6550a7189d887dbf098e3eadab03537e411f52c63c121e3ba4b", size = 1451509, upload-time = "2025-02-15T04:03:01.515Z" },
-]
-
-[[package]]
-name = "lightning"
-version = "2.6.1"
-source = { registry = "https://pypi.org/simple" }
-dependencies = [
-    { name = "fsspec", extra = ["http"] },
-    { name = "lightning-utilities" },
-    { name = "packaging" },
-    { name = "pytorch-lightning" },
-    { name = "pyyaml" },
-    { name = "torch" },
-    { name = "torchmetrics" },
-    { name = "tqdm" },
-    { name = "typing-extensions" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/15/ad/a1c91a795521be252209d45fb080f28a4f1e7244d3b37121fcc6e3e43034/lightning-2.6.1.tar.gz", hash = "sha256:859104b98c61add6fe60d0c623abf749baf25f2950a66ebdfb4bd18aa7decba9", size = 663175, upload-time = "2026-01-30T14:59:13.92Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/4a/6d/42640e15a8c34b57dc7ea922152440c0c6692214a08d5282b6e3eb46ddf4/lightning-2.6.1-py3-none-any.whl", hash = "sha256:30e1adac23004c713663928541bd72ecb1371b7abc9aff9f46b7fd2644988d30", size = 853631, upload-time = "2026-01-30T14:59:11.687Z" },
 ]
 
 [[package]]
@@ -3868,7 +3848,7 @@ requires-dist = [
     { name = "kailash-dataflow", specifier = ">=2.7.0" },
     { name = "kailash-kaizen", specifier = ">=2.14.0" },
     { name = "kailash-mcp", specifier = ">=0.2.10" },
-    { name = "kailash-ml", specifier = ">=1.6.0" },
+    { name = "kailash-ml", specifier = ">=1.7.0" },
     { name = "kailash-nexus", specifier = ">=2.6.0" },
     { name = "kailash-pact", specifier = ">=0.11.0" },
     { name = "kaizen-agents", specifier = ">=0.9.4" },
