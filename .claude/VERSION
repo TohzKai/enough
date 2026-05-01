@@ -1,14 +1,14 @@
 {
-  "version": "3.6.3",
+  "version": "3.6.4",
   "type": "coc-use-template",
   "description": "COC USE template for Python SDK projects",
   "released": "2026-05-01",
   "upstream": {
     "name": "kailash",
     "type": "coc-source",
-    "version": "2.12.0",
+    "version": "2.13.0",
     "build_version": "2.13.1",
-    "synced_at": "2026-05-01T02:30:00Z",
+    "synced_at": "2026-05-01T12:30:00Z",
     "sdk_packages": {
       "kailash": "2.13.1",
       "kailash-dataflow": "2.7.0",
@@ -19,46 +19,63 @@
       "kailash-ml": "1.7.1",
       "kailash-align": "0.7.0",
       "kaizen-agents": "0.9.4"
-    }
+    },
+    "loom_sha": "36db224"
   },
   "changelog": [
     {
+      "version": "3.6.4",
+      "date": "2026-05-01",
+      "summary": "PATCH: sync loom 2.12.0 \u2192 2.13.0. Procedure-safety + cap-headroom restoration. (1) DEMOTED rules/cross-cli-parity.md from baseline (priority:0/scope:baseline) \u2192 path-scoped (priority:10/scope:path-scoped, paths: **/.claude/rules/**, **/.claude/variants/**). Cross-CLI parity is loom-only meta-authoring guidance; demotion zeroes its baseline emission cost. (2) NEW HOOK .claude/hooks/gitignored-claude-warn.js \u2014 PreToolUse / Edit|Write matcher (5s timeout). Detects writes to gitignored .claude/** paths in downstream consumer environments and emits WARN advising codify-upstream-via-loom-issue. Registered in settings.json. (3) NEW HOOK .claude/hooks/pre-commit-branch-scope.js \u2014 standalone advisory (always exits 0). Resolves declared scope from open PR Scope: line first, falls back to branch-name keyword regex. Wired into validate-bash-command.js: when agent invokes `git commit ...` via Bash tool, validate-bash-command spawns the script and bubbles its stderr as a PreToolUse validation message. Conservative-by-design (unrecognised branch shapes silent); never blocks. (4) NEW SCAFFOLD workspaces/_template/ \u2014 eight phase dirs (briefs/, 01-analysis/, 02-plans/, 03-user-flows/, 04-validate/, journal/, todos/active/, todos/completed/) each with .gitkeep, plus README.md. New workspaces copied from this template inherit the full canonical structure. (5) /ws COMMAND UPDATED with missing-phase scan: emits `!! MISSING:` flags at the top of the dashboard output for any canonical phase dir absent (advisory; never blocks). (6) settings.json refreshed (gitignored-claude-warn matcher: Edit|Write). 13 hooks resolve. (7) SDK pins unchanged (kailash 2.13.1, dataflow 2.7.0, nexus 2.6.0, kaizen 2.14.0, pact 0.11.0, mcp 0.2.10, ml 1.7.1, align 0.7.0, kaizen-agents 0.9.4 \u2014 all match BUILD repo current state).",
+      "changes": [
+        "DEMOTION: .claude/rules/cross-cli-parity.md frontmatter \u2014 priority:0/scope:baseline \u2192 priority:10/scope:path-scoped + paths: ['**/.claude/rules/**', '**/.claude/variants/**'].",
+        "NEW HOOK: .claude/hooks/gitignored-claude-warn.js (PreToolUse / Edit|Write matcher, 5s).",
+        "NEW HOOK: .claude/hooks/pre-commit-branch-scope.js (standalone advisory; chmod +x).",
+        "EXTENDED HOOK: .claude/hooks/validate-bash-command.js \u2014 git commit detection block spawns pre-commit-branch-scope.js.",
+        "NEW SCAFFOLD: workspaces/_template/ (8 phase dirs + README.md, total 9 paths).",
+        "COMMAND UPDATE: .claude/commands/ws.md \u2014 missing-phase scan + _template/ excluded from listings.",
+        "SETTINGS: .claude/settings.json \u2014 added PreToolUse Edit|Write matcher with gitignored-claude-warn.js (5s).",
+        "VERSION: template 3.6.3 \u2192 3.6.4; upstream.version 2.12.0 \u2192 2.13.0; loom_sha cd53b65 \u2192 36db224.",
+        "MARKER: .claude/.coc-sync-marker rolled forward to loom 2.13.0 / SHA 36db224."
+      ]
+    },
+    {
       "version": "3.6.3",
       "date": "2026-05-01",
-      "summary": "PATCH: sync loom 2.11.2 → 2.12.0. (1) NEW path-scoped rule `rules/spec-accuracy.md` (priority:10, paths: specs/**, workspaces/**/specs/**, 02-plans/**, briefs/**) — blocks phantom citations and Phase-1/Phase-2 framings in spec content per loom issue #18. Sister to specs-authority.md. Path-scoped means baseline emission unchanged (no AGENTS.md / CLAUDE.md size impact). (2) NEW companion `guides/rule-extracts/spec-accuracy.md` — full 2026-04-21 phantom-Databricks post-mortem, gap-tracker migration playbook, BLOCKED-rationalization list with Why per item, relationship-to-other-rules table, full 3-sweep audit protocol. (3) kailash-ml pin >=1.7.0 → >=1.7.1 (PyPI live). (4) `.claude/.coc-sync-marker` rolled forward to loom 2.11.2 → 2.12.0; loom_sha 25a0501 → cd53b65.",
+      "summary": "PATCH: sync loom 2.11.2 \u2192 2.12.0. (1) NEW path-scoped rule `rules/spec-accuracy.md` (priority:10, paths: specs/**, workspaces/**/specs/**, 02-plans/**, briefs/**) \u2014 blocks phantom citations and Phase-1/Phase-2 framings in spec content per loom issue #18. Sister to specs-authority.md. Path-scoped means baseline emission unchanged (no AGENTS.md / CLAUDE.md size impact). (2) NEW companion `guides/rule-extracts/spec-accuracy.md` \u2014 full 2026-04-21 phantom-Databricks post-mortem, gap-tracker migration playbook, BLOCKED-rationalization list with Why per item, relationship-to-other-rules table, full 3-sweep audit protocol. (3) kailash-ml pin >=1.7.0 \u2192 >=1.7.1 (PyPI live). (4) `.claude/.coc-sync-marker` rolled forward to loom 2.11.2 \u2192 2.12.0; loom_sha 25a0501 \u2192 cd53b65.",
       "changes": [
-        "NEW RULE: .claude/rules/spec-accuracy.md (196 LOC, priority:10/path-scoped) — blocks phantom citations and split-state framings in spec content.",
-        "NEW EXTRACT: .claude/guides/rule-extracts/spec-accuracy.md — full post-mortem + migration playbook + audit protocol.",
-        "DEPENDENCY: pyproject.toml — kailash-ml>=1.7.0 → kailash-ml>=1.7.1.",
+        "NEW RULE: .claude/rules/spec-accuracy.md (196 LOC, priority:10/path-scoped) \u2014 blocks phantom citations and split-state framings in spec content.",
+        "NEW EXTRACT: .claude/guides/rule-extracts/spec-accuracy.md \u2014 full post-mortem + migration playbook + audit protocol.",
+        "DEPENDENCY: pyproject.toml \u2014 kailash-ml>=1.7.0 \u2192 kailash-ml>=1.7.1.",
         "MARKER: .claude/.coc-sync-marker rolled forward to loom 2.12.0 / SHA cd53b65.",
-        "VERSION: template 3.6.2 → 3.6.3; upstream.version 2.11.2 → 2.12.0; sdk_packages.kailash-ml 1.7.0 → 1.7.1."
+        "VERSION: template 3.6.2 \u2192 3.6.3; upstream.version 2.11.2 \u2192 2.12.0; sdk_packages.kailash-ml 1.7.0 \u2192 1.7.1."
       ]
     },
     {
       "version": "3.6.2",
       "date": "2026-05-01",
-      "summary": "PATCH: SDK-pin refresh + sync-marker freshness for loom 2.11.2. (1) kailash-ml pin >=1.6.0 → >=1.7.0 (PyPI-live; BUILD at 1.7.1 not yet published per deployment.md PyPI-resolvable rule). uv sync clean: dropped lightning transitive. All other pins held at PyPI tips. (2) `.claude/.coc-sync-marker` rolled forward: loom_version 2.11.0 → 2.11.2; loom_sha 068415b → 25a0501; timestamp refreshed. The 2.11.2 artifact-content delivery (git.md trim, use_obsoleted: purge of 7 BUILD-only paths, prior pin refresh kailash/dataflow/nexus) had landed at commit b775f25; this 3.6.2 iteration closes the marker freshness + ml pin gap.",
+      "summary": "PATCH: SDK-pin refresh + sync-marker freshness for loom 2.11.2. (1) kailash-ml pin >=1.6.0 \u2192 >=1.7.0 (PyPI-live; BUILD at 1.7.1 not yet published per deployment.md PyPI-resolvable rule). uv sync clean: dropped lightning transitive. All other pins held at PyPI tips. (2) `.claude/.coc-sync-marker` rolled forward: loom_version 2.11.0 \u2192 2.11.2; loom_sha 068415b \u2192 25a0501; timestamp refreshed. The 2.11.2 artifact-content delivery (git.md trim, use_obsoleted: purge of 7 BUILD-only paths, prior pin refresh kailash/dataflow/nexus) had landed at commit b775f25; this 3.6.2 iteration closes the marker freshness + ml pin gap.",
       "changes": [
-        "DEPENDENCY: pyproject.toml — kailash-ml>=1.6.0 → kailash-ml>=1.7.0.",
+        "DEPENDENCY: pyproject.toml \u2014 kailash-ml>=1.6.0 \u2192 kailash-ml>=1.7.0.",
         "MARKER: .claude/.coc-sync-marker rolled forward to loom 2.11.2 / SHA 25a0501.",
         "VERIFIED: 7 use_obsoleted: paths absent at this sync (.claude/rules/documentation.md, .claude/skills/30-claude-code-patterns/sdk-upstream-donation.md, .claude/guides/co-setup/, .claude/guides/deterministic-quality/, .claude/guides/automated-maintenance.md, .claude/guides/rule-extracts/git.md, .claude/guides/rule-extracts/independence-rs.md).",
         "VERIFIED: .coc-obsoleted contains the full union (13 obsoleted: + 7 use_obsoleted: = 20 entries).",
-        "VERSION: template 3.6.1 → 3.6.2; upstream loom 2.11.2 unchanged."
+        "VERSION: template 3.6.1 \u2192 3.6.2; upstream loom 2.11.2 unchanged."
       ]
     },
     {
       "version": "3.6.1",
       "date": "2026-05-01",
-      "summary": "PATCH: Sync loom 2.11.2 — trimmed rules/git.md (§ Discipline collapsed to bullet list; 8,673 → 7,098 B raw) + use_obsoleted: tier active-purge of 7 pre-existing BUILD-only artifacts. (1) rules/git.md trimmed: Issue Closure Discipline + Pre-Commit Hook Workarounds + Commit-Message Claim Accuracy collapsed into one tight `## Discipline` bullet list with combined Why; load-bearing MUST clauses preserved as bullets, full DO/DO NOT examples routed to guides/rule-extracts/git.md. (2) NEW manifest tier `use_obsoleted:` populated with 7 paths previously identified as pre-existing-in-USE-templates copies of newly-use_excluded BUILD-only artifacts; coc-sync agent Step 4.5 now UNIONS obsoleted: + use_obsoleted: for purge AND emits union to .coc-obsoleted (downstream consumers inherit purge contract). (3) Purged from this template: rules/documentation.md, skills/30-claude-code-patterns/sdk-upstream-donation.md, guides/co-setup/, guides/deterministic-quality/. The other three (guides/automated-maintenance.md, guides/rule-extracts/git.md, guides/rule-extracts/independence-rs.md) were already absent. .coc-obsoleted refreshed (13 → 20 entries). (4) SDK pins refreshed to BUILD/PyPI tips: kailash 2.13.0 → 2.13.1, kailash-dataflow 2.6.0 → 2.7.0, kailash-nexus 2.5.0 → 2.6.0. CC-only legacy template — no AGENTS.md / GEMINI.md regeneration.",
+      "summary": "PATCH: Sync loom 2.11.2 \u2014 trimmed rules/git.md (\u00a7 Discipline collapsed to bullet list; 8,673 \u2192 7,098 B raw) + use_obsoleted: tier active-purge of 7 pre-existing BUILD-only artifacts. (1) rules/git.md trimmed: Issue Closure Discipline + Pre-Commit Hook Workarounds + Commit-Message Claim Accuracy collapsed into one tight `## Discipline` bullet list with combined Why; load-bearing MUST clauses preserved as bullets, full DO/DO NOT examples routed to guides/rule-extracts/git.md. (2) NEW manifest tier `use_obsoleted:` populated with 7 paths previously identified as pre-existing-in-USE-templates copies of newly-use_excluded BUILD-only artifacts; coc-sync agent Step 4.5 now UNIONS obsoleted: + use_obsoleted: for purge AND emits union to .coc-obsoleted (downstream consumers inherit purge contract). (3) Purged from this template: rules/documentation.md, skills/30-claude-code-patterns/sdk-upstream-donation.md, guides/co-setup/, guides/deterministic-quality/. The other three (guides/automated-maintenance.md, guides/rule-extracts/git.md, guides/rule-extracts/independence-rs.md) were already absent. .coc-obsoleted refreshed (13 \u2192 20 entries). (4) SDK pins refreshed to BUILD/PyPI tips: kailash 2.13.0 \u2192 2.13.1, kailash-dataflow 2.6.0 \u2192 2.7.0, kailash-nexus 2.5.0 \u2192 2.6.0. CC-only legacy template \u2014 no AGENTS.md / GEMINI.md regeneration.",
       "changes": [
-        "RULE TRIM: .claude/rules/git.md — collapsed Issue Closure Discipline + Pre-Commit Hook Workarounds + Commit-Message Claim Accuracy into bullet-list `## Discipline` section with combined Why. 8,673 → 7,098 B raw.",
+        "RULE TRIM: .claude/rules/git.md \u2014 collapsed Issue Closure Discipline + Pre-Commit Hook Workarounds + Commit-Message Claim Accuracy into bullet-list `## Discipline` section with combined Why. 8,673 \u2192 7,098 B raw.",
         "PURGED via use_obsoleted: .claude/rules/documentation.md (BUILD-only; hardcoded terrene-foundation/kailash-py URLs).",
         "PURGED via use_obsoleted: .claude/skills/30-claude-code-patterns/sdk-upstream-donation.md (BUILD-only; auto-cross-file maintainer playbook).",
         "PURGED via use_obsoleted: .claude/guides/co-setup/ (10 files; BUILD-side artifact-flow internals).",
         "PURGED via use_obsoleted: .claude/guides/deterministic-quality/ (10 files; BUILD-side rule-authoring + session-architecture guides).",
-        ".coc-obsoleted regenerated: 13 → 20 entries (UNION of obsoleted: + use_obsoleted:).",
-        "DEPENDENCY: pyproject.toml — kailash>=2.13.0 → 2.13.1; kailash-dataflow>=2.6.0 → 2.7.0; kailash-nexus>=2.5.0 → 2.6.0.",
-        "VERSION: template 3.6.0 → 3.6.1; upstream loom 2.11.0 → 2.11.2; build_version 2.13.0 → 2.13.1."
+        ".coc-obsoleted regenerated: 13 \u2192 20 entries (UNION of obsoleted: + use_obsoleted:).",
+        "DEPENDENCY: pyproject.toml \u2014 kailash>=2.13.0 \u2192 2.13.1; kailash-dataflow>=2.6.0 \u2192 2.7.0; kailash-nexus>=2.5.0 \u2192 2.6.0.",
+        "VERSION: template 3.6.0 \u2192 3.6.1; upstream loom 2.11.0 \u2192 2.11.2; build_version 2.13.0 \u2192 2.13.1."
       ]
     },
     {
