@@ -1,28 +1,40 @@
 {
-  "version": "3.6.7",
+  "version": "3.6.8",
   "type": "coc-use-template",
   "description": "COC USE template for Python SDK projects",
   "released": "2026-05-02",
   "upstream": {
     "name": "kailash",
     "type": "coc-source",
-    "version": "2.14.0",
-    "build_version": "2.13.2",
-    "synced_at": "2026-05-02T00:00:00Z",
+    "version": "2.14.3",
+    "build_version": "2.13.3",
+    "synced_at": "2026-05-02T12:00:00Z",
     "sdk_packages": {
-      "kailash": "2.13.2",
-      "kailash-dataflow": "2.7.3",
+      "kailash": "2.13.3",
+      "kailash-dataflow": "2.7.5",
       "kailash-nexus": "2.6.0",
-      "kailash-kaizen": "2.14.0",
+      "kailash-kaizen": "2.16.1",
       "kailash-pact": "0.11.0",
       "kailash-mcp": "0.2.10",
       "kailash-ml": "1.7.1",
       "kailash-align": "0.7.0",
       "kaizen-agents": "0.9.4"
     },
-    "loom_sha": "897b6f9"
+    "loom_sha": "02e69bf"
   },
   "changelog": [
+    {
+      "version": "3.6.8",
+      "date": "2026-05-02",
+      "summary": "PATCH: forward-port to loom 2.14.3 (commit 02e69bf), sweeping 2.14.1 → 2.14.2 → 2.14.3 deltas in one sync. Two rule files updated, both global (no py-variant overlay applies). (1) rules/build-repo-release-discipline.md § MUST Rule 2 § `uv index-cache override` += pip-fallback sentence (~416 B raw / ~250 B abridged). When `uv pip install --refresh` STILL reports unresolvable while `pypi.org/.../json` returns the new metadata, fall back to `python -m ensurepip --upgrade && python -m pip install --no-cache-dir \"<pkg>==<ver>\"`. pip's index TTL is shorter than uv's deeper index-state cache; one-shot install succeeds where `uv pip install --refresh` does not. Evidence: kailash-dataflow 2.7.5 release verify (2026-05-01). Classified GLOBAL via /sync py Gate 1 — same surface as the 2.14.1 --refresh clarification. (2) rules/autonomous-execution.md Rule 4 Origin += rustdoc cross-class evidence (~660 B raw / ~400 B abridged). Three same-shard fix-immediately evidence points spanning two rule-violation classes: (a) bedrock register_bedrock_region rustdoc broken-intra-doc-link (kailash-rs PR #735); (b) PyOAuth2Client #[pymethods] rustdoc private_intra_doc_links (kailash-rs PR #736); (c) PyNexus EventBus #679 Wave-2 implementation. Confirms Rule 4 generalizes beyond null-bind sibling sweeps. Classified GLOBAL via /sync rs Gate 1. SDK PINS: kailash 2.13.2 → 2.13.3, kailash-kaizen 2.14.0 → 2.16.1 (matches BUILD repo current state at /Users/esperie/repos/loom/kailash-py). NO CAP-HEADROOM IMPACT for kailash-coc-claude-py — CC-only template, no codex/gemini emission. CLAUDE.md preserved (template-owned).",
+      "changes": [
+        "RULE UPDATE: .claude/rules/build-repo-release-discipline.md § MUST Rule 2 § `uv index-cache override` += pip-fallback sentence (~416 B). Lifted from loom 2.14.3 (commit 02e69bf). Classification: GLOBAL (no py-variant overlay).",
+        "RULE UPDATE: .claude/rules/autonomous-execution.md Rule 4 Origin += rustdoc cross-class evidence (~660 B). Lifted from loom 2.14.2 (commit 33e4ffc). Classification: GLOBAL.",
+        "SDK PIN: pyproject.toml kailash >= 2.13.2 → >= 2.13.3; kailash-kaizen >= 2.14.0 → >= 2.16.1 (matches BUILD repo current state).",
+        "VERSION: template 3.6.7 → 3.6.8; upstream version 2.14.0 → 2.14.3; loom_sha 897b6f9 → 02e69bf; build_version 2.13.2 → 2.13.3; sdk_packages.kailash 2.13.2 → 2.13.3; sdk_packages.kailash-dataflow 2.7.3 → 2.7.5; sdk_packages.kailash-kaizen 2.14.0 → 2.16.1.",
+        "DEPENDENCIES: uv sync re-run to regenerate uv.lock with new pins."
+      ]
+    },
     {
       "version": "3.6.7",
       "date": "2026-05-02",
