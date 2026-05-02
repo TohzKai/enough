@@ -1,28 +1,41 @@
 {
-  "version": "3.6.8",
+  "version": "3.6.9",
   "type": "coc-use-template",
   "description": "COC USE template for Python SDK projects",
   "released": "2026-05-02",
   "upstream": {
     "name": "kailash",
     "type": "coc-source",
-    "version": "2.14.3",
+    "version": "2.14.4",
     "build_version": "2.13.3",
-    "synced_at": "2026-05-02T12:00:00Z",
+    "synced_at": "2026-05-02T22:00:00Z",
     "sdk_packages": {
       "kailash": "2.13.3",
       "kailash-dataflow": "2.7.5",
       "kailash-nexus": "2.6.0",
-      "kailash-kaizen": "2.16.1",
+      "kailash-kaizen": "2.18.0",
       "kailash-pact": "0.11.0",
       "kailash-mcp": "0.2.10",
       "kailash-ml": "1.7.1",
       "kailash-align": "0.7.0",
       "kaizen-agents": "0.9.4"
     },
-    "loom_sha": "02e69bf"
+    "loom_sha": "e8083e8"
   },
   "changelog": [
+    {
+      "version": "3.6.9",
+      "date": "2026-05-02",
+      "summary": "PATCH: sync to loom 2.14.4 (commit e8083e8). Two structural changes ship to this CC-only py template (cross-sdk-inspection.md Rule 4a is use_excluded — verified absent). (1) rules/cc-artifacts.md Hooks section += Rule 8 'Workspace-Walking Hooks Filter Leading-Underscore Meta-Dirs' (~1,300 B raw). Hooks that walk workspaces/<name>/ MUST filter directories whose name starts with underscore (`_archive`, `_template`, `_draft`, etc.) alongside the existing `instructions` skip — prevents archival operations (`git mv workspaces/X workspaces/_archive/X`) from making `_archive/` surface as the active workspace and routing SessionEnd journal stubs into `workspaces/_archive/journal/.pending/`. Origin: kailash-rs PR #759 (dc63a8ac, 2026-05-02). Classified GLOBAL via /sync rs Gate 1 second cycle. (2) hooks/lib/workspace-utils.js — applied `!e.name.startsWith('_')` filter at `detectActiveWorkspace` (line 23 region) AND `findAllSessionNotes` (line 158 region). The hook source IS the canonical implementation Rule 8 documents; templates inherit the fix via Gate 2 distribution. SDK PINS: kailash-kaizen 2.16.1 → 2.18.0 (matches BUILD repo current state at /Users/esperie/repos/loom/kailash-py). cross-sdk-inspection.md Rule 4a (sibling-canonical fixture vendoring discipline) is NOT shipped — file is in sync-manifest.yaml::use_exclude (BUILD-internal cross-SDK process; not relevant to USE consumers). CLAUDE.md preserved (template-owned).",
+      "changes": [
+        "RULE UPDATE: .claude/rules/cc-artifacts.md Hooks section += Rule 8 'Workspace-Walking Hooks Filter Leading-Underscore Meta-Dirs' (~1,300 B). Lifted from loom 2.14.4 (commit e8083e8). Classification: GLOBAL (no py-variant overlay).",
+        "HOOK FIX: .claude/hooks/lib/workspace-utils.js — `!e.name.startsWith('_')` filter applied at `detectActiveWorkspace` + `findAllSessionNotes`. Hook source matches loom byte-for-byte.",
+        "VERIFIED EXCLUSION: rules/cross-sdk-inspection.md NOT shipped (use_exclude honored — BUILD-internal cross-SDK process).",
+        "SDK PIN: pyproject.toml kailash-kaizen >= 2.16.1 → >= 2.18.0 (matches BUILD repo current state).",
+        "VERSION: template 3.6.8 → 3.6.9; upstream.version 2.14.3 → 2.14.4; loom_sha 02e69bf → e8083e8; sdk_packages.kailash-kaizen 2.16.1 → 2.18.0.",
+        "DEPENDENCIES: uv sync re-run to regenerate uv.lock with new kailash-kaizen pin."
+      ]
+    },
     {
       "version": "3.6.8",
       "date": "2026-05-02",
