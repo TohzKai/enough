@@ -1,14 +1,14 @@
 {
-  "version": "3.6.9",
+  "version": "3.6.10",
   "type": "coc-use-template",
   "description": "COC USE template for Python SDK projects",
-  "released": "2026-05-02",
+  "released": "2026-05-03",
   "upstream": {
     "name": "kailash",
     "type": "coc-source",
-    "version": "2.14.4",
+    "version": "2.14.6",
     "build_version": "2.13.3",
-    "synced_at": "2026-05-02T22:00:00Z",
+    "synced_at": "2026-05-03T16:00:00Z",
     "sdk_packages": {
       "kailash": "2.13.3",
       "kailash-dataflow": "2.7.5",
@@ -20,9 +20,26 @@
       "kailash-align": "0.7.0",
       "kaizen-agents": "0.9.4"
     },
-    "loom_sha": "e8083e8"
+    "loom_sha": "f1c9803"
   },
   "changelog": [
+    {
+      "version": "3.6.10",
+      "date": "2026-05-03",
+      "summary": "PATCH: sync to loom 2.14.6 (commit f1c9803). Skips 2.14.5 (hard-blocked at Gate 2; never distributed) — net-new content originated from kailash-rs /codify 2026-05-03. Three intentional changes ship to this CC-only py template; no py-variant overlays apply. (1) NEW RULE rules/verify-resource-existence.md (3,909 B raw / priority:0 scope:baseline) — 'Existence Check Precedes Permission Debugging' — 3 MUST + 2 MUST NOT + Three-Layer Defense. When a tool fails with a permission error (HTTP 403, 'access denied') against a named external resource, the FIRST diagnostic action MUST be to verify the resource exists via live API read (gh api / psql \\dt / kubectl get / aws describe-*); recursing on the permission axis against an absent resource produces unbounded credential-rotation cycles. Default disposition when existence check returns empty: delete-or-stub the dependent code, NOT provision. Origin: 2026-05-03 ci-queue-monitor session burned 6 PRs + 2 user PAT-creation cycles debugging access to a 16-core hosted runner that did not exist. (2) NEW EXTRACT guides/rule-extracts/verify-resource-existence.md (~6,000 B) — full DO/DO NOT examples + BLOCKED-rationalization enumerations + origin post-mortem. (3) FRONTMATTER DEMOTE rules/upstream-issue-hygiene.md priority:0/scope:baseline → priority:10/scope:path-scoped + paths array (.github/, CONTRIBUTING.md, SECURITY.md, .session-notes, journal/, workspaces/). Body content unchanged; rule fires only when editing surfaces where outbound-issue authoring lives, not on every session — restores baseline emission headroom for the new resource-existence rule. NO CAP-HEADROOM IMPACT for kailash-coc-claude-py (CC-only template — no codex/gemini emission; baseline emission cost N/A). SDK PINS unchanged from 3.6.9 (kailash 2.13.3, dataflow 2.7.5, kaizen 2.18.0, etc. — all match BUILD repo /Users/esperie/repos/loom/kailash-py current state). CLAUDE.md preserved (template-owned).",
+      "changes": [
+        "NEW RULE: .claude/rules/verify-resource-existence.md (3,909 B raw, priority:0 scope:baseline). 3 MUST clauses + 2 MUST NOT + Three-Layer Defense. Lifted from loom 2.14.5+6 (commits ea0f150 + f1c9803). Classification: GLOBAL (no py-variant overlay).",
+        "NEW EXTRACT: .claude/guides/rule-extracts/verify-resource-existence.md (~6,500 B raw). Companion to rules/verify-resource-existence.md.",
+        "FRONTMATTER DEMOTE: .claude/rules/upstream-issue-hygiene.md priority:0/scope:baseline → priority:10/scope:path-scoped + paths array. Body content byte-identical to loom 2.14.6 (modulo fence-block hardening). Rationale: rule fires when editing .github/, CONTRIBUTING.md, SECURITY.md, .session-notes, journal/, workspaces/ — not every session — restoring baseline emission headroom for verify-resource-existence.md.",
+        "VERIFIED EXCLUSION: rules/cross-sdk-inspection.md NOT shipped (use_exclude honored).",
+        "VERIFIED: 18 obsoleted+use_obsoleted paths absent at this sync (no purge required).",
+        "VERIFIED: hooks resolve on disk (17 hooks); settings.json hook commands all under .claude/hooks/.",
+        "VERIFIED: SDK pin allowlist scan — 16 src/kailash/ refs found, 16 already in coc-sdk-refs-allowlist.txt (no new entries needed).",
+        "SDK PINS: unchanged from 3.6.9 (kailash 2.13.3, dataflow 2.7.5, nexus 2.6.0, kaizen 2.18.0, pact 0.11.0, mcp 0.2.10, ml 1.7.1, align 0.7.0, kaizen-agents 0.9.4 — all match BUILD repo current state).",
+        "VERSION: template 3.6.9 → 3.6.10; upstream.version 2.14.4 → 2.14.6 (skips 2.14.5 — hard-blocked at Gate 2, never distributed); loom_sha e8083e8 → f1c9803.",
+        "DEPENDENCIES: uv sync re-run, exit 0 (no pin changes — lockfile unchanged)."
+      ]
+    },
     {
       "version": "3.6.9",
       "date": "2026-05-02",
