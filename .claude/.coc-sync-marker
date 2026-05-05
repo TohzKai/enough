@@ -1,5 +1,40 @@
-synced_at: 2026-05-05T15:40:32Z
-loom_version: 2.18.0
-loom_commit: 671b79f
-event: kailash-py /codify upstream — Rule 3d + Rule 1a clause additions
-files_modified: 2
+# COC Sync Marker — kailash-coc-claude-py
+# Written by /sync py Gate 2 (loom v2.19.0 → cc-claude-py v3.9.0)
+# Source: loom 18e6f3f
+timestamp: 2026-05-05T16:38:57Z
+source: loom/.claude
+source_commit: 18e6f3f
+loom_version: 2.19.0
+target_version: 3.9.0
+variant: py
+clis: ["claude"]
+template_type: cc-only-legacy
+stats:
+  updated: 227
+  created: 64
+  unchanged: 0
+  composed: 2          # rules/ci-runners.md, rules/deployment.md (slot-keyed py overlays)
+  preserved: 1         # CLAUDE.md (template-owned, never overwritten)
+  obsoleted_purged: 0  # all obsoleted paths already absent (prior syncs cleaned)
+  baselines_emitted:
+    cc: 0              # CLAUDE.md is preserved, not emitted
+    codex: 0           # CC-only template; no Codex baseline
+    gemini: 0          # CC-only template; no Gemini baseline
+  cli_artifacts:       # CC-only — no .codex/ .gemini/ trees
+    codex: null
+    gemini: null
+  mcp_guard:
+    policies_populated: false
+worktree_isolation_in_baseline: false  # confirmed absent post-2.19.0 demotion
+sdk_pins:
+  kailash: 2.13.4
+  kailash-dataflow: 2.7.7    # bumped from 2.7.6
+  kailash-nexus: 2.6.1
+  kailash-kaizen: 2.19.0     # bumped from 2.18.1
+  kailash-pact: 0.11.0
+  kailash-mcp: 0.2.11
+  kailash-ml: 1.7.1
+  kailash-align: 0.7.0
+  kaizen-agents: 0.9.5
+hook_integrity: "22/22"
+allowlist_refresh: idempotent

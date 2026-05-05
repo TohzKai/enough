@@ -2648,7 +2648,7 @@ all = [
 
 [[package]]
 name = "kailash-dataflow"
-version = "2.7.6"
+version = "2.7.7"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiomysql" },
@@ -2675,12 +2675,12 @@ dependencies = [
     { name = "uvicorn", extra = ["standard"] },
 ]
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/d8/b4/c873936912cb99f5d83b7b48d95df77cb016d0d8f6a836fcf0d38047a0fa/kailash_dataflow-2.7.6-py3-none-any.whl", hash = "sha256:2a21fe3ddec06aebeb38d901ddf32349119ecdf24acd183effca17223d2a69f5", size = 1262632, upload-time = "2026-05-03T13:51:10.639Z" },
+    { url = "https://files.pythonhosted.org/packages/05/ff/20746a82e121eaeb4cd3e542ea8c1b8e4e046f7935f27cbfa21351032f01/kailash_dataflow-2.7.7-py3-none-any.whl", hash = "sha256:f6f25f0084677aa33033cc45489b450f482dea0a3dad6ecdcb0ddfbe86034f19", size = 1264846, upload-time = "2026-05-03T19:34:14.071Z" },
 ]
 
 [[package]]
 name = "kailash-kaizen"
-version = "2.18.1"
+version = "2.19.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "aiohttp" },
@@ -2714,7 +2714,7 @@ dependencies = [
     { name = "uvicorn", extra = ["standard"] },
 ]
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/4d/9c/c354af8080f334a2be0aa63ac37e8bd952dd1aafe278f09db73d682cd83e/kailash_kaizen-2.18.1-py3-none-any.whl", hash = "sha256:19f4ac90c961f48755a938845e0e64fecf5a94df6a22d37b0bceddadc6027497", size = 1569836, upload-time = "2026-05-03T13:51:30.696Z" },
+    { url = "https://files.pythonhosted.org/packages/d7/aa/937fb0a10257c0b0d0d41ec33ef952966db85bc1823dcdfbead82e46d371/kailash_kaizen-2.19.0-py3-none-any.whl", hash = "sha256:bc7e0235cd366671f113b315d0647fcf02a67820d749b8153558c06c1fb97d65", size = 1557223, upload-time = "2026-05-05T14:27:15.496Z" },
 ]
 
 [[package]]
@@ -3846,8 +3846,8 @@ requires-dist = [
     { name = "kailash", specifier = ">=2.13.4" },
     { name = "kailash-align", marker = "extra == 'align'", specifier = ">=0.7.0" },
     { name = "kailash-align", extras = ["all"], marker = "extra == 'all'", specifier = ">=0.7.0" },
-    { name = "kailash-dataflow", specifier = ">=2.7.6" },
-    { name = "kailash-kaizen", specifier = ">=2.18.1" },
+    { name = "kailash-dataflow", specifier = ">=2.7.7" },
+    { name = "kailash-kaizen", specifier = ">=2.19.0" },
     { name = "kailash-mcp", specifier = ">=0.2.11" },
     { name = "kailash-ml", specifier = ">=1.7.1" },
     { name = "kailash-nexus", specifier = ">=2.6.1" },
