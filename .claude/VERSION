@@ -1,5 +1,5 @@
 {
-  "version": "3.7.0",
+  "version": "3.8.0",
   "type": "coc-use-template",
   "description": "COC USE template for Python SDK projects",
   "released": "2026-05-05",
@@ -8,7 +8,7 @@
     "type": "coc-source",
     "version": "2.17.0",
     "build_version": "2.17.0",
-    "synced_at": "2026-05-05T06:46:25Z",
+    "synced_at": "2026-05-05T15:40:32Z",
     "sdk_packages": {
       "kailash": "2.13.4",
       "kailash-dataflow": "2.7.6",
@@ -21,7 +21,8 @@
       "kaizen-agents": "0.9.5"
     },
     "loom_sha": "76a3bfc",
-    "source_commit": "76a3bfc"
+    "source_commit": "671b79f",
+    "template_version": "2.18.0"
   },
   "changelog": [
     {
@@ -518,6 +519,6 @@
       ]
     }
   ],
-  "updated": "2026-04-29T04:00:00Z",
+  "updated": "2026-05-05",
   "synced_at": "2026-05-04T01:00:00Z"
 }
