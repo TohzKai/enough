@@ -1,40 +1,45 @@
 # COC Sync Marker — kailash-coc-claude-py
-# Written by /sync py Gate 2 (loom v2.19.0 → cc-claude-py v3.9.0)
-# Source: loom 18e6f3f
-timestamp: 2026-05-05T16:38:57Z
+# Written by /sync py Gate 2 (loom v2.21.1 → cc-claude-py)
+# Source: loom 47a6279 (PR #47 — verify-overlays.sh slot-keyed-aware tightening)
+timestamp: 2026-05-06T08:27:15Z
 source: loom/.claude
-source_commit: 18e6f3f
-loom_version: 2.19.0
-target_version: 3.9.0
+source_commit: 47a6279
+loom_version: 2.21.1
+template_version: 2.21.1
 variant: py
 clis: ["claude"]
 template_type: cc-only-legacy
 stats:
-  updated: 227
-  created: 64
+  updated: 5            # variant SKILL.md trims from PR #44
+  created: 0
   unchanged: 0
-  composed: 2          # rules/ci-runners.md, rules/deployment.md (slot-keyed py overlays)
-  preserved: 1         # CLAUDE.md (template-owned, never overwritten)
-  obsoleted_purged: 0  # all obsoleted paths already absent (prior syncs cleaned)
+  composed: 0           # no slot-keyed overlay changes this cycle
+  preserved: 1          # CLAUDE.md (template-owned, never overwritten)
+  obsoleted_purged: 0   # no new obsoleted paths
   baselines_emitted:
-    cc: 0              # CLAUDE.md is preserved, not emitted
-    codex: 0           # CC-only template; no Codex baseline
-    gemini: 0          # CC-only template; no Gemini baseline
-  cli_artifacts:       # CC-only — no .codex/ .gemini/ trees
-    codex: null
-    gemini: null
+    cc: 0               # CLAUDE.md preserved, not emitted
+    codex: 0            # CC-only template
+    gemini: 0           # CC-only template
+  cli_artifacts:
+    codex: null         # CC-only — no .codex/ tree
+    gemini: null        # CC-only — no .gemini/ tree
   mcp_guard:
     policies_populated: false
-worktree_isolation_in_baseline: false  # confirmed absent post-2.19.0 demotion
+sync_scope: surgical    # 5 variant SKILL.md files only — see PR #44 (dd39e50)
+files_distributed:
+  - skills/01-core-sdk/SKILL.md
+  - skills/02-dataflow/SKILL.md
+  - skills/03-nexus/SKILL.md
+  - skills/04-kaizen/SKILL.md
+  - skills/29-pact/SKILL.md
 sdk_pins:
   kailash: 2.13.4
-  kailash-dataflow: 2.7.7    # bumped from 2.7.6
+  kailash-dataflow: 2.7.8
   kailash-nexus: 2.6.1
-  kailash-kaizen: 2.19.0     # bumped from 2.18.1
+  kailash-kaizen: 2.20.0
   kailash-pact: 0.11.0
   kailash-mcp: 0.2.11
   kailash-ml: 1.7.1
   kailash-align: 0.7.0
   kaizen-agents: 0.9.5
-hook_integrity: "22/22"
 allowlist_refresh: idempotent
