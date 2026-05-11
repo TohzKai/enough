@@ -1,18 +1,18 @@
 # COC Sync Marker — kailash-coc-claude-py
-timestamp: 2026-05-11T00:00:00Z
+timestamp: 2026-05-11T01:00:00Z
 source: loom/.claude
-loom_sha: b50f869
+loom_sha: b840d8f
 loom_version: 2.29.4
 variant: py
 clis: ["claude"]
 stats:
-  updated: 5         # value-prioritization + 4 modified hooks/agents
-  created: 20        # state-file-write-guard rule+lib, journal-classifier lib, session-end-hook fixtures (16), guides/rule-extracts/state-file-write-guard.md
+  updated: 1         # skills/project/SKILL.md — YAML frontmatter added (Codex SKILL.md frontmatter fix, propagates here as CC-only template via standard .claude/ tree sync)
+  created: 0
   unchanged: 0
   removed: 0
   composed: 0
   preserved: 0       # template-owned (CLAUDE.md, README.md) not overwritten
   baselines_emitted:
     cc: 0            # CLAUDE.md preserved
-    codex: 0
-    gemini: 0
+    codex: 0         # this is the CC-only template (clis=[claude]); no AGENTS.md emission
+    gemini: 0        # this is the CC-only template (clis=[claude]); no GEMINI.md emission
