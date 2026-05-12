@@ -1,18 +1,21 @@
 # COC Sync Marker — kailash-coc-claude-py
-timestamp: 2026-05-11T00:12:37Z
+timestamp: 2026-05-12T02:40:46Z
 source: loom/.claude
-loom_sha: 06a0c4a
+loom_sha: 1c3b964
 loom_version: 2.29.4
 variant: py
 clis: ["claude"]
 stats:
-  updated: 1         # skills/project/SKILL.md — YAML frontmatter added (Codex SKILL.md frontmatter fix, propagates here as CC-only template via standard .claude/ tree sync)
-  created: 0
+  updated: 1         # .claude/settings.json — SessionEnd hook entry added (coc-telemetry-autocommit)
+  created: 2         # .claude/hooks/coc-telemetry-autocommit.js + .claude/audit-fixtures/coc-telemetry-autocommit/gates.test.js
   unchanged: 0
   removed: 0
   composed: 0
   preserved: 0       # template-owned (CLAUDE.md, README.md) not overwritten
   baselines_emitted:
     cc: 0            # CLAUDE.md preserved
-    codex: 0         # this is the CC-only template (clis=[claude]); no AGENTS.md emission
-    gemini: 0        # this is the CC-only template (clis=[claude]); no GEMINI.md emission
+    codex: 0         # CC-only template (clis=[claude]); no AGENTS.md
+    gemini: 0        # CC-only template (clis=[claude]); no GEMINI.md
+  cli_artifacts:
+    codex: null      # CC-only, not applicable
+    gemini: null
