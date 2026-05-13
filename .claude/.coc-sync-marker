@@ -1,30 +1,35 @@
 # COC Sync Marker — kailash-coc-claude-py
-timestamp: 2026-05-12T03:05:21Z
+timestamp: 2026-05-13T03:39:04Z
 source: loom/.claude
-loom_sha: 1c3b964
-loom_version: 2.29.4
+loom_sha: 2a497fc
+loom_version: 2.30.0
 variant: py
-clis: ["claude"]
-note: |
-  Round-2 continuation broad-drift sweep. Per user authorization, full broad
-  sweep of remaining drifted paths after Round-2 PR #80 (value-prioritization
-  rule + 5 audit fixture sets). Drift class: BUILD-internal path stripping in
-  skills/agents/commands/rules — loom-side has stripped `src/kailash/`,
-  `packages/kailash-*/src/`, internal class names, etc.; templates retained
-  pre-strip versions until this sweep.
+clis: [claude]
+correction: issue-179-overlay-regression-repair
 stats:
-  updated: 138       # tier-subscribed [cc, co, coc] files differing from loom; all overwritten with loom's USE-adapted version
-  created: 0
-  unchanged: 411     # tier-subscribed files already in sync
-  removed: 0
-  composed: 0        # py variant has zero overlays (all `null` in manifest)
-  preserved: 0       # template-owned (CLAUDE.md, README.md) not overwritten
+  total_considered: 1604
+  global_written: 8
+  global_unchanged: 401
+  overlay_full_written: 137
+  overlay_full_unchanged: 4
+  overlay_slot_written: 1
+  overlay_slot_unchanged: 0
+  overlay_compose_failed: 0
+  variant_only_written: 4
+  variant_only_unchanged: 15
+  excluded_skipped: 773
+  tier_filtered: 280
   baselines_emitted:
-    cc: 0            # CLAUDE.md preserved
-    codex: 0         # CC-only template (clis=[claude]); no AGENTS.md
-    gemini: 0        # CC-only template (clis=[claude]); no GEMINI.md
-  cli_artifacts:
-    codex: null      # CC-only, not applicable
-    gemini: null
-  allowlist:
-    refreshed: false # idempotent — every src/kailash/ ref already on allowlist
+    cc: 0   # CLAUDE.md preserved, not emitted
+  cli_artifacts: null   # CC-only template — no Codex/Gemini
+  preserved:
+    - CLAUDE.md
+verify_overlays:
+  langs_checked: py
+  total_checks: 286
+  passing: 286
+  failing: 0
+  post_sync_status: PASS
+sdk_pin_change:
+  kailash: "2.19.0 -> 2.20.3"
+uv_sync: PASS

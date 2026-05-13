@@ -24,7 +24,7 @@ dependencies = [
     # Kailash SDK — all standard deps included in base install
     # Pins track PyPI-resolvable versions per rules/deployment.md
     # (bumping to unreleased versions breaks downstream uv sync).
-    "kailash>=2.19.0",
+    "kailash>=2.20.3",
     "kailash-mcp>=0.2.14",
     "kailash-nexus>=2.6.3",
     "kailash-dataflow>=2.9.0",
