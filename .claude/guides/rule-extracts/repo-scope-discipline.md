@@ -127,6 +127,28 @@ After the fact, an authorized cross-repo write and an unauthorized one are byte-
 - "A standing directive can never be waived, that's what 'standing' means" — a standing directive sets a default; the principal who set it overrides it explicitly + logged
 - "Refusing the user's explicit override is me following the durable instruction" — it is misreading a default as an absolute; the durable instruction blocks agent self-authorization, not principal override
 
+### User-Authorized Exception — DO / DO NOT (moved from rule body 2026-05-16 for per-rule emission-budget headroom)
+
+```text
+# DO — user-initiated, specific, confirmed, journaled, THEN act
+User:  "From here, file an issue on loom titled 'X' with body 'Y'."
+Agent: "Confirm: create issue in terrene-foundation/loom — title 'X',
+        body 'Y'. Proceed? (yes/no)"
+User:  "yes"
+Agent: [writes journal/.../NNNN-cross-repo-authorized.md FIRST]
+       [then: gh issue create --repo terrene-foundation/loom ...]
+
+# DO NOT — agent-initiated surfacing, retroactively blessed
+Agent: "Higher-priority work lives in loom#NN — want me to file there?"
+User:  "sure"
+Agent: [files cross-repo]   # BLOCKED: trigger was agent surfacing,
+                            # not a user-initiated instruction (condition 1)
+
+# DO NOT — act first, journal later (or never)
+Agent: [gh issue create --repo ...]   # BLOCKED: no pre-action receipt
+       [writes journal afterward]     # receipt must PRECEDE the action
+```
+
 ### Propagation
 
 This rule is GLOBAL (`scope: baseline`). Downstream sessions (rr-coe, kailash-\*, USE templates) enforce a _synced copy_. The amendment changes downstream behavior only after `/sync` propagates it (or the downstream repo's local copy is updated out-of-band). The originating rr-coe session does not retroactively gain the exception.
