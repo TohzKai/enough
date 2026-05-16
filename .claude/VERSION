@@ -8,7 +8,7 @@
     "type": "coc-source",
     "version": "2.31.0",
     "build_version": "2.31.0",
-    "synced_at": "2026-05-15T07:45:37Z",
+    "synced_at": "2026-05-16T11:13:16Z",
     "sdk_packages": {
       "kailash": "2.21.0",
       "kailash-dataflow": "2.9.7",
@@ -20,8 +20,8 @@
       "kailash-align": "0.7.1",
       "kaizen-agents": "0.9.7"
     },
-    "loom_sha": "f45759b",
-    "source_commit": "b39410c",
+    "loom_sha": "53dd297",
+    "source_commit": "53dd297",
     "template_version": "2.31.0"
   },
   "changelog": [
