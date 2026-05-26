@@ -162,6 +162,8 @@ gh api -X POST repos/<owner>/<repo>/rulesets \
 
 **Why:** Pre-CONF-2 the design had to name client-fold/checkpoint-pin AS THE defense because the server-side path was UNCONFIRMED. CONF-2 closed the question at the server (`type: "creation"` + `type: "deletion"` are first-class REST API rule types); the architecture changes from "detection-only" to "prevention-primary, detection-secondary". Deploying the ruleset is the operator's job; the rule body requires both layers because deployment lag would otherwise re-introduce the residual.
 
+**Org-owned bootstrap path (issue #358 — informational).** Distinct from `genesis-migration` above (which relocates an existing trust root and is gated by MUST-4's 2-of-N quorum), the initial `genesis-anchor` ENROLLMENT ceremony has a narrow relaxation for org-owned bootstrap. When `repo_owner_kind === "org"` AND the root commit is unverified (the common case for pre-existing org-owned consumer repos whose root commit was authored by a contributor who didn't sign), the ceremony substitutes the verified-org-admin attestation captured at Step 3 (`role: admin` + `state: active`) as the verified-identity anchor — the gh-api-bound external admin claim is the structurally-equivalent anchor to a signed-root-commit in the user-owned case. The relaxation is captured in the signed `genesis-anchor` record (`gh_api_root_commit_capture` surfaces the unverified state + `gh_api_org_membership_capture` surfaces the admin attestation), so auditors can see WHY the ceremony succeeded under an unverified root commit. The relaxation does NOT apply to user-owned repos (the signed root commit IS the only anchor there) and does NOT apply to org-owned repos where the signer is NOT a verified active admin. The bounded-trust threat model is unchanged.
+
 ## 7. Cross-CLI policy registration
 
 Per journal/0124 CONF-1 CONFIRMED verdict, the codex-mcp-guard intercepts `apply_patch` (the Codex per-CLI primitive for file edits) AND policy denials carry block-equivalent severity (MCP `isError: true` is equivalent to a pre-tool-use `process.exit(2)` halt). The validator-13 bijection is satisfied: every Codex `apply_patch` policy MUST be registered under the corresponding CC `Edit`/`Write` matcher set in `settings.json` — that registration IS the bijection driver per `.claude/codex-mcp-guard/extract-policies.mjs:291-296`.
@@ -183,6 +185,42 @@ A policy declared as direct-to-MCP-only (no `Edit|Write` matcher entry) NEVER em
 ```
 
 **Why:** The bijection driver is one-directional by construction: CC `Edit|Write` → Codex `apply_patch`. A direct-to-MCP policy authored without the CC-side registration ships nothing at sync (the extractor cannot infer it) and the Codex CLI silently lacks the guard — exactly the cross-CLI parity violation `rules/cross-cli-parity.md` MUST-1 blocks.
+
+## 8. Multi-operator capacity considerations
+
+When more than one operator is concurrently active on this repository, the per-session capacity budget at `rules/autonomous-execution.md` § Per-Session Capacity Budget remains the per-shard ceiling — but throughput and contention enter the math through the operator dimension. Capacity is bounded per-`verified_id`, NOT per-session: an operator running two simultaneous sessions still sees one shared budget against the shard-fit gates.
+
+### 8.1 Per-operator capacity is per-`verified_id`, not per-session (MUST)
+
+The shard-fit ceilings at `autonomous-execution.md` § Per-Session Capacity Budget MUST Rules 1–3 (≤500 LOC load-bearing, ≤5–10 invariants, ≤3–4 call-graph hops) apply to ONE operator's in-flight work, regardless of how many sessions that operator has open. An operator opening a second session does NOT double their capacity budget; the operator's `verified_id` is the budget key.
+
+**Why:** Per-session capacity counting lets a single operator silently amplify load past the structural ceiling by opening parallel sessions — the cross-file invariant tracking the ceiling defends against degrades the same way whether load comes from one session or two from the same operator. Per-`verified_id` accounting closes that loophole. See §3 above for the adjacency-class definitions referenced below.
+
+### 8.2 Cross-operator parallelization multiplies throughput only for NON-SAME adjacency (MUST)
+
+The 10× throughput multiplier at `autonomous-execution.md` § 10x Throughput Multiplier (the 3–5× parallel-agent factor) applies to cross-operator parallel work ONLY when the operators' `/claim`-record scopes are NON-SAME-class (INDEPENDENT or ADJACENT per §3 above). SAME-class parallel work across operators is BLOCKED at the hook layer — the `/claim` record is the structural signal that prevents two operators from racing on the same path.
+
+```markdown
+# DO — INDEPENDENT/ADJACENT cross-operator parallel work multiplies throughput
+
+Operator A: `/claim packages/auth/**` (INDEPENDENT)
+Operator B: `/claim packages/billing/**` (INDEPENDENT)
+→ Both proceed; 2× wall-clock multiplier holds within each operator's per-`verified_id` budget.
+
+# DO NOT — SAME-class cross-operator parallel work
+
+Operator A: `/claim packages/auth/auth.py` (SAME)
+Operator B: `/claim packages/auth/auth.py` (SAME)
+→ Hook-layer block; second operator MUST defer or re-scope.
+```
+
+**Why:** SAME-class concurrent edits produce merge conflicts that erase one operator's work or, worse, three-way-merge invariant violations the human reviewer cannot catch without re-reading both sessions' transcripts. The hook layer is the structural defense; "we'll be careful" is not. Throughput-multiplier claims that assume SAME-class concurrency are arithmetically wrong: the merge-loss factor dominates the parallel-execution factor.
+
+### 8.3 `/claim`-record discipline is the coordination signal (MUST)
+
+Sibling sessions discover each other through the multi-operator coordination log, NOT through inferring intent from journal entries or `.session-notes`. An operator opening a parallel session MUST issue a `/claim` for the path scope before editing; readers MUST consult `/claims` (or the equivalent read-only surface) before starting new work to verify the path is not under an active sibling claim.
+
+**Why:** Without an explicit claim record, sibling sessions cannot detect each other in time to avoid SAME-class collision. The claim-record discipline converts "I noticed someone else was working here" (post-merge surprise) into "the hook refused my edit because another operator's claim was active" (pre-edit signal). Cited evidence: journal/0112 (multi-operator-coc architecture v11), journal/0122 (design convergence + claim semantics), journal/0132 (M6 single-writer contention + M7 codify-lease wiring — both depend on the claim record as the coordination substrate).
 
 ## MUST clauses
 
@@ -269,4 +307,4 @@ Any coordination-substrate tool (hook, agent, command, lib helper) that needs an
 
 Architecture v11 CONVERGED 2026-05-19 (`workspaces/multi-operator-coc/02-plans/01-architecture.md`, Rounds 10+11 clean). Decision-record chain at the ROOT `loom/journal/`: `0112` (architecture), `0122` (CONVERGENCE receipt). CONF-1 + CONF-2 closure: `0124` (codex `apply_patch` enforceability + validator-13 bijection CONFIRMED), `0125` (GitHub ref-creation/deletion rulesets CONFIRMED-PREVENTION). M6 + M7 convergence receipt: `0132`. Sec-MED-3 disposition (audit-trail completeness — Option C intentional-by-design): `0133`. Originating user brief: 2026-05-19 multi-operator-coc scaling brief. Authored at F14 Shard F-1 (M8 of the multi-operator-coc workstream) per `workspaces/multi-operator-coc/02-plans/01-architecture.md` §11 row F.
 
-**Length rationale (per `rules/rule-authoring.md` MUST NOT length cap, anchored at this Origin).** This rule body is ~280 lines, exceeding the 200-line guidance. Named rationale: **substrate scope**. The rule codifies a multi-stakeholder runtime substrate across 7 distinct sections (identity, log, claims/leases, posture/gate, lifecycle hooks, generation rotation, cross-CLI policy) plus 6 MUST clauses + 5 MUST NOT clauses + full Trust Posture Wiring. Each section carries non-overlapping invariants the bounded-trust threat model requires holding simultaneously. Splitting into sub-rules would fragment the threat model across files and force cross-rule lookups for every coordination decision — exactly the load-failure mode `rules/cc-artifacts.md` Rule 6 warns against. Per `rules/rule-authoring.md` MUST NOT § "Rules longer than 200 lines": the cap is guidance; overage is permitted with named rationale anchored at the rule's Origin. Sibling precedent: `user-flow-validation.md` Origin carries the same length-rationale shape (walk-discipline + scrub-discipline non-separable).
+**Length rationale (per `rules/rule-authoring.md` MUST NOT length cap, anchored at this Origin).** This rule body is ~310 lines, exceeding the 200-line guidance. Named rationale: **substrate scope**. The rule codifies a multi-stakeholder runtime substrate across 8 distinct sections (identity, log, claims/leases, posture/gate, lifecycle hooks, generation rotation, cross-CLI policy, multi-operator capacity) plus 6 MUST clauses + 5 MUST NOT clauses + full Trust Posture Wiring. Each section carries non-overlapping invariants the bounded-trust threat model requires holding simultaneously. Splitting into sub-rules would fragment the threat model across files and force cross-rule lookups for every coordination decision — exactly the load-failure mode `rules/cc-artifacts.md` Rule 6 warns against. Per `rules/rule-authoring.md` MUST NOT § "Rules longer than 200 lines": the cap is guidance; overage is permitted with named rationale anchored at the rule's Origin. Sibling precedent: `user-flow-validation.md` Origin carries the same length-rationale shape (walk-discipline + scrub-discipline non-separable).
