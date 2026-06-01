@@ -71,4 +71,9 @@ secrets/
 .claude/learning/codify-lease.json
 .claude/logs/
 **/.journal-skipped.log
+.session-notes
+.session-notes.d/
+.session-notes.shared.md
+/workspaces/*
+!/workspaces/_template/
 # <<< coc:gitignore_additions <<<
