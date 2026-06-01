@@ -224,6 +224,11 @@
             "type": "command",
             "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/adjacency-heartbeat.js\"",
             "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/provenance-capture-tool.js\"",
+            "timeout": 5
           }
         ]
       }
@@ -336,6 +341,11 @@
           {
             "type": "command",
             "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/detect-violations.js\"",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/provenance-capture-prompt.js\"",
             "timeout": 5
           }
         ]
