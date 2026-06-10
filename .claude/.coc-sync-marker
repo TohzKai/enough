@@ -1,28 +1,35 @@
 # COC Sync Marker — kailash-coc-claude-py
 visibility: public
-timestamp: 2026-06-10T02:52:00Z
+timestamp: 2026-06-10T15:22:06Z
 source: loom/.claude
-loom_sha: 1daa45b
+loom_sha: 3880c5f
 loom_version: "2.39.0"
 variant: py
 template_type: cc-only-legacy
 clis: ["claude"]
-operation: redistribution-close-427-variant_only-and-overlay-drifts
+pre_sync_version: "3.21.1"
+post_sync_version: "3.21.2"
+operation: redistribution-477-strip-extension-and-variant-lane-reclassification
 stats:
-  tier_copied: 1290
-  verified_byte_equal: 1290
-  variant_only_copied: 19
-  variant_only_verified_byte_equal: 19
-  overlays_applied: 143
-  composed: 1           # 1 slot-keyed overlay via compose.mjs
-  legacy_overlays: 142  # py full-file overlays copied-from-variant, strip-build-internal applied
-  preserved: 1          # CLAUDE.md (template-owned, not overwritten)
+  tier_copied: 1143
+  verified_byte_equal: 1143
+  verify_failures: 0
+  stripped: 38                    # strip-build-internal at write time (#477)
+  variant_only_copied: 12
+  variant_only_verified_byte_equal: 12
+  variant_only_verify_failures: 0
+  overlays_applied: 149           # variants: REPLACEMENT overlays
+  overlay_verified: 149
+  overlay_verify_failures: 0
+  overlay_orphans_purged: 0
+  preserved: 1                    # CLAUDE.md (template-owned, not overwritten)
   purged: 0
+  presync_snapshot: { dir: "coc-presync-snapshot-2026-06-10T15-18-15-837Z-3b74aad4", untracked_count: 54 }
   baselines_emitted:
-    cc: 0               # CLAUDE.md preserved, not emitted
-  cli_artifacts: null   # CC-only template; no codex/gemini trees
-verify_overlays_py: "324/324 Passing Failing:0 (post overlay-apply)"
+    cc: 0                         # CLAUDE.md preserved, not emitted
+  cli_artifacts: null             # CC-only template; no codex/gemini trees
+verify_overlays_py: "Failing:0 (py templates, post overlay-apply)"
+gitignore: { action: noop, added_entries_present: 10 }
 sdk_pin_delta:
-  kailash: "2.29.3 (unchanged; pyproject already >=2.29.3)"
-  kailash-dataflow: "2.11.3 (unchanged; pyproject already >=2.11.3)"
-  unchanged: [kailash-nexus, kailash-kaizen, kailash-pact, kailash-mcp, kailash-ml, kailash-align, kaizen-agents]
+  kailash-kaizen: "2.24.5 -> 2.24.6 (BUILD kailash-py at 2.24.6)"
+  unchanged: [kailash, kailash-dataflow, kailash-nexus, kailash-pact, kailash-mcp, kailash-ml, kailash-align, kaizen-agents]
