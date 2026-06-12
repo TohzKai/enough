@@ -1,20 +1,22 @@
 # COC Sync Marker — kailash-coc-claude-py
 visibility: public
-timestamp: 2026-06-11T14:39:06Z
+timestamp: 2026-06-12T02:15:45Z
 source: loom/.claude
-loom_sha: 036c8ff
-loom_version: 2.42.0
+loom_sha: d7ec0d2
+loom_version: 2.43.0
 variant: py
 template_type: cc-only-legacy
 clis: ["claude"]
 stats:
   copied: 1159
-  stripped_build_internal: 38
-  byte_equal: 1121
+  stripped_build_internal: 36
+  byte_equal: 1123
   variant_only: 12
   overlays_applied: 157
   purged: 0
+  changed_this_cycle: 3   # agents.md worktree-cluster extraction + security.md slot-partition + worktree-orchestration skill (#491)
   preserved: ["CLAUDE.md", "README.md", "settings.json"]
+  verify_overlays: "338/338"
   baselines_emitted:
     cc: 0   # CLAUDE.md preserved, not emitted
-  template_version: 3.21.5
+  template_version: 3.21.7
