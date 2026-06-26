@@ -1,28 +1,40 @@
 # COC Sync Marker — kailash-coc-claude-py (py lane, cc-only-legacy)
-timestamp: 2026-06-26T13:55:47Z
+timestamp: 2026-06-26T22:52:26Z
 source: loom/.claude
-loom_sha: 9755c2d
+loom_sha: 9101e34
 variant: py
 template_type: cc-only-legacy
 clis: [claude]
 visibility: public
-headline: F1 distribution — Shard-A/B/C rule narrowing+extraction, F5 base re-tier, claude-rb retirement, dogfood catch-up (loom 2.45.0 unchanged)
+headline: Obsoletion propagation — codex/gemini-templates added to .coc-obsoleted (F1 #685 follow-up; loom 9755c2d→9101e34, content CONSISTENT, no re-emit)
 stats:
-  copied: 1271
-  variant_only: 13
-  overlay_applied: 157
+  copied: 0                 # narrow cycle — content already CONSISTENT (sync-tier-aware --verify, 1441 files); no content writes
+  variant_only: 0
+  overlay_applied: 0
   verify_failures: 0
   overlay_verify_failures: 0
   variant_only_verify_failures: 0
-  purged: 0                 # sync-tier-aware --verify CONSISTENT (1441 files); no obsoleted present this cycle
+  purged: 0                 # no obsoleted path present in this template (verify: no obsoleted path present)
+  obsoleted_manifest:
+    regenerated: true        # .claude/.coc-obsoleted rebuilt from sync-manifest.yaml::obsoleted + use_obsoleted
+    lines: 74                # 3 header + 71 paths (69 unique + 2 dups: terrene-naming/independence)
+    prev_lines: 69
+    new_entries:             # additive — every prior entry preserved
+      - .claude/codex-templates/    # F1 #685 — orphan multi-CLI source tree, downstream auto-purge
+      - .claude/gemini-templates/   # F1 #685 — orphan multi-CLI source tree, downstream auto-purge
+      - .claude/commands/sync.md    # prior-cycle gap — de-surfaced /sync triplet, now in manifest union
+      - .codex/prompts/sync.md
+      - .gemini/commands/sync.toml
   preserved: [CLAUDE.md, .proposals/, learning/, settings.local.json, dev-container/*]
   baselines_emitted:
     cc: 0                   # CLAUDE.md preserved, not emitted
 distribution:
-  tool: sync-tier-aware.mjs --target py --all-templates
+  tool: sync-tier-aware.mjs --target py --all-templates --verify
   verify: CONSISTENT
   files_total: 1441
 sdk_pin_changes: none       # PRESERVED — BUILD kailash-py pyproject 2.44.1; no PyPI-resolvable bump warranted
 uv_sync: skipped            # no pyproject.toml change
 notes:
+  - "Narrow obsoletion-propagation cycle: only .coc-obsoleted regeneration (Step 4.5) + marker + VERSION patch bump. Content files untouched (sync-tier-aware --verify CONSISTENT both templates)."
+  - ".coc-obsoleted now carries the manifest's full obsoleted+use_obsoleted union (74 lines); downstream /sync-from-template can auto-purge leaked .claude/codex-templates/ + .claude/gemini-templates/ orphan trees (leaked at v2.23.1)."
   - "session-end.js requires ../learning/digest-builder (learning/** excluded runtime dir) — identical in loom source, guarded by try/catch + observationCount>=5; not a sync defect."
