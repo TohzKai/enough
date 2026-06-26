@@ -1,30 +1,28 @@
 # COC Sync Marker — kailash-coc-claude-py (py lane, cc-only-legacy)
-timestamp: 2026-06-25T07:21:30Z
+timestamp: 2026-06-26T13:55:47Z
 source: loom/.claude
-loom_sha: 8197257
+loom_sha: 9755c2d
 variant: py
+template_type: cc-only-legacy
 clis: [claude]
 visibility: public
-headline: MO-OPT W1 — multi-operator-coordination substrate made OPT-IN (coordination-mode.js + isCoordinationEnabled hoists; all GLOBAL hooks, no py overlay)
+headline: F1 distribution — Shard-A/B/C rule narrowing+extraction, F5 base re-tier, claude-rb retirement, dogfood catch-up (loom 2.45.0 unchanged)
 stats:
-  copied: 1263
-  stripped: 35
+  copied: 1271
   variant_only: 13
   overlay_applied: 157
   verify_failures: 0
   overlay_verify_failures: 0
   variant_only_verify_failures: 0
-  purged: 3                # universal obsoleted: stale loom-only leak copies (sync-from-build/use, cli-audit)
+  purged: 0                 # sync-tier-aware --verify CONSISTENT (1441 files); no obsoleted present this cycle
   preserved: [CLAUDE.md, .proposals/, learning/, settings.local.json, dev-container/*]
   baselines_emitted:
-    cc: 0                  # CLAUDE.md preserved, not emitted
-w1_landing:
-  coordination_mode_js: present
-  isCoordinationEnabled_in_integrity_guard: verified
-sdk_pin_changes: none      # PRESERVED — BUILD kailash-py mid-feature (feat/issue-1456); no PyPI-resolvable bump warranted
-uv_sync: skipped           # no pyproject.toml change (hooks-focused cycle)
-obsoleted_purge:
-  obsoleted_union_entries: 66
-  removed_this_cycle: 3
+    cc: 0                   # CLAUDE.md preserved, not emitted
+distribution:
+  tool: sync-tier-aware.mjs --target py --all-templates
+  verify: CONSISTENT
+  files_total: 1441
+sdk_pin_changes: none       # PRESERVED — BUILD kailash-py pyproject 2.44.1; no PyPI-resolvable bump warranted
+uv_sync: skipped            # no pyproject.toml change
 notes:
   - "session-end.js requires ../learning/digest-builder (learning/** excluded runtime dir) — identical in loom source, guarded by try/catch + observationCount>=5; not a sync defect."
