@@ -1,0 +1,13 @@
+node_modules
+dist
+dist-ssr
+*.local
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+coverage
+
+# stray tsc -b outputs for vite.config
+vite.config.js
+vite.config.d.ts
+*.tsbuildinfo

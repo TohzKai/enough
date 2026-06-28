@@ -1,0 +1,123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-size: 17px; /* larger base for retiree / family readability */
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-enough-cream text-enough-ink font-sans antialiased;
+    margin: 0;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply text-enough-navy;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  /* Bigger, clearer form controls for the target audience. */
+  input,
+  select,
+  button {
+    font-family: inherit;
+  }
+
+  /* Hide number-input spinners for a cleaner, premium look. */
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-enough-paper rounded-xl2 border border-enough-line shadow-card p-6;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl2 px-5 py-3 text-base font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-enough-blue/40 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply btn bg-enough-navy text-white hover:bg-enough-navyLight;
+  }
+  .btn-emerald {
+    @apply btn bg-enough-emerald text-white hover:bg-enough-emeraldDark;
+  }
+  .btn-ghost {
+    @apply btn bg-transparent text-enough-navy border border-enough-navy/20 hover:bg-enough-navy/5;
+  }
+  .btn-soft {
+    @apply btn bg-enough-navy/5 text-enough-navy hover:bg-enough-navy/10;
+  }
+
+  .field-label {
+    @apply block text-sm font-semibold text-enough-slate mb-1.5;
+  }
+  .field-input {
+    @apply w-full rounded-xl2 border border-enough-line bg-white px-3 py-2.5 text-base text-enough-ink focus:border-enough-blue focus:outline-none focus:ring-2 focus:ring-enough-blue/20;
+  }
+  .field-help {
+    @apply mt-1 text-xs text-enough-slate/80;
+  }
+
+  .pill {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm font-semibold;
+  }
+
+  .section-title {
+    @apply text-2xl md:text-3xl font-bold text-enough-navy;
+  }
+  .section-sub {
+    @apply mt-2 text-enough-slate text-base md:text-lg;
+  }
+}
+
+/* Print styling for the family report download. */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+  }
+  .card {
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+    break-inside: avoid;
+  }
+  /* Print the report light and ink-efficient: override the dark navy hero card
+     inside the printable area so it does not waste ink or split awkwardly. */
+  .print-area .bg-enough-navy,
+  .print-area .bg-gradient-to-br {
+    background: #fff !important;
+    color: #0a2540 !important;
+    border: 1px solid #0a2540 !important;
+  }
+  .print-area .text-white {
+    color: #0a2540 !important;
+  }
+  .print-area .text-white\/70,
+  .print-area .text-white\/85,
+  .print-area .text-white\/80,
+  .print-area .text-white\/60,
+  .print-area .text-white\/55 {
+    color: #5b6b7f !important;
+  }
+  .print-area .text-enough-emerald {
+    color: #0b7a55 !important;
+  }
+  .print-area .border-l-4 {
+    break-inside: avoid;
+  }
+}
