@@ -2,10 +2,13 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
 // https://vitejs.dev/config/
-// `base: '/enough/'` for production builds so assets resolve correctly when
-// served at https://TohzKai.github.io/enough/. Local dev keeps the default '/'.
+// Asset base path per host:
+//  - GitHub Pages serves the app under https://TohzKai.github.io/enough/ → `/enough/`
+//  - Vercel serves the app at the site root (https://<project>.vercel.app/) → `/`
+// Vercel injects VERCEL=1 during builds, so the same config works on both hosts.
+// Local dev keeps the default '/'.
 export default defineConfig(({ mode }) => ({
-  base: mode === "production" ? "/enough/" : "/",
+  base: process.env.VERCEL ? "/" : mode === "production" ? "/enough/" : "/",
   plugins: [react()],
   server: {
     port: 5173,
