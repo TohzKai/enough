@@ -13,6 +13,11 @@ export default defineConfig(({ mode }) => ({
   server: {
     port: 5173,
     open: true,
+    // Note: this is a OneDrive-synced folder mounted in WSL, where native fs
+    // events don't reach Vite — so HMR won't auto-reload on edit. Restart the
+    // dev server after code changes (a fresh start reads current files from
+    // disk). Polling the whole tree here is worse: it starves the server on
+    // this mount's node_modules, so it is deliberately NOT enabled.
   },
   build: {
     outDir: "dist",

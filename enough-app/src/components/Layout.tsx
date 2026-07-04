@@ -1,12 +1,13 @@
 import { NavLink, Outlet, Link } from "react-router-dom";
+import { useViewMode } from "../store/viewMode";
 
-// Main consumer navigation — only four destinations. "For Partners" is a
-// secondary footer link, not a top-nav item.
+// Main consumer navigation. "For partners" is a secondary footer link, not a
+// top-nav item.
 const NAV = [
   { to: "/", label: "Home", end: true },
-  { to: "/plan", label: "Build Plan" },
+  { to: "/plan", label: "Connect" },
   { to: "/result", label: "Results" },
-  { to: "/family", label: "Family Report" },
+  { to: "/family", label: "Family" },
 ];
 
 function navClass({ isActive }: { isActive: boolean }) {
@@ -17,10 +18,37 @@ function navClass({ isActive }: { isActive: boolean }) {
   }`;
 }
 
+/** Parent vs Adult-child face toggle — the product's two faces. */
+function ViewToggle() {
+  const { mode, setMode } = useViewMode();
+  return (
+    <div className="flex items-center rounded-full bg-white/10 p-0.5 text-xs font-semibold">
+      <button
+        type="button"
+        onClick={() => setMode("parent")}
+        className={`rounded-full px-3 py-1.5 transition-colors ${
+          mode === "parent" ? "bg-white text-enough-navy" : "text-white/70"
+        }`}
+      >
+        Parent view
+      </button>
+      <button
+        type="button"
+        onClick={() => setMode("child")}
+        className={`rounded-full px-3 py-1.5 transition-colors ${
+          mode === "child" ? "bg-white text-enough-navy" : "text-white/70"
+        }`}
+      >
+        Adult-child view
+      </button>
+    </div>
+  );
+}
+
 export function Layout() {
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Compact premium top bar — no top-right CTA, no secondary scroll row */}
+      {/* Compact premium top bar with the two-face toggle */}
       <header className="sticky top-0 z-30 bg-enough-navy text-white shadow-pop no-print">
         <div className="mx-auto max-w-app px-4 md:px-6">
           <div className="flex items-center justify-between gap-3 h-16">
@@ -33,19 +61,36 @@ export function Layout() {
                   Enough
                 </div>
                 <div className="text-[11px] text-white/55 -mt-0.5">
-                  Singapore retirement spending
+                  Neutral Singapore retirement spending
                 </div>
               </div>
             </Link>
 
-            <nav className="flex items-center gap-1">
-              {NAV.map((n) => (
-                <NavLink key={n.to} to={n.to} end={n.end} className={navClass}>
-                  {n.label}
-                </NavLink>
-              ))}
-            </nav>
+            <div className="flex items-center gap-3">
+              <nav className="hidden sm:flex items-center gap-1">
+                {NAV.map((n) => (
+                  <NavLink
+                    key={n.to}
+                    to={n.to}
+                    end={n.end}
+                    className={navClass}
+                  >
+                    {n.label}
+                  </NavLink>
+                ))}
+              </nav>
+              <ViewToggle />
+            </div>
           </div>
+
+          {/* Mobile nav row */}
+          <nav className="sm:hidden flex items-center gap-1 pb-2 -mt-1 overflow-x-auto">
+            {NAV.map((n) => (
+              <NavLink key={n.to} to={n.to} end={n.end} className={navClass}>
+                {n.label}
+              </NavLink>
+            ))}
+          </nav>
         </div>
       </header>
 
@@ -60,9 +105,9 @@ export function Layout() {
       <footer className="no-print">
         <div className="mx-auto max-w-app px-4 md:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-2">
           <p className="text-xs text-enough-slate text-center sm:text-left">
-            Educational simulator only · Not financial advice · No product
-            recommendations · No guarantee · Not affiliated with CPF Board or
-            MAS.
+            Educational decision-support only · Not financial advice · No
+            product recommendations · No guarantee · Not affiliated with CPF
+            Board or MAS.
           </p>
           <Link
             to="/partners"

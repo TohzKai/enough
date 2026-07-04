@@ -12,3 +12,9 @@ vite.config.js
 vite.config.d.ts
 *.tsbuildinfo
 .vercel
+
+# src/lib holds real app source (currency/number formatters). The repo-root
+# .gitignore's broad `lib/` rule would otherwise swallow it, breaking the build
+# on a clean checkout (blank page). Re-include it here.
+!src/lib/
+!src/lib/**

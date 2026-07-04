@@ -1,6 +1,9 @@
 /**
  * Stable sample dataset for the worked example (Mr Tan, 65).
  *
+ * Figures aligned to the strategy proposal (enough-proposal.md §8): CPF LIFE
+ * S$1,550/mo, ~S$190,000 in cash + investments + SRS, paid-off 4-room HDB.
+ *
  * This keeps the worked example deterministic so the UI, charts, and narrative are
  * fully reproducible run-to-run. The sample output is labelled "Illustrative result
  * based on stated assumptions" wherever it appears, and the live Monte Carlo engine
@@ -13,58 +16,59 @@
 export const demoMrTan = {
   age: 65,
   horizonAge: 95,
-  cpfLife: 950,
+  cpfLife: 1550,
   plan: "Standard",
-  assets: 150000,
-  desired: 2350,
-  family: "Does not want to burden his children",
-  // Calibrated safer spend
-  saferLower: 1350,
-  saferCentral: 1400,
-  saferUpper: 1500,
-  confidence: 92,
-  desiredConfidence: 40, // ~35–45%
-  withdrawal: 450, // 1400 − 950
-  gap: 950, // 2350 − 1400
-  initialWithdrawalRate: 0.036, // 450 × 12 / 150000
+  assets: 190000,
+  desired: 3100,
+  family: "Wants his children to be involved, not burdened",
+  // Calibrated safer spend (S$190k assets, ~3.8% initial withdrawal)
+  saferLower: 2000,
+  saferCentral: 2150,
+  saferUpper: 2350,
+  confidence: 90,
+  desiredConfidence: 45, // ~40–50%
+  withdrawal: 600, // 2150 − 1550
+  gap: 950, // 3100 − 2150
+  initialWithdrawalRate: 0.038, // 600 × 12 / 190000
 };
 
 /** Spend-confidence curve points with clean x-axis labels. */
 export const demoCurve = [
-  { spend: 950, conf: 100 },
-  { spend: 1200, conf: 97 },
-  { spend: 1400, conf: 92 },
-  { spend: 1650, conf: 85 },
-  { spend: 1900, conf: 75 },
-  { spend: 2350, conf: 40 },
+  { spend: 1550, conf: 100 },
+  { spend: 1850, conf: 96 },
+  { spend: 2150, conf: 90 },
+  { spend: 2500, conf: 82 },
+  { spend: 2800, conf: 70 },
+  { spend: 3100, conf: 45 },
 ];
 
 /** Meaningful sensitivity impacts (no zero rows). */
 export const demoSensitivity = {
-  base: 1400,
+  base: 2150,
   reduces: [
-    { factor: "Planning horizon +5 years", impact: -180 },
-    { factor: "Bequest target +S$50,000", impact: -120 },
-    { factor: "Healthcare inflation +2%", impact: -100 },
-    { factor: "Investment return −1%", impact: -100 },
+    { factor: "Planning horizon +5 years", impact: -220 },
+    { factor: "Bequest target +S$50,000", impact: -160 },
+    { factor: "Healthcare inflation +2%", impact: -130 },
+    { factor: "Investment return −1%", impact: -140 },
   ],
   improves: [
-    { factor: "Investment return +1%", impact: 110 },
-    { factor: "Spending flexibility 15% (guardrails)", impact: 90 },
+    { factor: "Investment return +1%", impact: 150 },
+    { factor: "Spending flexibility 15% (guardrails)", impact: 120 },
+    { factor: "Top up CPF to ERS (larger floor)", impact: 90 },
   ],
 };
 
 /** Illustrative sequence-of-returns balance trajectories (20 years, S$'000s). */
 export const demoSequence = {
-  start: 150000,
+  start: 190000,
   paths: [
     {
       label: "Steady market",
       tone: "emerald" as const,
       blurb: "Returns arrive near the long-run average throughout.",
       series: [
-        150, 152, 153, 153, 151, 149, 146, 142, 137, 131, 124, 116, 107, 97, 86,
-        74, 61, 47, 32, 16,
+        190, 192, 193, 193, 191, 188, 184, 179, 173, 165, 156, 146, 135, 122,
+        108, 93, 76, 58, 39, 19,
       ],
       depletedYear: null as number | null,
     },
@@ -74,8 +78,8 @@ export const demoSequence = {
       blurb:
         "A bear market in years 1–2 — withdrawals hit a depressed portfolio.",
       series: [
-        150, 128, 112, 108, 107, 105, 100, 93, 84, 73, 60, 45, 28, 9, 0, 0, 0,
-        0, 0, 0,
+        190, 162, 142, 137, 135, 132, 126, 117, 105, 91, 74, 55, 33, 10, 0, 0,
+        0, 0, 0, 0,
       ],
       depletedYear: 14,
     },
@@ -84,8 +88,8 @@ export const demoSequence = {
       tone: "amber" as const,
       blurb: "The same bear market, around year 13 — far less damage.",
       series: [
-        150, 152, 153, 153, 151, 149, 146, 142, 137, 131, 124, 116, 107, 88, 76,
-        66, 55, 43, 30, 22,
+        190, 192, 193, 193, 191, 188, 184, 179, 173, 165, 156, 146, 135, 111,
+        95, 82, 68, 53, 37, 27,
       ],
       depletedYear: null as number | null,
     },
@@ -93,34 +97,34 @@ export const demoSequence = {
 };
 
 export const demoFamily = {
-  saferRange: "S$1,350 – S$1,500",
-  central: 1400,
-  cpfFloor: 950,
-  familyCapacity: 250, // approx room for family support after essentials + healthcare
+  saferRange: "S$2,000 – S$2,350",
+  central: 2150,
+  cpfFloor: 1550,
+  familyCapacity: 300, // approx room for family support within the safer range
   bequest: 0,
 };
 
 export const demoBusiness = {
   // Column 1 — Regulation
   regulation: [
-    "Education calculator first — no product recommendation",
+    "Decision-support & education first — no product recommendation",
     "No 'MAS-approved' claim; no guarantee",
-    "Personalised advice only via licensed partner later",
+    "Personalised advice only after an MAS Financial Adviser licence",
     "Subject to legal review before any commercial launch",
   ],
   // Column 2 — Business model
   model: [
-    "B2B2C first — banks, insurers, wealth managers",
-    "S$2–5 per active user / month",
-    "B2B adviser SaaS later (per seat)",
-    "B2C premium later (family report + updates)",
+    "Non-bank B2B2C led — employer-wellness, fee-only IFAs, insurers",
+    "Flat fees only — never commission or product revenue-share",
+    "Direct family tier on top — the adult child pays",
+    "Enough stays the data controller in every deal",
   ],
   // Column 3 — Pilot ask
   pilot: [
-    "One bank or insurer pilot",
-    "Retirement-age customer cohort",
-    "Measure: completed plans, report downloads, engagement, adviser follow-up",
-    "Then: prove the number, scale the floor",
+    "One employer-wellness or fee-only IFA pilot",
+    "Sandwich-generation staff with ageing parents",
+    "Measure: connected plans, safe-spend adoption, family engagement",
+    "Then: prove the number, build the family flywheel",
   ],
 };
 

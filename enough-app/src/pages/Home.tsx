@@ -1,23 +1,27 @@
 import { useNavigate } from "react-router-dom";
 import { Card } from "../components/ui";
+import { useViewMode } from "../store/viewMode";
 
+// The three differentiators that survive the competitor scan
+// (enough-competitor-analysis.md §4) — NOT the engine / "8 models".
 const PILLARS = [
   {
-    title: "CPF LIFE as the floor",
-    body: "Start with the income you cannot outlive.",
+    title: "Neutral, whole-wealth",
+    body: "Product-free and commission-free. We connect CPF, SRS, bank and investments in one consented view — and tell you how much of ALL of it you can safely spend.",
   },
   {
-    title: "Spending confidence",
-    body: "See how each spending level affects the chance your money lasts.",
+    title: "CPF-native depth",
+    body: "CPF LIFE as your guaranteed floor, SRS drawn inside its 10-year window, tax- and longevity-aware sequencing across every account.",
   },
   {
-    title: "Family report",
-    body: "Turn the result into a simple conversation at home.",
+    title: "For the whole family",
+    body: "A permissioned plane for retiree, spouse and adult child — the child helps set it up and keeps watch, the parent always confirms the number.",
   },
 ];
 
 export function Home() {
   const navigate = useNavigate();
+  const { mode } = useViewMode();
   const startPlan = () => navigate("/plan");
 
   return (
@@ -25,28 +29,45 @@ export function Home() {
       {/* Hero */}
       <section className="text-center pt-2 md:pt-6">
         <div className="inline-flex items-center gap-2 rounded-full bg-enough-emerald/10 px-4 py-1.5 text-sm font-semibold text-enough-emeraldDark">
-          Singapore retirement spending simulator
+          Singapore's neutral retirement-spending co-pilot
         </div>
         <h1 className="mt-5 text-4xl md:text-6xl font-extrabold text-enough-navy leading-tight">
           How much can I <span className="text-enough-emerald">really</span>{" "}
           spend?
         </h1>
         <p className="mt-5 mx-auto max-w-2xl text-lg md:text-xl text-enough-slate leading-relaxed">
-          A Singapore retirement spending simulator built around CPF LIFE,
-          family needs, housing cost, and market uncertainty.
+          {mode === "parent" ? (
+            <>
+              One calm number — how much you can safely spend each month, from
+              your CPF, savings and the lifestyle you want. Explained in plain
+              words. Sells nothing.
+            </>
+          ) : (
+            <>
+              Help your parents spend their retirement with confidence. Connect
+              their accounts once, keep watch with alerts, and co-sign the big
+              moves — while they stay in control of the number.
+            </>
+          )}
         </p>
 
-        <div className="mt-8 flex items-center justify-center">
+        <div className="mt-8 flex items-center justify-center gap-3 flex-wrap">
           <button
             onClick={startPlan}
             className="btn-emerald text-lg !px-8 !py-4"
           >
-            Start my plan
+            {mode === "parent" ? "Start my plan" : "Set up for my parent"}
+          </button>
+          <button
+            onClick={() => navigate("/result")}
+            className="btn-ghost text-lg !px-6 !py-4"
+          >
+            See a worked example
           </button>
         </div>
       </section>
 
-      {/* Pillars */}
+      {/* Three differentiators */}
       <section className="grid gap-5 md:grid-cols-3">
         {PILLARS.map((p) => (
           <Card key={p.title}>
@@ -61,36 +82,41 @@ export function Home() {
         <div className="grid md:grid-cols-[1fr_auto] gap-6 items-center">
           <div>
             <h3 className="text-white text-2xl font-bold">
-              The decumulation gap
+              The permission to spend
             </h3>
             <p className="mt-3 text-white/85 text-lg leading-relaxed max-w-2xl">
-              Most tools help Singaporeans save and invest. Fewer tools answer
-              the retirement question that matters most: how much can I safely
-              spend every month?
+              CPF, banks and advisers all help Singaporeans save. None will
+              neutrally tell a retiree how much they can safely spend — because
+              banks and advisers earn on the products they sell. That's the one
+              question Enough answers.
             </p>
           </div>
           <div className="rounded-xl2 bg-white/10 p-4 text-center min-w-[220px]">
             <div className="text-xs text-white/60 font-semibold uppercase tracking-wider">
-              balance → monthly spend
+              whole wealth → monthly spend
             </div>
             <div className="mt-2 flex flex-wrap items-center justify-center gap-1.5 text-xs text-white/80">
               <span className="rounded-full bg-white/10 px-2 py-1">
                 CPF LIFE
               </span>
+              <span className="rounded-full bg-white/10 px-2 py-1">SRS</span>
+              <span className="rounded-full bg-white/10 px-2 py-1">Bank</span>
               <span className="rounded-full bg-white/10 px-2 py-1">
-                Savings
+                Investments
               </span>
-              <span className="rounded-full bg-white/10 px-2 py-1">
-                Housing
-              </span>
-              <span className="rounded-full bg-white/10 px-2 py-1">Family</span>
             </div>
             <div className="mt-2 text-enough-emerald font-bold">
-              → safer spend range
+              → safer monthly spend
             </div>
           </div>
         </div>
       </Card>
+
+      {/* Trust strip */}
+      <p className="text-center text-sm text-enough-slate">
+        Educational decision-support prototype · No products, no commission ·
+        Your data stays yours · Plain-English "why" behind every number.
+      </p>
     </div>
   );
 }

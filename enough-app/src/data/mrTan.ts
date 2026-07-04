@@ -3,9 +3,10 @@ import type { PlanInputs } from "../types";
 /**
  * Mr Tan — the canonical worked example.
  *
- *  - 65 years old, CPF LIFE S$950/mo (Standard plan, LEVEL nominal), HDB paid off.
- *  - S$150,000 in cash + investments + SRS.
- *  - Aspires to spend S$2,350/month.
+ * Figures aligned to the strategy proposal (enough-proposal.md §8):
+ *  - 65 years old, CPF LIFE S$1,550/mo (Standard plan, LEVEL nominal), paid-off 4-room HDB.
+ *  - ~S$190,000 across cash + investments + SRS.
+ *  - Aspires to spend S$3,100/month (lifestyle he actually wants).
  *
  * IMPORTANT (A+ honesty): Mr Tan's "safer spend" is NOT a fixed number. It moves
  * meaningfully across the Conservative / Base / Optimistic assumption presets
@@ -16,7 +17,7 @@ import type { PlanInputs } from "../types";
  * CPF LIFE is a LONGEVITY floor, not an inflation floor. Standard payouts are
  * level in nominal terms; their real value erodes with inflation. Only the
  * Escalating plan (+2%/yr, modelled to start lower) grows. Spending, by contrast,
- * IS inflated over time.
+ * IS inflated over time. Figures are illustrative estimates, not guarantees.
  */
 export const MR_TAN_SEED = 73210;
 
@@ -25,18 +26,18 @@ export const mrTanInputs: PlanInputs = {
   age: 65,
   gender: "male",
   horizonAge: 95,
-  spouseIncluded: false,
-  spouseAge: 0,
+  spouseIncluded: true,
+  spouseAge: 63,
 
   // CPF LIFE — Standard plan, LEVEL nominal (payoutGrowthAnnual = 0)
-  cpfLifeMonthly: 950,
+  cpfLifeMonthly: 1550,
   cpfPlan: "Standard",
   payoutGrowthAnnual: 0,
 
-  // Assets (total S$150,000)
-  cash: 45000,
-  investments: 90000,
-  srs: 15000,
+  // Assets (total S$190,000)
+  cash: 40000,
+  investments: 130000,
+  srs: 20000,
   cashPct: 20,
   bondPct: 40,
   equityPct: 40,
@@ -46,17 +47,17 @@ export const mrTanInputs: PlanInputs = {
   monetisationMonthlyIncome: 0,
   monetisationCapitalInjection: 0,
 
-  // Spending (sums to S$2,350 — the aspired total)
-  desiredSpend: 2350,
-  essentialSpend: 950,
-  discretionarySpend: 600,
-  healthcareSpend: 500,
+  // Spending (sums to S$3,100 — the aspired lifestyle total)
+  desiredSpend: 3100,
+  essentialSpend: 1400,
+  discretionarySpend: 800,
+  healthcareSpend: 600,
   familySupport: 300,
   bequestTarget: 0,
   contingencyReserve: 0,
 
   // Base-case assumptions (see presets.ts for Conservative / Optimistic variants)
-  confidence: 92,
+  confidence: 90,
   generalInflation: 2.7,
   healthcareInflation: 5,
   cashReturn: 2,
@@ -77,12 +78,12 @@ export const blankInputs: PlanInputs = {
   horizonAge: 95,
   spouseIncluded: false,
   spouseAge: 62,
-  cpfLifeMonthly: 950,
+  cpfLifeMonthly: 1550,
   cpfPlan: "Standard",
   payoutGrowthAnnual: 0,
   cash: 30000,
-  investments: 80000,
-  srs: 10000,
+  investments: 120000,
+  srs: 15000,
   cashPct: 20,
   bondPct: 40,
   equityPct: 40,
@@ -91,14 +92,14 @@ export const blankInputs: PlanInputs = {
   monetisation: "none",
   monetisationMonthlyIncome: 0,
   monetisationCapitalInjection: 0,
-  desiredSpend: 2200,
-  essentialSpend: 900,
-  discretionarySpend: 550,
-  healthcareSpend: 450,
+  desiredSpend: 2900,
+  essentialSpend: 1300,
+  discretionarySpend: 700,
+  healthcareSpend: 550,
   familySupport: 300,
   bequestTarget: 0,
   contingencyReserve: 10000,
-  confidence: 92,
+  confidence: 90,
   generalInflation: 2.7,
   healthcareInflation: 5,
   cashReturn: 2,

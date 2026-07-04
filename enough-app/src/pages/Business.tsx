@@ -6,77 +6,94 @@ export function Business() {
       <SectionTitle
         kicker="For partners"
         title="Enough for partners"
-        subtitle="A Singapore decumulation engine for banks, insurers, and advisers."
+        subtitle="A neutral Singapore decumulation engine — distributed through partners for whom neutrality is an asset, never a threat."
       />
+
+      {/* The honest position: wedge, not moat (yet) */}
+      <Card className="bg-enough-navy text-white border-0">
+        <h3 className="text-white text-xl font-bold">
+          A wedge today, a built moat tomorrow
+        </h3>
+        <p className="text-white/85 mt-2 leading-relaxed max-w-3xl">
+          The safe-spend engine is honest, focused table stakes — the defensible
+          moat is the licence-gated, family-embedded system-of-record it
+          becomes: consented whole-wealth aggregation, tax-aware sequencing, and
+          a multi-year household relationship no product-seller can assemble.
+        </p>
+      </Card>
 
       {/* Problem + Why now + Why wins */}
       <div className="grid lg:grid-cols-3 gap-4">
         <Block title="The problem" tone="red">
           <p>
-            Accumulation is crowded. Decumulation is under-served. No incumbent
-            owns the monthly spend decision.
+            Accumulation is crowded. Decumulation is under-served. No neutral
+            player owns the monthly spend decision — banks and advisers earn on
+            the products they sell.
           </p>
         </Block>
         <Block title="Why now" tone="amber">
           <ul className="list-disc pl-4 space-y-1">
-            <li>Singapore is ageing.</li>
+            <li>Singapore is ageing — 1 in 4 over 65 by 2030.</li>
+            <li>CPF LIFE is a floor, not a whole-wealth spending answer.</li>
             <li>
-              CPF LIFE is important but incomplete as a total spending answer.
+              The public neutral whole-wealth planner (MyMoneySense) exited.
             </li>
-            <li>Healthcare-cost anxiety is rising.</li>
-            <li>Older Singaporeans are more digitally reachable.</li>
-            <li>Banks and insurers need retirement engagement tools.</li>
+            <li>SGFinDex makes consented aggregation possible.</li>
           </ul>
         </Block>
-        <Block title="Why Enough wins" tone="emerald">
+        <Block title="The three that survive" tone="emerald">
           <ul className="list-disc pl-4 space-y-1">
-            <li>Decumulation-first.</li>
-            <li>CPF-aware.</li>
-            <li>Singapore-calibrated.</li>
-            <li>Family-aware.</li>
-            <li>Transparent about uncertainty.</li>
-            <li>Product-neutral.</li>
+            <li>Neutral, whole-wealth aggregation.</li>
+            <li>Native CPF-LIFE / SRS / SG-tax depth.</li>
+            <li>The family / adult-child layer (uncontested).</li>
           </ul>
         </Block>
       </div>
 
-      {/* Business model */}
+      {/* Business model — non-bank B2B2C led + family tier */}
       <Card>
-        <h3 className="text-lg font-bold text-enough-navy mb-3">
-          Business model
+        <h3 className="text-lg font-bold text-enough-navy mb-1">
+          Channel: non-bank B2B2C led, family tier on top
         </h3>
+        <p className="text-sm text-enough-slate mb-3">
+          Flat fees only — never commission or product revenue-share. Enough
+          stays the data controller in every deal. Banks last, and only as a
+          firewalled neutral rail.
+        </p>
         <div className="grid md:grid-cols-3 gap-4">
           <Channel
-            name="B2B2C (first)"
+            name="Employer-wellness (lead)"
             tone="emerald"
             lines={[
-              "Banks, insurers, wealth managers",
-              "S$2–5 per active user / month",
-              "Partner distributes, reducing CAC",
-              "Value: retention, engagement, adviser follow-up",
+              "Support sandwich-generation staff with ageing parents",
+              "Per-employee-per-year (PEPY), flat",
+              "Cleanest on neutrality + data",
+              "Reaches the adult-child buyer directly",
             ]}
           />
           <Channel
-            name="B2B adviser SaaS (later)"
+            name="Fee-only IFAs"
             tone="amber"
             lines={[
-              "Per adviser seat",
-              "S$50–100 per adviser / month",
-              "Used in live client meetings",
+              "A scalable neutral engine + a glass-box plan to hand clients",
+              "Per-adviser seat / month",
+              "Co-brandable; Enough keeps engine + data",
             ]}
           />
           <Channel
-            name="B2C premium (later)"
+            name="Insurers + family tier"
             tone="navy"
             lines={[
-              "S$60–120 per year",
-              "Family report and annual updates",
-              "Higher CAC — later phase",
+              "Neutral need-sizing as qualified lead-gen (flat + per-lead)",
+              "Never commission on sales",
+              "Direct family tier: the adult child pays",
             ]}
           />
         </div>
         <p className="text-xs text-enough-slate mt-3">
-          All figures illustrative estimates for an academic proposal.
+          All figures illustrative estimates for an academic proposal. Validate
+          pricing units with partner discovery + Van Westendorp before
+          committing.
         </p>
       </Card>
 
@@ -84,37 +101,35 @@ export function Business() {
       <div className="grid lg:grid-cols-2 gap-4">
         <Block title="Regulatory path" tone="emerald">
           <ul className="space-y-1.5">
-            <li>Start as an education calculator.</li>
-            <li>No product recommendation.</li>
-            <li>No "MAS-approved" claim.</li>
+            <li>Phase 1 — decision-support & education only.</li>
+            <li>No product recommendation, no "you should".</li>
+            <li>No "MAS-approved" claim; no guarantee.</li>
             <li>
-              Personalised advice only through a licensed partner or appropriate
-              licence.
+              Get the MAS Financial Adviser licence before personalising — it's
+              plausibly a Wave-1 critical-path item (it gates the moat).
             </li>
-            <li>Subject to legal review before commercial launch.</li>
           </ul>
         </Block>
         <Block title="Pilot ask" tone="navy">
           <ul className="space-y-1.5">
-            <li>One bank or insurer partner.</li>
-            <li>Retirement-age customer cohort.</li>
+            <li>One employer-wellness or fee-only IFA partner.</li>
+            <li>Sandwich-generation staff with ageing parents.</li>
             <li>
-              Measure completed plans, report downloads, engagement, adviser
-              follow-up.
+              Measure connected plans, safe-spend adoption, family engagement.
             </li>
-            <li>Goal: prove the number, then scale the floor.</li>
+            <li>Goal: prove the number, build the family flywheel.</li>
           </ul>
         </Block>
       </div>
 
       <Card className="bg-enough-navy text-white border-0 text-center">
         <div className="text-xl md:text-2xl font-bold text-enough-emerald">
-          Pilot one partner, prove the number, scale the floor.
+          Out-focus MoneyOwl. Out-neutral DBS. Own the family.
         </div>
         <p className="text-white/70 text-sm mt-2">
-          Educational simulator only. Not personalised financial advice. No
-          product recommendations. No guarantee. Not affiliated with CPF Board
-          or MAS.
+          Educational decision-support only. Not personalised financial advice.
+          No product recommendations. No guarantee. Not affiliated with CPF
+          Board or MAS.
         </p>
       </Card>
 
@@ -154,8 +169,8 @@ function Channel({
 }) {
   return (
     <div className="rounded-xl2 border border-enough-line p-4">
-      <div className="flex items-center justify-between">
-        <div className="text-lg font-extrabold text-enough-navy">{name}</div>
+      <div className="flex items-center justify-between gap-2">
+        <div className="text-base font-extrabold text-enough-navy">{name}</div>
         <Pill tone={tone}>channel</Pill>
       </div>
       <ul className="mt-2 space-y-1 text-sm text-enough-ink">

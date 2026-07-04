@@ -1,0 +1,49 @@
+# Session Notes — 2026-07-03
+
+## Where we are
+
+Advisory session only — no code changed. Discussed how to drive the `enough-app` Monte
+Carlo engine with real vs synthetic data. Key finding: the engine consumes *assumptions*
+(expectedReturn/volatility from asset mix, inflation, CPF payouts), NOT a dataset — it already
+generates synthetic Gaussian returns. "Real data" = calibrate those assumptions from SG sources,
+and optionally add historical bootstrap resampling. Prior session's uncommitted alignment work
+is still uncommitted (see below).
+
+## Read first
+
+1. `enough-app/src/engine/simulation.ts` — the MC engine; `generateScenarios` IS the synthetic generator (Gaussian from mu/sigma)
+2. `enough-app/src/engine/portfolio.ts` — derives expectedReturn/volatility from asset mix (assumes zero cross-asset correlation)
+3. `enough-app/src/engine/backtest.ts` — `HISTORICAL_60_40` stylised series; Level-2 real-sequence path already exists
+4. `enough-app/src/types.ts` — `PlanInputs`: market assumptions vs personal facts split
+5. `workspaces/_template/briefs/enough-session-record-2026-07-02.md` — prior narrative + file list
+
+## In-flight state
+
+- ALL prior alignment work STILL uncommitted (format.ts, alignment change set, journals 0002–0004).
+- No new files created this session; nothing to commit from 2026-07-03.
+- Static preview still served from built `dist/` at http://localhost:8080/enough/ (not auto-updating).
+
+## Outstanding ledger (forest)
+
+| ID | Item | Value-anchor (MUST-1 source) | Status |
+| -- | ---- | ---------------------------- | ------ |
+| F1 | Commit + push the app changes | user directive to align demo (journal 0002); live Pages demo broken (journal 0004) | queued — awaiting user go |
+| F2 | Move repo off OneDrive to native WSL path | dev loop broken on this mount (journal 0003 RISK) | queued (optional) |
+| F3 | In-browser visual walk of the aligned app | user-flow validation not done (journal 0002 §Consequences) | queued |
+| F4 | Verify strategy figures before the deck asserts | CPF FRS/ERS + SGFinDex eligibility UNVERIFIED (briefs risks §9, proposal §16) | queued (research) |
+| F5 | Calibrate MC engine assumptions from real SG sources (+ optional bootstrap resampling) | user Q 2026-07-03: "use real/synthetic data to simulate the MC engine, what sources needed"; SingStat CPI/healthcare, CPF LIFE tables, index return series | queued — options a/b/c offered, awaiting pick |
+
+Closed this session: none.
+
+## Traps
+
+- Engine credibility gap is in the INPUT numbers, not the method — Gaussian model is standard/defensible.
+- `HISTORICAL_60_40` is annual + "illustrative"; bootstrap resampling (Level 3) needs a REAL monthly series first.
+- `CPF_ESCALATING_START_FACTOR = 0.82` and +2yr female longevity are hand-estimates — flag F4/F5 before asserting.
+- Do NOT `git add -A` — ~1,574 unrelated `.claude/**` files dirty; stage `enough-app/**` + `workspaces/**` explicitly (journal 0004).
+- Do NOT trust the Vite dev server on this mount; edit → rebuild → static-serve `dist/` (journal 0003).
+
+## Open questions for the human
+
+- F5 direction: (a) wire real monthly series for bootstrap, (b) build a calibration module documenting each assumption's source, or (c) verify CPF LIFE factors first?
+- Commit scope + direct-to-`main` vs PR for the still-uncommitted prior work? (journal 0004)
