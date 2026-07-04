@@ -85,7 +85,9 @@ function AccountRow({ acct }: { acct: ConnectedAccount }) {
         <div className="font-extrabold text-enough-navy whitespace-nowrap">
           {formatMoney(acct.amount)}
           {acct.isMonthly && (
-            <span className="text-xs font-medium text-enough-slate">/mo</span>
+            <span className="text-xs font-medium text-enough-slate">
+              /month
+            </span>
           )}
         </div>
         <Pill tone={kindTone[acct.kind]}>{acct.kind.toUpperCase()}</Pill>
@@ -132,7 +134,7 @@ function ConnectPanel() {
             <p className="text-enough-slate mt-2 leading-relaxed">
               One consented pull via Singpass brings in your CPF, bank, SRS and
               investments through SGFinDex — no typing, always current. We never
-              see your password, and we sell nothing.
+              see your password, and we make no product recommendations.
             </p>
             <div className="mt-3 flex flex-wrap gap-2 text-xs">
               <Pill tone="navy">CPF Board</Pill>

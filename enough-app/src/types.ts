@@ -34,7 +34,7 @@ export interface PlanInputs {
   housingStatus: HousingStatus;
   monthlyHousingCost: number; // S$/month housing cost (0 if paid off) — a spending item
   monetisation: Monetisation;
-  monetisationMonthlyIncome: number; // S$/mo from room rental (illustrative)
+  monetisationMonthlyIncome: number; // S$/month from room rental (illustrative)
   monetisationCapitalInjection: number; // one-off S$ from lease buyback / downgrade
 
   // --- Spending (monthly S$) ---

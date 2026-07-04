@@ -16,7 +16,7 @@ export interface SensitivityRow {
   factor: string;
   baseSpend: number;
   adjustedSpend: number;
-  impact: number; // S$ per month (adjusted - base)
+  impact: number; // S$/month (adjusted - base)
   direction: "up" | "down" | "flat";
 }
 

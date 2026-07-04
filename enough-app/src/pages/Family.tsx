@@ -102,7 +102,7 @@ export function Family() {
       <SectionTitle
         kicker="Family tier"
         title="One plan, the whole family"
-        subtitle="A permissioned plane for retiree, spouse and adult child. The child helps run it; the parent always confirms the number. Enough stays on the parent's side."
+        subtitle="A permissioned plan for the retiree, spouse, and adult child — the child helps set it up, but the parent always confirms the number."
       />
 
       {/* Two-face intro */}
@@ -130,10 +130,10 @@ export function Family() {
         </p>
       </Card>
 
-      {/* Roles / permissioned plane */}
+      {/* Roles / permissioned plan */}
       <div>
         <h3 className="text-lg font-bold text-enough-navy mb-3">
-          Who's on the plane
+          Who's on the plan
         </h3>
         <div className="grid md:grid-cols-3 gap-4">
           {familyMembers.map((m) => (

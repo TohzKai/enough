@@ -4,7 +4,7 @@
  *
  * The question every retiree has and no NEUTRAL tool answers: which account to draw,
  * in what order, each year, to maximise after-tax, longevity-adjusted spending. A
- * bank can't be neutral here ("draw the unit trust we sold you first" is conflicted).
+ * bank can't be neutral here (a single product provider may not be neutral on withdrawal sequencing).
  *
  * This is an ILLUSTRATIVE decision-support view — not personalised advice and not a
  * product recommendation (enough-risks-and-constraints.md §1.1). It shows the
@@ -57,9 +57,10 @@ export const withdrawalOrder: SequenceStep[] = [
   {
     order: 4,
     account: "cpf",
-    title: "CPF — the risk-free ~4%, drawn last",
+    title:
+      "CPF balances — preserved as the longevity backstop where appropriate",
     rationale:
-      "CPF LIFE already pays the floor for life; leave remaining CPF to compound at its risk-free rate as the longevity backstop.",
+      "CPF LIFE already pays the floor for life; preserving remaining CPF balances keeps them as the longevity backstop.",
     nuance:
       "The guaranteed base you can never outlive — spend it down last, on purpose.",
     tone: "slate",
@@ -80,7 +81,7 @@ export interface TopUpRecommendation {
  */
 export const topUpRecommendations: TopUpRecommendation[] = [
   {
-    title: "Top up CPF towards the Enhanced Retirement Sum (ERS)",
+    title: "Model a higher CPF LIFE floor",
     detail:
       "A larger CPF LIFE floor means more of your essentials are guaranteed for life, so less of your lifestyle depends on markets.",
     confidenceLift: "+3% modelled confidence",

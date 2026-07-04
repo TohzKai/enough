@@ -7,7 +7,7 @@ import { useViewMode } from "../store/viewMode";
 const PILLARS = [
   {
     title: "Neutral, whole-wealth",
-    body: "Product-free and commission-free. We connect CPF, SRS, bank and investments in one consented view — and tell you how much of ALL of it you can safely spend.",
+    body: "Product-free and commission-free. We connect CPF, SRS, bank and investments in one consented view — and tell you how much of your total wealth you can safely spend.",
   },
   {
     title: "CPF-native depth",
@@ -15,7 +15,7 @@ const PILLARS = [
   },
   {
     title: "For the whole family",
-    body: "A permissioned plane for retiree, spouse and adult child — the child helps set it up and keeps watch, the parent always confirms the number.",
+    body: "A permissioned plan for the retiree, spouse, and adult child — the child helps set it up, but the parent always confirms the number.",
   },
 ];
 
@@ -40,7 +40,7 @@ export function Home() {
             <>
               One calm number — how much you can safely spend each month, from
               your CPF, savings and the lifestyle you want. Explained in plain
-              words. Sells nothing.
+              words. Product-free. No product recommendations.
             </>
           ) : (
             <>
@@ -85,10 +85,9 @@ export function Home() {
               The permission to spend
             </h3>
             <p className="mt-3 text-white/85 text-lg leading-relaxed max-w-2xl">
-              CPF, banks and advisers all help Singaporeans save. None will
-              neutrally tell a retiree how much they can safely spend — because
-              banks and advisers earn on the products they sell. That's the one
-              question Enough answers.
+              CPF, banks and advisers all help Singaporeans save. A neutral
+              spending view is harder when providers also sell products. Enough
+              focuses on the monthly spend decision.
             </p>
           </div>
           <div className="rounded-xl2 bg-white/10 p-4 text-center min-w-[220px]">

@@ -9,7 +9,7 @@ import {
 /**
  * The product needs TWO faces (enough-moat-and-differentiation.md §4.4 +
  * enough-adult-children-research.md Part C.4):
- *  - "parent"  — one calm "your monthly paycheck" view for the retiree.
+ *  - "parent"  — one calm "your safer monthly spend range" view for the retiree.
  *  - "child"   — a richer analytical + oversight view with alerts for the adult child.
  *
  * The child wants oversight WITHOUT intrusion; the parent wants confidence WITHOUT

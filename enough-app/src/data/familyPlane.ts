@@ -1,7 +1,7 @@
 /**
  * Moat pillar E — the family layer / family tier (the uncontested whitespace).
  *
- * A permissioned retiree + spouse + adult-child on ONE plane, with a co-signer flow
+ * A permissioned retiree + spouse + adult-child on ONE plan, with a co-signer flow
  * for big moves (enough-moat-and-differentiation.md §4 "The family layer (E)" +
  * enough-adult-children-research.md Part C). The adult child is the operator + likely
  * buyer; the retiree stays the beneficiary and decision-maker.
@@ -19,7 +19,7 @@ export interface FamilyMember {
   relation: string;
   role: FamilyRole;
   roleLabel: string;
-  /** What this member can do on the plane. */
+  /** What this member can do on the plan. */
   permissions: string[];
   initials: string;
   tone: "navy" | "emerald" | "amber";
@@ -45,7 +45,7 @@ export const familyMembers: FamilyMember[] = [
     role: "viewer",
     roleLabel: "Viewer",
     permissions: [
-      "Sees the plan and the monthly paycheck",
+      "Sees the plan and the safer monthly spend range",
       "Joins family conversations",
       "Cannot change accounts or spending",
     ],
@@ -84,7 +84,7 @@ export interface CoSignRequest {
 export const coSignRequests: CoSignRequest[] = [
   {
     id: "cs-1",
-    title: "Raise the monthly paycheck to S$2,350",
+    title: "Raise the safer monthly spend to S$2,350",
     detail:
       "Guardrails earned a raise after a strong market. Wei Ling reviewed it; Dad confirms before it takes effect.",
     raisedBy: "Wei Ling (operator)",
@@ -95,7 +95,7 @@ export const coSignRequests: CoSignRequest[] = [
   },
   {
     id: "cs-2",
-    title: "Top up CPF towards ERS (larger floor)",
+    title: "Model a higher CPF LIFE floor",
     detail:
       "A larger guaranteed floor raises confidence. Framed as a decision shape, not a product — Dad decides.",
     raisedBy: "Enough (guardrail engine)",
@@ -123,7 +123,7 @@ export const childAlerts = [
   {
     tone: "amber" as const,
     title: "A safe raise is waiting for Dad to confirm",
-    body: "Markets ran above the plan line — the paycheck can rise to S$2,350.",
+    body: "Markets ran above the plan line — the safer monthly spend can rise to S$2,350.",
   },
   {
     tone: "navy" as const,

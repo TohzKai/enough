@@ -2,7 +2,7 @@
  * Stable sample dataset for the worked example (Mr Tan, 65).
  *
  * Figures aligned to the strategy proposal (enough-proposal.md §8): CPF LIFE
- * S$1,550/mo, ~S$190,000 in cash + investments + SRS, paid-off 4-room HDB.
+ * S$1,550/month, ~S$190,000 in cash + investments + SRS, paid-off 4-room HDB.
  *
  * This keeps the worked example deterministic so the UI, charts, and narrative are
  * fully reproducible run-to-run. The sample output is labelled "Illustrative result
@@ -54,7 +54,7 @@ export const demoSensitivity = {
   improves: [
     { factor: "Investment return +1%", impact: 150 },
     { factor: "Spending flexibility 15% (guardrails)", impact: 120 },
-    { factor: "Top up CPF to ERS (larger floor)", impact: 90 },
+    { factor: "Model a higher CPF LIFE floor", impact: 90 },
   ],
 };
 
@@ -97,7 +97,7 @@ export const demoSequence = {
 };
 
 export const demoFamily = {
-  saferRange: "S$2,000 – S$2,350",
+  saferRange: "S$2,000 to S$2,350/month",
   central: 2150,
   cpfFloor: 1550,
   familyCapacity: 300, // approx room for family support within the safer range

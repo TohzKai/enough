@@ -27,7 +27,7 @@ export const guardrailBands: GuardrailBand[] = [
     zone: "raise",
     headline: "Markets are up — you can safely spend more",
     rule: "Portfolio sustainably above the plan line",
-    action: "Raise the monthly paycheck (e.g. S$2,150 → S$2,350).",
+    action: "Raise the safer monthly spend (e.g. S$2,150 → S$2,350).",
   },
   {
     zone: "green",

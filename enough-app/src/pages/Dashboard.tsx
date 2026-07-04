@@ -21,6 +21,7 @@ import {
   formatMoney,
   formatMoneyMonth,
   formatDeltaMonth,
+  formatConfidence,
   pct,
   pctRaw,
 } from "../lib/format";
@@ -137,7 +138,7 @@ function OversightStrip() {
         to="/family"
         className="mt-3 inline-flex text-sm font-semibold text-enough-navy hover:text-enough-emeraldDark"
       >
-        Go to the family plane to co-sign →
+        Go to the family plan to co-sign →
       </Link>
     </Card>
   );
@@ -161,21 +162,23 @@ function MrTanResults() {
 
       {child && <OversightStrip />}
 
-      {/* Summary hero — the monthly paycheck */}
+      {/* Summary hero — the safer monthly spend range */}
       <Card className="bg-gradient-to-br from-enough-navy to-enough-navyLight text-white border-0 !p-5">
         <div className="text-white/60 text-xs font-semibold uppercase tracking-wider">
-          {child ? "Dad's monthly paycheck" : "Your monthly paycheck"}
+          {child
+            ? "Dad's safer monthly spend range"
+            : "Your safer monthly spend range"}
         </div>
         <div className="mt-1.5 flex items-end gap-2 flex-wrap">
           <div className="text-3xl md:text-4xl font-extrabold text-white leading-tight">
             {formatMoney(demoMrTan.saferLower)} to{" "}
             {formatMoney(demoMrTan.saferUpper)}
           </div>
-          <div className="text-white/60 text-base pb-1">per month</div>
+          <div className="text-white/60 text-base pb-1">/month</div>
         </div>
         <div className="mt-2 text-base md:text-lg text-enough-emerald font-semibold">
-          Safe today: {formatMoneyMonth(demoMrTan.saferCentral)} · about{" "}
-          {demoMrTan.confidence}% confidence
+          Suggested today: {formatMoneyMonth(demoMrTan.saferCentral)} ·{" "}
+          {formatConfidence(demoMrTan.confidence / 100)}
         </div>
         <div className="mt-2 flex items-center gap-3 flex-wrap">
           <Pill tone="emerald">
@@ -194,25 +197,25 @@ function MrTanResults() {
           label="CPF LIFE floor"
           value={formatMoney(demoMrTan.cpfLife)}
           tone="navy"
-          sub="per month · income for life"
+          sub="/month · income for life"
         />
         <StatCard
           label="Extra withdrawal"
           value={formatMoney(demoMrTan.withdrawal)}
           tone="emerald"
-          sub={`per month · ${pct(demoMrTan.initialWithdrawalRate, 1)} rate`}
+          sub={`/month · ${pct(demoMrTan.initialWithdrawalRate, 1)} rate`}
         />
         <StatCard
           label="Desired spend"
           value={formatMoney(demoMrTan.desired)}
           tone="amber"
-          sub="per month"
+          sub="/month"
         />
         <StatCard
           label="Gap vs desired"
           value={formatMoney(demoMrTan.gap)}
           tone="red"
-          sub="per month"
+          sub="/month"
         />
       </div>
 
@@ -236,7 +239,7 @@ function MrTanResults() {
       {/* Curve */}
       <CurveSection
         title="The product is the curve"
-        sub="Each extra S$100 per month improves lifestyle today but reduces safety tomorrow."
+        sub="Each extra S$100/month improves lifestyle today but reduces safety tomorrow."
         data={demoCurve.map((p) => ({ spend: p.spend, conf: p.conf }))}
         ticks={[1550, 1850, 2150, 2500, 2800, 3100]}
       />
@@ -261,12 +264,12 @@ function MrTanResults() {
             </h3>
             <p className="text-white/80 mt-1">
               {child
-                ? "Review and co-sign the safe raise on the family plane — Dad confirms."
+                ? "Review and co-sign the safe raise on the family plan — Dad confirms."
                 : "Open a calm, printable one-page report to share at home."}
             </p>
           </div>
           <Link to={child ? "/family" : "/report"} className="btn-emerald">
-            {child ? "Open family plane →" : "Open family report →"}
+            {child ? "Open family plan →" : "Open family report →"}
           </Link>
         </div>
       </Card>
@@ -285,7 +288,7 @@ function GuardrailNow() {
             <Pill tone="emerald">Guardrail · raise available</Pill>
           </div>
           <h3 className="text-2xl font-bold text-enough-navy mt-2">
-            Markets are up — a safe raise is available
+            Markets are up — the model shows room to raise spend
           </h3>
           <p className="text-enough-ink mt-1 leading-relaxed max-w-2xl">
             {g.reason} A living plan with a steering wheel — no panic in
@@ -300,7 +303,7 @@ function GuardrailNow() {
               {formatMoney(g.suggestedSpend)}
             </span>
           </div>
-          <div className="text-xs text-enough-slate">per month</div>
+          <div className="text-xs text-enough-slate">/month</div>
         </div>
       </div>
       <div className="mt-4 grid sm:grid-cols-4 gap-2 text-xs">
@@ -349,8 +352,8 @@ function WithdrawalSequenceSection() {
       </h3>
       <p className="text-enough-slate mt-1 max-w-3xl">
         Tax- and longevity-aware sequencing across CPF, SRS, cash and
-        investments. This is the decision shape no bank can answer neutrally —
-        "draw the unit trust we sold you first" is conflicted.
+        investments. This is the decision shape no bank can answer neutrally — a
+        single product provider may not be neutral on withdrawal sequencing.
       </p>
       <div className="mt-4 space-y-3">
         {withdrawalOrder.map((s) => (
@@ -494,17 +497,17 @@ function CustomResults({ analysis }: { analysis: FullAnalysis }) {
 
       <Card className="bg-gradient-to-br from-enough-navy to-enough-navyLight text-white border-0 !p-5">
         <div className="text-white/60 text-xs font-semibold uppercase tracking-wider">
-          Your monthly paycheck
+          Your safer monthly spend range
         </div>
         <div className="mt-1.5 flex items-end gap-2 flex-wrap">
           <div className="text-3xl md:text-4xl font-extrabold text-white leading-tight">
             {formatMoney(safe.lowerSpend)} to {formatMoney(safe.upperSpend)}
           </div>
-          <div className="text-white/60 text-base pb-1">per month</div>
+          <div className="text-white/60 text-base pb-1">/month</div>
         </div>
         <div className="mt-2 text-base md:text-lg text-enough-emerald font-semibold">
           Central: {formatMoneyMonth(safe.centralSpend)} · about{" "}
-          {pctRaw(safe.confidence)}
+          {pctRaw(safe.confidence)} confidence
         </div>
         <div className="text-white/60 text-sm mt-1">
           {analysis.trials.toLocaleString()} trials · return{" "}
@@ -518,25 +521,25 @@ function CustomResults({ analysis }: { analysis: FullAnalysis }) {
           label="CPF LIFE floor"
           value={formatMoney(inputs.cpfLifeMonthly)}
           tone="navy"
-          sub="per month"
+          sub="/month"
         />
         <StatCard
           label="Extra withdrawal"
           value={formatMoney(withdrawal)}
           tone="emerald"
-          sub="per month"
+          sub="/month"
         />
         <StatCard
           label="Desired spend"
           value={formatMoney(inputs.desiredSpend)}
           tone="amber"
-          sub="per month"
+          sub="/month"
         />
         <StatCard
           label="Gap"
           value={formatMoney(gap)}
           tone="red"
-          sub="per month"
+          sub="/month"
         />
       </div>
 
@@ -567,7 +570,7 @@ function CustomResults({ analysis }: { analysis: FullAnalysis }) {
 
       <CurveSection
         title="Spend-confidence curve"
-        sub="Each extra S$100 per month improves lifestyle today but reduces safety tomorrow."
+        sub="Each extra S$100/month improves lifestyle today but reduces safety tomorrow."
         data={analysis.curve.map((p) => ({
           spend: Math.round(p.spend),
           conf: Math.round(p.successRate * 100),

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Card, SectionTitle, Disclaimer } from "../components/ui";
-import { s$, s$month } from "../lib/format";
+import { s$, s$month, formatConfidence } from "../lib/format";
 import { demoMrTan, demoFamily, cpfWording } from "../data/demoDataset";
 
 export function FamilyReport() {
@@ -44,11 +44,11 @@ export function FamilyReport() {
             <div className="text-2xl md:text-3xl font-extrabold">
               {s$(demoMrTan.saferLower)} to {s$(demoMrTan.saferUpper)}
             </div>
-            <div className="text-white/60 text-sm pb-1">per month</div>
+            <div className="text-white/60 text-sm pb-1">/month</div>
           </div>
           <div className="mt-1 text-sm text-enough-emerald font-semibold">
-            Central estimate: {s$month(demoMrTan.saferCentral)} at about{" "}
-            {demoMrTan.confidence}% confidence
+            Central estimate: {s$month(demoMrTan.saferCentral)} at{" "}
+            {formatConfidence(demoMrTan.confidence / 100)}
           </div>
         </div>
 
@@ -60,7 +60,7 @@ export function FamilyReport() {
           <div className="text-2xl font-extrabold text-enough-navy">
             {s$(demoMrTan.cpfLife)}{" "}
             <span className="text-sm font-medium text-enough-slate">
-              per month
+              /month
             </span>
           </div>
           <div className="text-xs text-enough-slate mt-1">

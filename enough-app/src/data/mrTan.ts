@@ -4,7 +4,7 @@ import type { PlanInputs } from "../types";
  * Mr Tan — the canonical worked example.
  *
  * Figures aligned to the strategy proposal (enough-proposal.md §8):
- *  - 65 years old, CPF LIFE S$1,550/mo (Standard plan, LEVEL nominal), paid-off 4-room HDB.
+ *  - 65 years old, CPF LIFE S$1,550/month (Standard plan, LEVEL nominal), paid-off 4-room HDB.
  *  - ~S$190,000 across cash + investments + SRS.
  *  - Aspires to spend S$3,100/month (lifestyle he actually wants).
  *
