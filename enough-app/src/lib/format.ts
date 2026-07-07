@@ -66,6 +66,11 @@ export function pct(fraction: number, digits = 0): string {
   return `${(fraction * 100).toFixed(digits)}%`;
 }
 
+/** Alias of {@link pct} (fraction → percent). `formatPercent(0.9)` → "90%". */
+export function formatPercent(fraction: number, digits = 0): string {
+  return pct(fraction, digits);
+}
+
 /** Percentage from a raw percentage number (92 → "92%"), rounded to whole percent. */
 export function pctRaw(value: number): string {
   return `${Math.round(value)}%`;

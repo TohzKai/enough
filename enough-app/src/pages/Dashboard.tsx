@@ -14,7 +14,15 @@ import {
 } from "recharts";
 import { usePlan } from "../store/planStore";
 import { useViewMode } from "../store/viewMode";
-import { Card, SectionTitle, StatCard, Pill, Spinner } from "../components/ui";
+import {
+  Card,
+  SectionTitle,
+  StatCard,
+  Pill,
+  Spinner,
+  MoneyField,
+  SelectField,
+} from "../components/ui";
 import {
   s$,
   s$month,
@@ -42,6 +50,32 @@ import {
   learningTimeline,
 } from "../data/guardrails";
 import { childAlerts } from "../data/familyPlane";
+import {
+  lifeEventStressTestsFor,
+  optionsToDiscuss,
+  type LifeEventStressTest,
+  type StressTone,
+} from "../data/lifeEvents";
+import { layerTotals } from "../data/lifestyle";
+import {
+  CRISIS_SCENARIOS,
+  CRISIS_ZONE_GUIDANCE,
+  CARE_DURATIONS,
+  CARE_START_AGES,
+  DEFAULT_CARE,
+  DEMO_STRESS,
+  FUNDING_SEQUENCE,
+  type CrisisScenario,
+  type StressZone,
+} from "../data/stressScenarios";
+import {
+  recompute,
+  saferSpendOf,
+  careOverrides,
+  crisisOverrides,
+  zoneForImpact,
+} from "../lib/stress";
+import type { PlanInputs } from "../types";
 import {
   runSensitivityAnalysis,
   generateSequenceRiskScenario,
@@ -226,6 +260,20 @@ function MrTanResults() {
         Standard payouts are level nominal; spending is inflated over time.
         Results are estimates, not guarantees.
       </div>
+
+      {/* Life event stress test — what moves the monthly spend number */}
+      <StressTestSection
+        child={child}
+        centralSpend={demoMrTan.saferCentral}
+        horizonAge={demoMrTan.horizonAge}
+      />
+
+      {/* Inflation, lifestyle, healthcare, crisis, lifespan deep modules */}
+      <ExtraResultsModules
+        inputs={inputs}
+        baseSpend={demoMrTan.saferCentral}
+        isMrTan
+      />
 
       {/* C — Dynamic guardrails: the current steer */}
       <GuardrailNow />
@@ -416,6 +464,529 @@ function TopUpSection() {
   );
 }
 
+/* ============ Assumption, lifestyle, and deep stress modules (F1,F2,F4,F5,F6) ============ */
+
+function InflationCard({ inputs }: { inputs: PlanInputs }) {
+  const escalating = inputs.cpfPlan === "Escalating";
+  const rows: [string, string][] = [
+    [
+      "General / lifestyle spending",
+      `${pct(inputs.generalInflation / 100, 1)} / year`,
+    ],
+    ["Healthcare", `${pct(inputs.healthcareInflation / 100, 1)} / year`],
+    ["CPF LIFE Standard", "level nominal payout"],
+    [
+      "CPF LIFE Escalating",
+      escalating
+        ? "selected — grows about 2% / year"
+        : "grows about 2% / year if selected",
+    ],
+  ];
+  return (
+    <Card>
+      <h3 className="text-base font-bold text-enough-navy mb-2">
+        Inflation assumptions used
+      </h3>
+      <ul className="text-sm space-y-1">
+        {rows.map(([k, v]) => (
+          <li key={k} className="flex justify-between gap-3">
+            <span className="text-enough-slate">{k}</span>
+            <span className="font-semibold text-enough-navy text-right">
+              {v}
+            </span>
+          </li>
+        ))}
+      </ul>
+      <p className="text-xs text-enough-slate mt-2 leading-relaxed">
+        CPF LIFE is a longevity floor, not necessarily an inflation hedge.
+        Spending is inflated over time.
+      </p>
+    </Card>
+  );
+}
+
+function LifestyleSummary({ inputs }: { inputs: PlanInputs }) {
+  const t = layerTotals(inputs.lifestyle);
+  const tiles = [
+    { label: "Essentials", v: t.essential, cls: "text-enough-navy" },
+    { label: "Flexible", v: t.flexible, cls: "text-enough-emeraldDark" },
+    { label: "Aspirational", v: t.aspirational, cls: "text-enough-amber" },
+    { label: "Total / month", v: t.total, cls: "text-enough-navy" },
+  ];
+  return (
+    <Card>
+      <h3 className="text-base font-bold text-enough-navy mb-2">
+        Lifestyle layers
+      </h3>
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        {tiles.map((x) => (
+          <div
+            key={x.label}
+            className="rounded-xl2 border border-enough-line bg-enough-navy/5 px-3 py-2 text-center"
+          >
+            <div className="text-[11px] font-semibold uppercase tracking-wide text-enough-slate">
+              {x.label}
+            </div>
+            <div className={`text-sm font-extrabold ${x.cls}`}>
+              {formatMoneyMonth(x.v)}
+            </div>
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+const zoneTone: Record<StressZone, "emerald" | "amber" | "red"> = {
+  green: "emerald",
+  amber: "amber",
+  red: "red",
+};
+const zoneLabel: Record<StressZone, string> = {
+  green: "Green zone",
+  amber: "Amber zone",
+  red: "Red zone",
+};
+
+function HealthcareStress({
+  inputs,
+  baseSpend,
+  isMrTan,
+}: {
+  inputs: PlanInputs;
+  baseSpend: number;
+  isMrTan: boolean;
+}) {
+  const [care, setCare] = useState(DEFAULT_CARE);
+  const [showAdviser, setShowAdviser] = useState(false);
+  const [after, setAfter] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (isMrTan) {
+      setAfter(null);
+      return;
+    }
+    const id = setTimeout(() => {
+      setAfter(saferSpendOf(recompute(inputs, careOverrides(inputs, care))));
+    }, 30);
+    return () => clearTimeout(id);
+  }, [inputs, care, isMrTan]);
+
+  const afterSpend = isMrTan
+    ? DEMO_STRESS.healthcare.afterSpend
+    : (after ?? baseSpend);
+  const impact = isMrTan
+    ? DEMO_STRESS.healthcare.impactMonthly
+    : afterSpend - baseSpend;
+  const monthlyGap = Math.max(0, -impact);
+  const careGap =
+    (care.healthcareIncrease + care.ltc) * care.durationYears * 12;
+  const needsBuffer = isMrTan
+    ? DEMO_STRESS.healthcare.needsBuffer
+    : monthlyGap > 0;
+
+  return (
+    <Card>
+      <h3 className="text-2xl font-bold text-enough-navy">
+        Healthcare & care-cost stress test
+      </h3>
+      <p className="text-enough-slate mt-1 max-w-3xl">
+        Add a healthcare or long-term care cost and see how the safer monthly
+        spend moves. Illustrative model output, not advice.
+      </p>
+      <div className="mt-4 grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <MoneyField
+          label="Healthcare increase / month"
+          value={care.healthcareIncrease}
+          onChange={(v) => setCare((c) => ({ ...c, healthcareIncrease: v }))}
+        />
+        <MoneyField
+          label="Long-term care / month"
+          value={care.ltc}
+          onChange={(v) => setCare((c) => ({ ...c, ltc: v }))}
+        />
+        <SelectField
+          label="Duration"
+          value={String(care.durationYears)}
+          onChange={(v) => setCare((c) => ({ ...c, durationYears: Number(v) }))}
+          options={CARE_DURATIONS.map((d) => ({
+            value: String(d),
+            label: `${d} years`,
+          }))}
+        />
+        <SelectField
+          label="Start age"
+          value={String(care.startAge)}
+          onChange={(v) => setCare((c) => ({ ...c, startAge: Number(v) }))}
+          options={CARE_START_AGES.map((a) => ({
+            value: String(a),
+            label: `Age ${a}`,
+          }))}
+        />
+      </div>
+
+      <div className="mt-4 grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <StatCard
+          label="Base safer spend"
+          value={formatMoneyMonth(baseSpend)}
+          tone="navy"
+        />
+        <StatCard
+          label="After care shock"
+          value={formatMoneyMonth(afterSpend)}
+          tone={impact < 0 ? "red" : "emerald"}
+        />
+        <StatCard
+          label="Estimated impact"
+          value={formatDeltaMonth(impact)}
+          tone={impact < 0 ? "red" : "emerald"}
+        />
+        <StatCard
+          label="Care gap"
+          value={formatMoney(careGap)}
+          sub={
+            needsBuffer
+              ? "Buffer or family support may help"
+              : "Within modelled range"
+          }
+          tone="amber"
+        />
+      </div>
+
+      <div className="mt-4 rounded-xl2 border border-enough-line bg-enough-navy/5 p-4">
+        <div className="font-bold text-enough-navy text-sm">
+          Funding sequence to review
+        </div>
+        <p className="text-xs text-enough-slate mt-0.5 mb-2">
+          Options to discuss — not a recommended action.
+        </p>
+        <ol className="text-sm text-enough-ink space-y-1 list-decimal list-inside">
+          {FUNDING_SEQUENCE.map((s) => (
+            <li key={s} className="leading-snug">
+              {s}
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <div className="mt-3 flex flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={() => setShowAdviser((s) => !s)}
+          className="btn-ghost text-sm"
+        >
+          {showAdviser ? "Hide" : "Discuss options with a licensed adviser"}
+        </button>
+        <Link to="/report" className="btn-soft text-sm">
+          Show family discussion summary
+        </Link>
+      </div>
+      {showAdviser && (
+        <p className="text-xs text-enough-slate mt-2 leading-relaxed">
+          Enough does not match you to an adviser and makes no product
+          recommendation. Raise these options with a licensed financial adviser.
+        </p>
+      )}
+    </Card>
+  );
+}
+
+function CrisisStress({
+  inputs,
+  baseSpend,
+  isMrTan,
+}: {
+  inputs: PlanInputs;
+  baseSpend: number;
+  isMrTan: boolean;
+}) {
+  const [key, setKey] = useState<CrisisScenario["key"]>("severe");
+  const [after, setAfter] = useState<number | null>(null);
+  const scenario = CRISIS_SCENARIOS.find((s) => s.key === key)!;
+
+  useEffect(() => {
+    if (isMrTan) {
+      setAfter(null);
+      return;
+    }
+    const id = setTimeout(() => {
+      setAfter(
+        saferSpendOf(recompute(inputs, crisisOverrides(inputs, scenario))),
+      );
+    }, 30);
+    return () => clearTimeout(id);
+  }, [inputs, key, isMrTan, scenario]);
+
+  const demo = DEMO_STRESS.crisis[key];
+  const afterSpend = isMrTan ? demo.afterSpend : (after ?? baseSpend);
+  const impact = afterSpend - baseSpend;
+  const zone = isMrTan ? demo.zone : zoneForImpact(baseSpend, afterSpend);
+
+  return (
+    <Card>
+      <h3 className="text-2xl font-bold text-enough-navy">
+        Financial crisis stress test
+      </h3>
+      <p className="text-enough-slate mt-1 max-w-3xl">
+        A scenario test, not market timing. See how a downturn moves the safer
+        spend and which guardrail zone applies.
+      </p>
+      <div className="mt-4 flex flex-wrap gap-2">
+        {CRISIS_SCENARIOS.map((s) => (
+          <button
+            key={s.key}
+            type="button"
+            onClick={() => setKey(s.key)}
+            className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
+              key === s.key
+                ? "bg-enough-navy text-white"
+                : "bg-enough-navy/5 text-enough-navy hover:bg-enough-navy/10"
+            }`}
+          >
+            {s.label}
+          </button>
+        ))}
+      </div>
+      <p className="text-sm text-enough-slate mt-2">{scenario.blurb}</p>
+
+      <div className="mt-4 grid sm:grid-cols-3 gap-3">
+        <StatCard
+          label="Base safer spend"
+          value={formatMoneyMonth(baseSpend)}
+          tone="navy"
+        />
+        <StatCard
+          label={`After ${scenario.label.toLowerCase()}`}
+          value={formatMoneyMonth(afterSpend)}
+          tone={zone === "red" ? "red" : zone === "amber" ? "amber" : "emerald"}
+        />
+        <StatCard
+          label="Estimated impact"
+          value={formatDeltaMonth(impact)}
+          tone={impact < 0 ? "red" : "emerald"}
+        />
+      </div>
+
+      <div className="mt-4 flex items-center gap-3 flex-wrap">
+        <Pill tone={zoneTone[zone]}>{zoneLabel[zone]}</Pill>
+        <span className="text-sm text-enough-ink">
+          {CRISIS_ZONE_GUIDANCE[zone]}
+        </span>
+      </div>
+    </Card>
+  );
+}
+
+function LifespanSensitivity({
+  inputs,
+  baseSpend,
+  isMrTan,
+}: {
+  inputs: PlanInputs;
+  baseSpend: number;
+  isMrTan: boolean;
+}) {
+  const [points, setPoints] = useState<{ age: number; safer: number }[] | null>(
+    null,
+  );
+
+  useEffect(() => {
+    if (isMrTan) {
+      setPoints(null);
+      return;
+    }
+    const id = setTimeout(() => {
+      const at = (age: number) =>
+        saferSpendOf(recompute(inputs, { horizonAge: age }));
+      setPoints([
+        { age: 90, safer: at(90) },
+        { age: 95, safer: baseSpend },
+        { age: 100, safer: at(100) },
+      ]);
+    }, 30);
+    return () => clearTimeout(id);
+  }, [inputs, baseSpend, isMrTan]);
+
+  const rows = isMrTan
+    ? DEMO_STRESS.lifespan.map((p) => ({ age: p.age, safer: p.saferSpend }))
+    : (points ?? []);
+
+  return (
+    <Card>
+      <h3 className="text-2xl font-bold text-enough-navy">
+        Lifespan sensitivity
+      </h3>
+      <p className="text-enough-slate mt-1 max-w-3xl">
+        Longer life usually lowers the safer monthly spend because the same
+        assets must last longer.
+      </p>
+      <div className="mt-4 grid sm:grid-cols-3 gap-3">
+        {rows.map((r) => (
+          <div
+            key={r.age}
+            className="rounded-xl2 border border-enough-line bg-enough-navy/5 px-4 py-3 text-center"
+          >
+            <div className="text-xs font-semibold uppercase tracking-wide text-enough-slate">
+              Plan to age {r.age}
+            </div>
+            <div className="text-lg font-extrabold text-enough-navy">
+              {formatMoneyMonth(r.safer)}
+            </div>
+          </div>
+        ))}
+      </div>
+    </Card>
+  );
+}
+
+/** Wrapper rendering all five new Results modules (used by both result faces). */
+function ExtraResultsModules({
+  inputs,
+  baseSpend,
+  isMrTan,
+}: {
+  inputs: PlanInputs;
+  baseSpend: number;
+  isMrTan: boolean;
+}) {
+  return (
+    <>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <InflationCard inputs={inputs} />
+        <LifestyleSummary inputs={inputs} />
+      </div>
+      <HealthcareStress
+        inputs={inputs}
+        baseSpend={baseSpend}
+        isMrTan={isMrTan}
+      />
+      <CrisisStress inputs={inputs} baseSpend={baseSpend} isMrTan={isMrTan} />
+      <LifespanSensitivity
+        inputs={inputs}
+        baseSpend={baseSpend}
+        isMrTan={isMrTan}
+      />
+    </>
+  );
+}
+
+/* ============ Life event stress test ============ */
+const stressToneStyles: Record<
+  StressTone,
+  { card: string; pill: "emerald" | "amber" | "red"; impact: string }
+> = {
+  green: {
+    card: "border-enough-emerald/30 bg-enough-emerald/5",
+    pill: "emerald",
+    impact: "text-enough-emeraldDark",
+  },
+  amber: {
+    card: "border-enough-amber/30 bg-enough-amber/5",
+    pill: "amber",
+    impact: "text-enough-amber",
+  },
+  red: {
+    card: "border-enough-red/30 bg-enough-red/5",
+    pill: "red",
+    impact: "text-enough-red",
+  },
+};
+
+function StressCard({ test }: { test: LifeEventStressTest }) {
+  const s = stressToneStyles[test.tone];
+  return (
+    <div className={`rounded-xl2 border ${s.card} p-4 flex flex-col`}>
+      <Pill tone={s.pill}>{test.label}</Pill>
+      <div className="font-bold text-enough-navy mt-2">{test.title}</div>
+      <p className="text-sm text-enough-ink mt-1 leading-relaxed">
+        {test.description}
+      </p>
+      <div className={`text-lg font-extrabold mt-2 ${s.impact}`}>
+        Safer spend impact: {formatDeltaMonth(test.impactMonthly)}
+      </div>
+      <p className="text-xs text-enough-slate mt-2 leading-relaxed">
+        {test.footer}
+      </p>
+    </div>
+  );
+}
+
+function StressTestSection({
+  child,
+  centralSpend,
+  horizonAge,
+}: {
+  child: boolean;
+  centralSpend: number;
+  horizonAge: number;
+}) {
+  const [showOptions, setShowOptions] = useState(false);
+  const tests = lifeEventStressTestsFor(centralSpend, horizonAge);
+
+  return (
+    <Card>
+      <h3 className="text-2xl font-bold text-enough-navy">
+        {child ? "Stress-test Dad's plan" : "Stress-test the plan"}
+      </h3>
+      <p className="text-enough-slate mt-1 max-w-3xl">
+        See how life events move the monthly spend number before they happen.
+      </p>
+
+      <div className="mt-4 grid sm:grid-cols-2 gap-4">
+        {tests.map((t) => (
+          <StressCard key={t.key} test={t} />
+        ))}
+      </div>
+
+      {/* Summary — the most important risk */}
+      <div className="mt-4 rounded-xl2 border border-enough-navy/15 bg-enough-navy/5 px-4 py-3">
+        <div className="font-bold text-enough-navy">
+          {child
+            ? "Most important risk for Dad's plan"
+            : "Most important risk for this plan"}
+        </div>
+        <p className="text-sm text-enough-ink mt-1 leading-relaxed">
+          Healthcare and longevity move the number more than the retirement
+          trip.
+        </p>
+        <p className="text-xs text-enough-slate mt-1 leading-relaxed">
+          Enough does not hide uncertainty. It shows which assumptions matter
+          before the family commits to a monthly spend.
+        </p>
+      </div>
+
+      {/* Options to discuss — non-advisory prompts */}
+      <div className="mt-3">
+        <button
+          type="button"
+          onClick={() => setShowOptions((s) => !s)}
+          className="btn-ghost text-sm"
+          aria-expanded={showOptions}
+        >
+          {showOptions ? "Hide options" : "Discuss options"}
+        </button>
+        {showOptions && (
+          <div className="mt-3 rounded-xl2 border border-enough-line bg-white p-4">
+            <div className="font-bold text-enough-navy">Options to discuss</div>
+            <p className="text-xs text-enough-slate mt-1 leading-relaxed">
+              These are discussion prompts, not financial advice or product
+              recommendations.
+            </p>
+            <ul className="mt-2 space-y-1.5 text-sm text-enough-ink">
+              {optionsToDiscuss.map((o) => (
+                <li key={o} className="flex gap-2">
+                  <span className="text-enough-emerald">•</span>
+                  <span className="leading-snug">{o}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </Card>
+  );
+}
+
 /* ============ Longitudinal learning (D) ============ */
 function LearningSection() {
   return (
@@ -563,6 +1134,20 @@ function CustomResults({ analysis }: { analysis: FullAnalysis }) {
         The safer range depends on assumptions. Results are estimates, not
         guarantees.
       </div>
+
+      {/* Life event stress test — what moves the monthly spend number */}
+      <StressTestSection
+        child={child}
+        centralSpend={safe.centralSpend}
+        horizonAge={inputs.horizonAge}
+      />
+
+      {/* Inflation, lifestyle, healthcare, crisis, lifespan deep modules */}
+      <ExtraResultsModules
+        inputs={inputs}
+        baseSpend={safe.centralSpend}
+        isMrTan={false}
+      />
 
       {/* Decision-shape sections apply to any plan */}
       <WithdrawalSequenceSection />

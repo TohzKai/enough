@@ -188,6 +188,48 @@ export function NumberField({
   );
 }
 
+/** Range slider with a formatted value readout. Used for the lifespan control. */
+export function Slider({
+  label,
+  value,
+  min,
+  max,
+  step = 1,
+  onChange,
+  format,
+  help,
+}: {
+  label: string;
+  value: number;
+  min: number;
+  max: number;
+  step?: number;
+  onChange: (v: number) => void;
+  format?: (v: number) => string;
+  help?: string;
+}) {
+  return (
+    <label className="block">
+      <span className="field-label">{label}</span>
+      <div className="flex items-center gap-3 mt-1">
+        <input
+          type="range"
+          min={min}
+          max={max}
+          step={step}
+          value={value}
+          onChange={(e) => onChange(parseFloat(e.target.value))}
+          className="flex-1 accent-enough-emerald"
+        />
+        <span className="font-bold text-enough-navy whitespace-nowrap min-w-[3.5rem] text-right">
+          {format ? format(value) : value}
+        </span>
+      </div>
+      {help && <span className="field-help">{help}</span>}
+    </label>
+  );
+}
+
 /**
  * MoneyField — a premium S$ input.
  * Uses type="text" (no browser spinners), shows comma grouping when not focused

@@ -1,10 +1,34 @@
 import { Link } from "react-router-dom";
 import { Card, SectionTitle, Disclaimer } from "../components/ui";
-import { s$, s$month, formatConfidence } from "../lib/format";
+import {
+  s$,
+  s$month,
+  formatConfidence,
+  formatMoney,
+  formatMoneyMonth,
+  formatRangeMonth,
+} from "../lib/format";
 import { demoMrTan, demoFamily, cpfWording } from "../data/demoDataset";
+import { lifeEventStressTests } from "../data/lifeEvents";
+import {
+  DEFAULT_LIFESTYLE,
+  layerTotals,
+  totalLifestyle,
+} from "../data/lifestyle";
+import { useSpend } from "../store/spendStore";
 
 export function FamilyReport() {
   const handlePrint = () => window.print();
+  // Illustrative safer-spend impact magnitudes (Mr Tan sample) — single source
+  // of truth shared with the Results-page stress-test cards.
+  const stressMag = (key: string) =>
+    Math.abs(
+      lifeEventStressTests.find((t) => t.key === key)?.impactMonthly ?? 0,
+    );
+  const layers = layerTotals(DEFAULT_LIFESTYLE);
+  const { actuals } = useSpend();
+  const totalActual = totalLifestyle(actuals);
+  const overUpper = Math.max(0, totalActual - demoMrTan.saferUpper);
 
   return (
     <div className="space-y-5">
@@ -68,24 +92,70 @@ export function FamilyReport() {
           </div>
         </div>
 
-        {/* Safe / risky / family / changes */}
-        <div className="mt-5 space-y-3">
-          <Row tone="emerald" title="What is safe">
-            Spending around {s$month(demoMrTan.saferCentral)} keeps the plan
-            within the safer range under the base case.
-          </Row>
-          <Row tone="amber" title="What is risky">
-            Spending {s$month(demoMrTan.desired)} lowers confidence to around{" "}
-            {demoMrTan.desiredConfidence}%.
-          </Row>
-          <Row tone="emerald" title="Room for family support">
-            About {s$month(demoFamily.familyCapacity)} may be possible within
-            the safer range, depending on assumptions.
-          </Row>
-          <Row tone="navy" title="What changes the number">
-            Longer life, higher healthcare inflation, lower returns, or a larger
-            bequest target reduce the safer spend.
-          </Row>
+        {/* Lifestyle layers */}
+        <div className="mt-5 rounded-xl2 border border-enough-line p-4">
+          <div className="text-sm font-semibold text-enough-slate">
+            Lifestyle spending
+          </div>
+          <p className="text-sm text-enough-ink mt-1 leading-relaxed">
+            Essentials {formatMoneyMonth(layers.essential)} · Flexible{" "}
+            {formatMoneyMonth(layers.flexible)} · Aspirational{" "}
+            {formatMoneyMonth(layers.aspirational)} · Total{" "}
+            {formatMoneyMonth(layers.total)}.
+          </p>
+        </div>
+
+        {/* Healthcare & care shock */}
+        <div className="mt-5 rounded-xl2 border border-enough-line p-4">
+          <div className="text-sm font-semibold text-enough-slate">
+            Healthcare & care shock
+          </div>
+          <p className="text-sm text-enough-ink mt-1 leading-relaxed">
+            A care shock (for example, extra care cost for a few years) may
+            reduce safer spend by about{" "}
+            {formatMoneyMonth(stressMag("healthcare"))}. Options to discuss:
+            cash buffer, family support, public or community schemes, or a
+            licensed adviser.
+          </p>
+        </div>
+
+        {/* Life goals */}
+        <div className="mt-5 rounded-xl2 border border-enough-line p-4">
+          <div className="text-sm font-semibold text-enough-slate">
+            Life goals
+          </div>
+          <p className="text-sm text-enough-ink mt-1 leading-relaxed">
+            A {formatMoney(12000)} retirement trip may reduce safer spend by
+            about {formatMoneyMonth(stressMag("trip"))}; a {formatMoney(50000)}{" "}
+            bequest target by about {formatMoneyMonth(stressMag("bequest"))}.
+            Goals are not rejected — Enough shows the monthly trade-off.
+          </p>
+        </div>
+
+        {/* Crisis guardrail */}
+        <div className="mt-5 rounded-xl2 border border-enough-line p-4">
+          <div className="text-sm font-semibold text-enough-slate">
+            Market downturn guardrail
+          </div>
+          <p className="text-sm text-enough-ink mt-1 leading-relaxed">
+            A severe downturn may move the plan to the Amber zone — the model
+            suggests trimming discretionary spending by 5% to 10% until
+            confidence recovers. This is a scenario test, not market timing.
+          </p>
+        </div>
+
+        {/* Current spending check */}
+        <div className="mt-5 rounded-xl2 border border-enough-line p-4">
+          <div className="text-sm font-semibold text-enough-slate">
+            Current spending check
+          </div>
+          <p className="text-sm text-enough-ink mt-1 leading-relaxed">
+            Actual {formatMoneyMonth(totalActual)} vs safer range{" "}
+            {formatRangeMonth(demoMrTan.saferLower, demoMrTan.saferUpper)}.
+            {overUpper > 0
+              ? ` About ${formatMoneyMonth(overUpper)} above the upper safer range — review discretionary and travel buckets first.`
+              : " Within the safer range."}
+          </p>
         </div>
 
         {/* Conversation */}
@@ -118,31 +188,6 @@ export function FamilyReport() {
           report.
         </span>
       </Disclaimer>
-    </div>
-  );
-}
-
-function Row({
-  tone,
-  title,
-  children,
-}: {
-  tone: "emerald" | "amber" | "navy";
-  title: string;
-  children: React.ReactNode;
-}) {
-  const ring =
-    tone === "emerald"
-      ? "border-l-enough-emerald"
-      : tone === "amber"
-        ? "border-l-enough-amber"
-        : "border-l-enough-navy";
-  return (
-    <div
-      className={`rounded-xl2 border border-enough-line border-l-4 ${ring} p-4`}
-    >
-      <div className="font-bold text-enough-navy">{title}</div>
-      <p className="text-enough-ink text-sm mt-1 leading-relaxed">{children}</p>
     </div>
   );
 }

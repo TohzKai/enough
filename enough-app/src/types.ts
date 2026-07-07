@@ -7,6 +7,21 @@ export type Monetisation =
 export type HousingStatus = "paid-off" | "mortgage" | "renting" | "other";
 export type Gender = "male" | "female";
 
+/** The nine lifestyle spending buckets the user fills in on Build Plan. */
+export type LifestyleBucketKey =
+  | "essentials"
+  | "housing"
+  | "healthcare"
+  | "foodTransport"
+  | "utilities"
+  | "discretionary"
+  | "familySupport"
+  | "travelHobbies"
+  | "other";
+
+/** Three lifestyle layers used for the spending summary. */
+export type LifestyleLayer = "essential" | "flexible" | "aspirational";
+
 /**
  * The full set of user inputs that drive the simulation.
  * Grouped to mirror the input form sections (Personal / CPF / Assets / Spending / Assumptions).
@@ -45,6 +60,13 @@ export interface PlanInputs {
   familySupport: number;
   bequestTarget: number; // minimum ending balance required
   contingencyReserve: number; // buffer for shocks (narrative / not drawn in base sim)
+
+  // --- Lifestyle buckets (single source for the spending fields above) ---
+  lifestyle: Record<LifestyleBucketKey, number>; // 9 bucket amounts; summed → desiredSpend
+
+  // --- Life goals (one-off) ---
+  retirementTrip: number; // one-off trip amount (illustrative; modelled as an asset pre-fund)
+  otherGoal: number; // other one-off goal amount
 
   // --- Assumptions ---
   confidence: number; // target success confidence, % (default 92)

@@ -1,4 +1,5 @@
 import type { PlanInputs } from "../types";
+import { DEFAULT_LIFESTYLE } from "./lifestyle";
 
 /**
  * Mr Tan — the canonical worked example.
@@ -56,6 +57,13 @@ export const mrTanInputs: PlanInputs = {
   bequestTarget: 0,
   contingencyReserve: 0,
 
+  // Lifestyle buckets (single source for the spending fields above; sum = S$3,100)
+  lifestyle: { ...DEFAULT_LIFESTYLE },
+
+  // Life goals (one-off)
+  retirementTrip: 12000,
+  otherGoal: 0,
+
   // Base-case assumptions (see presets.ts for Conservative / Optimistic variants)
   confidence: 90,
   generalInflation: 2.7,
@@ -99,6 +107,9 @@ export const blankInputs: PlanInputs = {
   familySupport: 300,
   bequestTarget: 0,
   contingencyReserve: 10000,
+  lifestyle: { ...DEFAULT_LIFESTYLE },
+  retirementTrip: 12000,
+  otherGoal: 0,
   confidence: 90,
   generalInflation: 2.7,
   healthcareInflation: 5,

@@ -7,13 +7,26 @@ import {
   NumberField,
   MoneyField,
   SelectField,
+  Slider,
   Disclaimer,
   ProgressBar,
   Pill,
 } from "../components/ui";
 import { formatMoney, formatMoneyMonth } from "../lib/format";
 import { PRESETS, withPreset, type PresetKey } from "../data/presets";
-import type { CpfPlan, Gender, HousingStatus } from "../types";
+import type {
+  CpfPlan,
+  Gender,
+  HousingStatus,
+  LifestyleBucketKey,
+  LifestyleLayer,
+  PlanInputs,
+} from "../types";
+import {
+  LIFESTYLE_BUCKETS,
+  layerTotals,
+  syncLifestyleToSpend,
+} from "../data/lifestyle";
 import {
   connectedAccounts,
   singpassPullSteps,
@@ -253,6 +266,95 @@ function ConnectPanel() {
   );
 }
 
+/** Lifestyle spending — nine buckets grouped into three layers, with a compact summary. */
+function LifestyleSection({
+  lifestyle,
+  onChange,
+}: {
+  lifestyle: PlanInputs["lifestyle"];
+  onChange: (key: LifestyleBucketKey, amount: number) => void;
+}) {
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const totals = layerTotals(lifestyle);
+  const tiles: { label: string; value: number; cls: string }[] = [
+    { label: "Essentials", value: totals.essential, cls: "text-enough-navy" },
+    {
+      label: "Flexible",
+      value: totals.flexible,
+      cls: "text-enough-emeraldDark",
+    },
+    {
+      label: "Aspirational",
+      value: totals.aspirational,
+      cls: "text-enough-amber",
+    },
+    { label: "Total / month", value: totals.total, cls: "text-enough-navy" },
+  ];
+  const byLayer = (layer: LifestyleLayer) =>
+    LIFESTYLE_BUCKETS.filter((b) => b.layer === layer);
+  return (
+    <Card>
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-base font-bold text-enough-navy">
+          5 · Lifestyle spending
+        </h3>
+        <span className="text-xs text-enough-slate">
+          Build the monthly lifestyle
+        </span>
+      </div>
+
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
+        {tiles.map((t) => (
+          <div
+            key={t.label}
+            className="rounded-xl2 border border-enough-line bg-enough-navy/5 px-3 py-2 text-center"
+          >
+            <div className="text-[11px] font-semibold uppercase tracking-wide text-enough-slate">
+              {t.label}
+            </div>
+            <div className={`text-sm font-extrabold ${t.cls}`}>
+              {formatMoneyMonth(t.value)}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        {[...byLayer("essential"), ...byLayer("flexible")].map((b) => (
+          <MoneyField
+            key={b.key}
+            label={b.label}
+            value={lifestyle[b.key]}
+            onChange={(v) => onChange(b.key, v)}
+          />
+        ))}
+      </div>
+
+      <button
+        type="button"
+        onClick={() => setShowAdvanced((s) => !s)}
+        className="mt-4 text-sm font-semibold text-enough-navy hover:text-enough-emeraldDark"
+      >
+        {showAdvanced
+          ? "Hide aspirational buckets ▲"
+          : "Show aspirational buckets (travel, hobbies, other) ▼"}
+      </button>
+      {showAdvanced && (
+        <div className="grid gap-4 sm:grid-cols-2 mt-3">
+          {byLayer("aspirational").map((b) => (
+            <MoneyField
+              key={b.key}
+              label={b.label}
+              value={lifestyle[b.key]}
+              onChange={(v) => onChange(b.key, v)}
+            />
+          ))}
+        </div>
+      )}
+    </Card>
+  );
+}
+
 export function Inputs() {
   const navigate = useNavigate();
   const { inputs, setField, setInputs, loadSample, run, status, progress } =
@@ -281,11 +383,20 @@ export function Inputs() {
           : status === "renting"
             ? 1500
             : 800;
+    // Housing cost lives in the lifestyle "housing" bucket; sync derives monthlyHousingCost.
+    const lifestyle = { ...inputs.lifestyle, housing: defaultCost };
     setInputs({
       ...inputs,
       housingStatus: status,
-      monthlyHousingCost: defaultCost,
+      lifestyle,
+      ...syncLifestyleToSpend(lifestyle),
     });
+  };
+
+  // Any lifestyle bucket edit re-derives the engine spending fields + desiredSpend.
+  const onLifestyleChange = (key: LifestyleBucketKey, amount: number) => {
+    const lifestyle = { ...inputs.lifestyle, [key]: amount };
+    setInputs({ ...inputs, lifestyle, ...syncLifestyleToSpend(lifestyle) });
   };
 
   const calculate = async () => {
@@ -382,11 +493,15 @@ export function Inputs() {
                   onChange={(v) => setField("age", v)}
                   suffix="yrs"
                 />
-                <NumberField
+                <Slider
                   label="Plan to age"
                   value={inputs.horizonAge}
+                  min={85}
+                  max={105}
+                  step={1}
                   onChange={(v) => setField("horizonAge", v)}
-                  suffix="yrs"
+                  format={(v) => `${v} yrs`}
+                  help="Longer life usually lowers the safer monthly spend."
                 />
                 <SelectField<Gender>
                   label="Gender"
@@ -443,8 +558,8 @@ export function Inputs() {
                 />
                 <MoneyField
                   label="Monthly housing cost"
-                  value={inputs.monthlyHousingCost}
-                  onChange={(v) => setField("monthlyHousingCost", v)}
+                  value={inputs.lifestyle.housing}
+                  onChange={(v) => onLifestyleChange("housing", v)}
                   help="Mortgage, rent, or other — 0 if paid off."
                 />
               </Group>
@@ -493,40 +608,46 @@ export function Inputs() {
                 )}
               </Group>
 
-              <Group title="5 · Spending">
-                <MoneyField
-                  label="Desired monthly spend"
-                  value={inputs.desiredSpend}
-                  onChange={(v) => setField("desiredSpend", v)}
-                />
-                <MoneyField
-                  label="Essential spend"
-                  value={inputs.essentialSpend}
-                  onChange={(v) => setField("essentialSpend", v)}
-                />
-                <MoneyField
-                  label="Healthcare spend"
-                  value={inputs.healthcareSpend}
-                  onChange={(v) => setField("healthcareSpend", v)}
-                />
-                <MoneyField
-                  label="Discretionary spend"
-                  value={inputs.discretionarySpend}
-                  onChange={(v) => setField("discretionarySpend", v)}
-                />
-              </Group>
+              <LifestyleSection
+                lifestyle={inputs.lifestyle}
+                onChange={onLifestyleChange}
+              />
 
-              <Group title="6 · Family needs">
+              <Group title="6 · Life goals">
                 <MoneyField
-                  label="Family support"
-                  value={inputs.familySupport}
-                  onChange={(v) => setField("familySupport", v)}
+                  label="Retirement trip (one-off)"
+                  value={inputs.retirementTrip}
+                  onChange={(v) => setField("retirementTrip", v)}
+                  help="Modelled by setting the amount aside today."
+                />
+                <MoneyField
+                  label="Other one-off goal"
+                  value={inputs.otherGoal}
+                  onChange={(v) => setField("otherGoal", v)}
                 />
                 <MoneyField
                   label="Bequest target"
                   value={inputs.bequestTarget}
                   onChange={(v) => setField("bequestTarget", v)}
                   help="Minimum to leave at the horizon."
+                />
+              </Group>
+
+              <Group title="7 · Assumptions">
+                <NumberField
+                  label="General / lifestyle inflation"
+                  value={inputs.generalInflation}
+                  onChange={(v) => setField("generalInflation", v)}
+                  suffix="%"
+                  step={0.1}
+                />
+                <NumberField
+                  label="Healthcare inflation"
+                  value={inputs.healthcareInflation}
+                  onChange={(v) => setField("healthcareInflation", v)}
+                  suffix="%"
+                  step={0.5}
+                  help="Healthcare costs usually rise faster than general inflation."
                 />
               </Group>
             </div>
