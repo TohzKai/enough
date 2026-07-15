@@ -106,8 +106,9 @@ export function Layout() {
       <footer className="no-print">
         <div className="mx-auto max-w-app px-4 md:px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-2">
           <p className="text-xs text-enough-slate text-center sm:text-left">
-            Educational decision-support only · Not financial advice · No
-            product recommendations · No guarantee · Not affiliated with CPF
+            Neutral financial planning advice — you make the final call. We
+            advise the decision, not a specific product (flat fees, never
+            commission). Estimates, not guarantees. Not affiliated with CPF
             Board or MAS.
           </p>
           <Link

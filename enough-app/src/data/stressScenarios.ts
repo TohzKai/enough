@@ -9,8 +9,8 @@
  *  - Mr Tan demo: the modules render the deterministic illustrative constants in
  *    `DEMO_STRESS` so the class demo stays stable.
  *
- * Educational decision-support only — NOT advice. The funding sequence is framed
- * as "to review" / "options to discuss", never as a recommended action.
+ * Neutral planning advice; product-neutral. The funding sequence is what we'd
+ * suggest reviewing — the user weighs it and decides.
  */
 
 export type StressZone = "green" | "amber" | "red";
@@ -76,7 +76,7 @@ export const FUNDING_SEQUENCE: string[] = [
   "Reduce discretionary spending temporarily",
   "Review family support",
   "Explore public or community support schemes",
-  "Discuss insurance gaps with a licensed adviser",
+  "Close insurance gaps — Enough refers you to an insurer, IFA, or your existing adviser",
   "Consider housing monetisation options such as room rental, lease buyback, or downsizing",
 ];
 
@@ -88,38 +88,38 @@ export const CRISIS_ZONE_GUIDANCE: Record<StressZone, string> = {
 };
 
 /**
- * Deterministic illustrative values for the Mr Tan demo (central safer spend
- * S$2,150/month). Custom plans recompute these live via the engine.
+ * Engine-true values for the Mr Tan demo (central safer spend S$2,139/month),
+ * taken from runFullAnalysisSync(mrTanInputs). Custom plans recompute live.
  */
 export const DEMO_STRESS = {
-  baseSpend: 2150,
+  baseSpend: 2139,
   healthcare: {
-    impactMonthly: -300,
-    afterSpend: 1850,
-    careGap: 18000, // S$500/month healthcare increase × 3 yrs
+    impactMonthly: -245,
+    afterSpend: 1894,
+    careGap: 18000, // display only; the live careGap is computed from the inputs
     needsBuffer: true,
   },
   crisis: {
     mild: {
-      impactMonthly: -120,
-      afterSpend: 2030,
-      zone: "green" as StressZone,
+      impactMonthly: -114,
+      afterSpend: 2025,
+      zone: "amber" as StressZone,
     },
     severe: {
-      impactMonthly: -300,
-      afterSpend: 1850,
+      impactMonthly: -292,
+      afterSpend: 1847,
       zone: "amber" as StressZone,
     },
     lostDecade: {
-      impactMonthly: -260,
-      afterSpend: 1890,
+      impactMonthly: -319,
+      afterSpend: 1820,
       zone: "amber" as StressZone,
     },
   },
-  // Lifespan sensitivity (spec example): higher horizon → lower safer spend.
+  // Lifespan sensitivity: higher horizon → lower safer spend (engine values).
   lifespan: [
-    { age: 90, saferSpend: 2350 },
-    { age: 95, saferSpend: 2150 },
-    { age: 100, saferSpend: 1970 },
+    { age: 90, saferSpend: 2433 },
+    { age: 95, saferSpend: 2139 },
+    { age: 100, saferSpend: 1927 },
   ],
 };

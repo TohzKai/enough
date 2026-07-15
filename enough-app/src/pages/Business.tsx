@@ -101,12 +101,15 @@ export function Business() {
       <div className="grid lg:grid-cols-2 gap-4">
         <Block title="Regulatory path" tone="emerald">
           <ul className="space-y-1.5">
-            <li>Phase 1 — decision-support & education only.</li>
-            <li>No product recommendation, no "you should".</li>
-            <li>No "MAS-approved" claim; no guarantee.</li>
             <li>
-              Get the MAS Financial Adviser licence before personalising — it's
-              plausibly a Wave-1 critical-path item (it gates the moat).
+              Pursuing the MAS Financial Adviser licence to give neutral
+              financial planning advice.
+            </li>
+            <li>Product-neutral: advise the decision, never push a product.</li>
+            <li>Flat fees, never commission — so the advice stays honest.</li>
+            <li>
+              The licence gates the moat — a Wave-1 critical-path item, not an
+              afterthought.
             </li>
           </ul>
         </Block>
@@ -127,9 +130,9 @@ export function Business() {
           Out-focus MoneyOwl. Out-neutral DBS. Own the family.
         </div>
         <p className="text-white/70 text-sm mt-2">
-          Educational decision-support only. Not personalised financial advice.
-          No product recommendations. No guarantee. Not affiliated with CPF
-          Board or MAS.
+          Neutral financial planning advice (pursuing MAS FA licensing). We
+          advise the decision, not a specific product. Estimates, not
+          guarantees. Not affiliated with CPF Board or MAS.
         </p>
       </Card>
 

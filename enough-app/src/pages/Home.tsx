@@ -40,7 +40,7 @@ export function Home() {
             <>
               One calm number — how much you can safely spend each month, from
               your CPF, savings and the lifestyle you want. Explained in plain
-              words. Product-free. No product recommendations.
+              words. Neutral advice — never a product pitch.
             </>
           ) : (
             <>
@@ -113,8 +113,8 @@ export function Home() {
 
       {/* Trust strip */}
       <p className="text-center text-sm text-enough-slate">
-        Educational decision-support prototype · No products, no commission ·
-        Your data stays yours · Plain-English "why" behind every number.
+        Neutral financial planning advice · Flat fees, never commission · Your
+        data stays yours · Plain-English "why" behind every number.
       </p>
     </div>
   );

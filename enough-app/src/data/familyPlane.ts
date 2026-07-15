@@ -97,7 +97,7 @@ export const coSignRequests: CoSignRequest[] = [
     id: "cs-2",
     title: "Model a higher CPF LIFE floor",
     detail:
-      "A larger guaranteed floor raises confidence. Framed as a decision shape, not a product — Dad decides.",
+      "A larger guaranteed floor raises confidence. We advise the move; the specific product is Dad's call — and Dad decides.",
     raisedBy: "Enough (guardrail engine)",
     needs: "Mr Tan + Wei Ling",
     status: "awaiting-child",
@@ -128,6 +128,6 @@ export const childAlerts = [
   {
     tone: "navy" as const,
     title: "CPF top-up decision to review together",
-    body: "A larger floor would lift confidence ~3%. Decision shape, not a product.",
+    body: "A larger floor would lift confidence ~3%. We advise the move, not a specific product.",
   },
 ];

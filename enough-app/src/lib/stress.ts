@@ -6,7 +6,7 @@
  * recomputed safer spend (~300ms). The engine itself is unchanged — we only
  * mutate the input snapshot before running it.
  *
- * Educational decision-support only — outputs are model estimates, not advice.
+ * Outputs are model estimates that inform planning advice — not guarantees.
  */
 
 import { runFullAnalysisSync, type FullAnalysis } from "../engine";
@@ -52,14 +52,6 @@ export function careOverrides(
     healthcareSpend:
       inputs.healthcareSpend + care.healthcareIncrease + care.ltc,
   };
-}
-
-/** One-off goal override: pre-fund the goal by reducing cash today. */
-export function oneOffGoalOverrides(
-  inputs: PlanInputs,
-  goalAmount: number,
-): Partial<PlanInputs> {
-  return { cash: Math.max(0, inputs.cash - goalAmount) };
 }
 
 /** Map a safer-spend drop to a guardrail zone (green / amber / red). */

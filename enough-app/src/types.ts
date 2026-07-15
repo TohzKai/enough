@@ -64,10 +64,6 @@ export interface PlanInputs {
   // --- Lifestyle buckets (single source for the spending fields above) ---
   lifestyle: Record<LifestyleBucketKey, number>; // 9 bucket amounts; summed → desiredSpend
 
-  // --- Life goals (one-off) ---
-  retirementTrip: number; // one-off trip amount (illustrative; modelled as an asset pre-fund)
-  otherGoal: number; // other one-off goal amount
-
   // --- Assumptions ---
   confidence: number; // target success confidence, % (default 92)
   generalInflation: number; // % (default 2.8)

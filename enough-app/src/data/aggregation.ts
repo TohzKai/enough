@@ -30,7 +30,7 @@ export interface ConnectedAccount {
 
 /**
  * The accounts a consented Singpass/SGFinDex pull would surface for Mr Tan.
- * Balances reconcile to the aligned worked example (S$190k spendable + CPF LIFE
+ * Balances reconcile to the aligned worked example (S$520k spendable + CPF LIFE
  * floor + an excluded primary residence).
  */
 export const connectedAccounts: ConnectedAccount[] = [
@@ -55,7 +55,7 @@ export const connectedAccounts: ConnectedAccount[] = [
     kind: "investment",
     source: "Endowus · Poems · via SGFinDex",
     label: "Investments (unit trusts, shares)",
-    amount: 130000,
+    amount: 460000,
     note: "Bonds + equity — the growth engine",
     spendable: true,
   },

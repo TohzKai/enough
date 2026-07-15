@@ -36,7 +36,7 @@ export function FamilyReport() {
         <SectionTitle
           kicker="For the kitchen table"
           title="Family report"
-          subtitle="A calm, one-page summary to discuss at home. Plain language, no product recommendations."
+          subtitle="A calm, one-page summary to discuss at home. Plain language, product-neutral advice."
         />
         <button onClick={handlePrint} className="btn-primary">
           Print family report
@@ -55,7 +55,7 @@ export function FamilyReport() {
             </div>
           </div>
           <div className="text-right text-xs text-enough-slate">
-            Educational, not advice
+            Planning advice · you decide
           </div>
         </div>
 
@@ -113,22 +113,19 @@ export function FamilyReport() {
           <p className="text-sm text-enough-ink mt-1 leading-relaxed">
             A care shock (for example, extra care cost for a few years) may
             reduce safer spend by about{" "}
-            {formatMoneyMonth(stressMag("healthcare"))}. Options to discuss:
-            cash buffer, family support, public or community schemes, or a
-            licensed adviser.
+            {formatMoneyMonth(stressMag("healthcare"))}. Ways to cover it: cash
+            buffer, family support, public or community schemes, or a referral
+            to an insurer, IFA, or your existing adviser.
           </p>
         </div>
 
-        {/* Life goals */}
+        {/* Bequest */}
         <div className="mt-5 rounded-xl2 border border-enough-line p-4">
-          <div className="text-sm font-semibold text-enough-slate">
-            Life goals
-          </div>
+          <div className="text-sm font-semibold text-enough-slate">Bequest</div>
           <p className="text-sm text-enough-ink mt-1 leading-relaxed">
-            A {formatMoney(12000)} retirement trip may reduce safer spend by
-            about {formatMoneyMonth(stressMag("trip"))}; a {formatMoney(50000)}{" "}
-            bequest target by about {formatMoneyMonth(stressMag("bequest"))}.
-            Goals are not rejected — Enough shows the monthly trade-off.
+            A {formatMoney(50000)} bequest target may reduce safer spend by
+            about {formatMoneyMonth(stressMag("bequest"))}. A bequest is not
+            rejected — Enough shows the monthly trade-off.
           </p>
         </div>
 
@@ -169,10 +166,10 @@ export function FamilyReport() {
         </div>
 
         <p className="mt-5 text-xs text-enough-slate leading-relaxed border-t border-enough-line pt-3">
-          Educational simulator only. Not personalised financial advice. No
-          product recommendations. No guarantee. Illustrative result based on
-          stated assumptions. Discuss this plan with a licensed financial
-          adviser before major financial decisions.
+          Neutral financial planning advice (pursuing MAS FA licensing). We
+          advise the decision, not a specific product. Estimates, not guarantees
+          — illustrative result based on stated assumptions. Think it through
+          and make your own call before major financial decisions.
         </p>
       </Card>
 

@@ -4,9 +4,10 @@ import { DEFAULT_LIFESTYLE } from "./lifestyle";
 /**
  * Mr Tan — the canonical worked example.
  *
- * Figures aligned to the strategy proposal (enough-proposal.md §8):
+ * Figures build on the strategy proposal (enough-proposal.md §8), recapitalised
+ * so the LIVE engine — not a hand-written number — drives the worked example:
  *  - 65 years old, CPF LIFE S$1,550/month (Standard plan, LEVEL nominal), paid-off 4-room HDB.
- *  - ~S$190,000 across cash + investments + SRS.
+ *  - ~S$520,000 across cash + investments + SRS (mass-affluent; see the assets note below).
  *  - Aspires to spend S$3,100/month (lifestyle he actually wants).
  *
  * IMPORTANT (A+ honesty): Mr Tan's "safer spend" is NOT a fixed number. It moves
@@ -35,9 +36,12 @@ export const mrTanInputs: PlanInputs = {
   cpfPlan: "Standard",
   payoutGrowthAnnual: 0,
 
-  // Assets (total S$190,000)
+  // Assets (total S$520,000 — mass-affluent; the level at which the honest
+  // engine sustains ~S$2,140/month at 90% confidence for this 30-year, level-
+  // nominal-CPF profile. A lighter portfolio cannot safely fund much above the
+  // CPF floor once inflation erodes it — that is a real result, not a bug.)
   cash: 40000,
-  investments: 130000,
+  investments: 460000,
   srs: 20000,
   cashPct: 20,
   bondPct: 40,
@@ -59,10 +63,6 @@ export const mrTanInputs: PlanInputs = {
 
   // Lifestyle buckets (single source for the spending fields above; sum = S$3,100)
   lifestyle: { ...DEFAULT_LIFESTYLE },
-
-  // Life goals (one-off)
-  retirementTrip: 12000,
-  otherGoal: 0,
 
   // Base-case assumptions (see presets.ts for Conservative / Optimistic variants)
   confidence: 90,
@@ -108,8 +108,6 @@ export const blankInputs: PlanInputs = {
   bequestTarget: 0,
   contingencyReserve: 10000,
   lifestyle: { ...DEFAULT_LIFESTYLE },
-  retirementTrip: 12000,
-  otherGoal: 0,
   confidence: 90,
   generalInflation: 2.7,
   healthcareInflation: 5,

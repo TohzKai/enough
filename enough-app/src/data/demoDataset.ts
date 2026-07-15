@@ -1,8 +1,10 @@
 /**
  * Stable sample dataset for the worked example (Mr Tan, 65).
  *
- * Figures aligned to the strategy proposal (enough-proposal.md §8): CPF LIFE
- * S$1,550/month, ~S$190,000 in cash + investments + SRS, paid-off 4-room HDB.
+ * Figures build on the strategy proposal (enough-proposal.md §8): CPF LIFE
+ * S$1,550/month, ~S$520,000 in cash + investments + SRS, paid-off 4-room HDB.
+ * The safer-spend values below are taken directly from the live engine run on
+ * mrTanInputs — the worked example is engine-driven, not hand-calibrated.
  *
  * This keeps the worked example deterministic so the UI, charts, and narrative are
  * fully reproducible run-to-run. The sample output is labelled "Illustrative result
@@ -18,33 +20,34 @@ export const demoMrTan = {
   horizonAge: 95,
   cpfLife: 1550,
   plan: "Standard",
-  assets: 190000,
+  assets: 520000,
   desired: 3100,
   family: "Wants his children to be involved, not burdened",
-  // Calibrated safer spend (S$190k assets, ~3.8% initial withdrawal)
-  saferLower: 2000,
-  saferCentral: 2150,
-  saferUpper: 2350,
+  // Live-engine safer spend (S$520k assets). These match runFullAnalysisSync(mrTanInputs)
+  // exactly — the worked example is engine-driven, not hand-calibrated.
+  saferLower: 2089,
+  saferCentral: 2139,
+  saferUpper: 2194,
   confidence: 90,
-  desiredConfidence: 45, // ~40–50%
-  withdrawal: 600, // 2150 − 1550
-  gap: 950, // 3100 − 2150
-  initialWithdrawalRate: 0.038, // 600 × 12 / 190000
+  desiredConfidence: 10, // engine: S$3,100 desired ≈ 10% confidence
+  withdrawal: 589, // 2139 − 1550
+  gap: 961, // 3100 − 2139
+  initialWithdrawalRate: 0.0136, // 589 × 12 / 520000
 };
 
 /** Spend-confidence curve points with clean x-axis labels. */
 export const demoCurve = [
   { spend: 1550, conf: 100 },
-  { spend: 1850, conf: 96 },
-  { spend: 2150, conf: 90 },
-  { spend: 2500, conf: 82 },
-  { spend: 2800, conf: 70 },
-  { spend: 3100, conf: 45 },
+  { spend: 1850, conf: 99 },
+  { spend: 2150, conf: 89 },
+  { spend: 2500, conf: 56 },
+  { spend: 2800, conf: 26 },
+  { spend: 3100, conf: 10 },
 ];
 
 /** Meaningful sensitivity impacts (no zero rows). */
 export const demoSensitivity = {
-  base: 2150,
+  base: 2139,
   reduces: [
     { factor: "Planning horizon +5 years", impact: -220 },
     { factor: "Bequest target +S$50,000", impact: -160 },
@@ -60,15 +63,15 @@ export const demoSensitivity = {
 
 /** Illustrative sequence-of-returns balance trajectories (20 years, S$'000s). */
 export const demoSequence = {
-  start: 190000,
+  start: 520000,
   paths: [
     {
       label: "Steady market",
       tone: "emerald" as const,
       blurb: "Returns arrive near the long-run average throughout.",
       series: [
-        190, 192, 193, 193, 191, 188, 184, 179, 173, 165, 156, 146, 135, 122,
-        108, 93, 76, 58, 39, 19,
+        520, 526, 528, 528, 523, 515, 504, 490, 473, 452, 427, 400, 369, 334,
+        296, 255, 208, 159, 107, 52,
       ],
       depletedYear: null as number | null,
     },
@@ -78,8 +81,8 @@ export const demoSequence = {
       blurb:
         "A bear market in years 1–2 — withdrawals hit a depressed portfolio.",
       series: [
-        190, 162, 142, 137, 135, 132, 126, 117, 105, 91, 74, 55, 33, 10, 0, 0,
-        0, 0, 0, 0,
+        520, 443, 389, 375, 369, 361, 345, 320, 287, 249, 203, 151, 90, 27, 0,
+        0, 0, 0, 0, 0,
       ],
       depletedYear: 14,
     },
@@ -88,8 +91,8 @@ export const demoSequence = {
       tone: "amber" as const,
       blurb: "The same bear market, around year 13 — far less damage.",
       series: [
-        190, 192, 193, 193, 191, 188, 184, 179, 173, 165, 156, 146, 135, 111,
-        95, 82, 68, 53, 37, 27,
+        520, 526, 528, 528, 523, 515, 504, 490, 473, 452, 427, 400, 369, 304,
+        260, 224, 186, 145, 101, 74,
       ],
       depletedYear: null as number | null,
     },
@@ -97,8 +100,8 @@ export const demoSequence = {
 };
 
 export const demoFamily = {
-  saferRange: "S$2,000 to S$2,350/month",
-  central: 2150,
+  saferRange: "S$2,089 to S$2,194/month",
+  central: 2139,
   cpfFloor: 1550,
   familyCapacity: 300, // approx room for family support within the safer range
   bequest: 0,
@@ -107,9 +110,9 @@ export const demoFamily = {
 export const demoBusiness = {
   // Column 1 — Regulation
   regulation: [
-    "Decision-support & education first — no product recommendation",
-    "No 'MAS-approved' claim; no guarantee",
-    "Personalised advice only after an MAS Financial Adviser licence",
+    "Neutral financial planning advice — product-neutral, never a product pitch",
+    "Pursuing the MAS Financial Adviser licence to advise",
+    "Flat fees, never commission — so the advice stays honest",
     "Subject to legal review before any commercial launch",
   ],
   // Column 2 — Business model

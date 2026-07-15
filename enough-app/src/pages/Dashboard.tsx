@@ -14,15 +14,7 @@ import {
 } from "recharts";
 import { usePlan } from "../store/planStore";
 import { useViewMode } from "../store/viewMode";
-import {
-  Card,
-  SectionTitle,
-  StatCard,
-  Pill,
-  Spinner,
-  MoneyField,
-  SelectField,
-} from "../components/ui";
+import { Card, SectionTitle, StatCard, Pill, Spinner } from "../components/ui";
 import {
   s$,
   s$month,
@@ -40,10 +32,10 @@ import {
   demoSequence,
 } from "../data/demoDataset";
 import { mrTanInputs } from "../data/mrTan";
-import {
-  withdrawalOrder,
-  topUpRecommendations,
-} from "../data/withdrawalSequence";
+import { GapCloser } from "../components/GapCloser";
+import { FundingSequence } from "../components/FundingSequence";
+import { HealthcareConditions } from "../components/HealthcareConditions";
+import { ProtectionReferral } from "../components/ProtectionReferral";
 import {
   currentGuardrail,
   guardrailBands,
@@ -60,18 +52,13 @@ import { layerTotals } from "../data/lifestyle";
 import {
   CRISIS_SCENARIOS,
   CRISIS_ZONE_GUIDANCE,
-  CARE_DURATIONS,
-  CARE_START_AGES,
-  DEFAULT_CARE,
   DEMO_STRESS,
-  FUNDING_SEQUENCE,
   type CrisisScenario,
   type StressZone,
 } from "../data/stressScenarios";
 import {
   recompute,
   saferSpendOf,
-  careOverrides,
   crisisOverrides,
   zoneForImpact,
 } from "../lib/stress";
@@ -89,7 +76,7 @@ function isMrTan(i: ReturnType<typeof usePlan>["inputs"]): boolean {
   return (
     i.age === 65 &&
     i.cpfLifeMonthly === 1550 &&
-    i.cash + i.investments + i.srs === 190000 &&
+    i.cash + i.investments + i.srs === 520000 &&
     i.desiredSpend === 3100
   );
 }
@@ -278,11 +265,14 @@ function MrTanResults() {
       {/* C — Dynamic guardrails: the current steer */}
       <GuardrailNow />
 
-      {/* B — Tax & longevity-aware withdrawal sequencing */}
-      <WithdrawalSequenceSection />
+      {/* Item 2 — engine-wired gap-closing ledger */}
+      <GapCloser inputs={inputs} gap={demoMrTan.gap} />
 
-      {/* Top-up decision shapes (never product recommendations) */}
-      <TopUpSection />
+      {/* Item 5 — funding sequence with amounts + schemes + referral */}
+      <FundingSequence inputs={inputs} centralSpend={demoMrTan.saferCentral} />
+
+      {/* Protection-gap referral map — gap → protection → named partner */}
+      <ProtectionReferral inputs={inputs} />
 
       {/* Curve */}
       <CurveSection
@@ -385,85 +375,6 @@ function GuardrailNow() {
   );
 }
 
-/* ============ Withdrawal sequencing (B) ============ */
-function WithdrawalSequenceSection() {
-  const toneBar: Record<string, string> = {
-    emerald: "bg-enough-emerald",
-    amber: "bg-enough-amber",
-    navy: "bg-enough-navy",
-    slate: "bg-enough-slate",
-  };
-  return (
-    <Card>
-      <h3 className="text-2xl font-bold text-enough-navy">
-        Which account to spend first
-      </h3>
-      <p className="text-enough-slate mt-1 max-w-3xl">
-        Tax- and longevity-aware sequencing across CPF, SRS, cash and
-        investments. This is the decision shape no bank can answer neutrally — a
-        single product provider may not be neutral on withdrawal sequencing.
-      </p>
-      <div className="mt-4 space-y-3">
-        {withdrawalOrder.map((s) => (
-          <div
-            key={s.order}
-            className="flex gap-3 rounded-xl2 border border-enough-line p-4"
-          >
-            <div
-              className={`h-8 w-8 shrink-0 rounded-full ${toneBar[s.tone]} text-white flex items-center justify-center font-extrabold`}
-            >
-              {s.order}
-            </div>
-            <div>
-              <div className="font-bold text-enough-navy">{s.title}</div>
-              <p className="text-sm text-enough-ink mt-1 leading-relaxed">
-                {s.rationale}
-              </p>
-              <p className="text-xs text-enough-slate mt-1 leading-relaxed">
-                {s.nuance}
-              </p>
-            </div>
-          </div>
-        ))}
-      </div>
-    </Card>
-  );
-}
-
-/* ============ Top-up decision shapes ============ */
-function TopUpSection() {
-  return (
-    <Card>
-      <h3 className="text-2xl font-bold text-enough-navy">
-        Levers that raise confidence
-      </h3>
-      <p className="text-enough-slate mt-1 max-w-3xl">
-        The decision shape, never a product. Enough sizes the move; a licensed
-        partner would handle any product.
-      </p>
-      <div className="mt-4 grid md:grid-cols-3 gap-3">
-        {topUpRecommendations.map((t) => (
-          <div
-            key={t.title}
-            className="rounded-xl2 border border-enough-line p-4"
-          >
-            <div className="font-bold text-enough-navy">{t.title}</div>
-            <p className="text-sm text-enough-ink mt-1 leading-relaxed">
-              {t.detail}
-            </p>
-            <div className="mt-2 flex items-center gap-2 flex-wrap">
-              <Pill tone="emerald">{t.confidenceLift}</Pill>
-              <Pill tone={t.reversible ? "navy" : "amber"}>
-                {t.reversible ? "reversible" : "hard to reverse"}
-              </Pill>
-            </div>
-          </div>
-        ))}
-      </div>
-    </Card>
-  );
-}
-
 /* ============ Assumption, lifestyle, and deep stress modules (F1,F2,F4,F5,F6) ============ */
 
 function InflationCard({ inputs }: { inputs: PlanInputs }) {
@@ -547,149 +458,6 @@ const zoneLabel: Record<StressZone, string> = {
   amber: "Amber zone",
   red: "Red zone",
 };
-
-function HealthcareStress({
-  inputs,
-  baseSpend,
-  isMrTan,
-}: {
-  inputs: PlanInputs;
-  baseSpend: number;
-  isMrTan: boolean;
-}) {
-  const [care, setCare] = useState(DEFAULT_CARE);
-  const [showAdviser, setShowAdviser] = useState(false);
-  const [after, setAfter] = useState<number | null>(null);
-
-  useEffect(() => {
-    if (isMrTan) {
-      setAfter(null);
-      return;
-    }
-    const id = setTimeout(() => {
-      setAfter(saferSpendOf(recompute(inputs, careOverrides(inputs, care))));
-    }, 30);
-    return () => clearTimeout(id);
-  }, [inputs, care, isMrTan]);
-
-  const afterSpend = isMrTan
-    ? DEMO_STRESS.healthcare.afterSpend
-    : (after ?? baseSpend);
-  const impact = isMrTan
-    ? DEMO_STRESS.healthcare.impactMonthly
-    : afterSpend - baseSpend;
-  const monthlyGap = Math.max(0, -impact);
-  const careGap =
-    (care.healthcareIncrease + care.ltc) * care.durationYears * 12;
-  const needsBuffer = isMrTan
-    ? DEMO_STRESS.healthcare.needsBuffer
-    : monthlyGap > 0;
-
-  return (
-    <Card>
-      <h3 className="text-2xl font-bold text-enough-navy">
-        Healthcare & care-cost stress test
-      </h3>
-      <p className="text-enough-slate mt-1 max-w-3xl">
-        Add a healthcare or long-term care cost and see how the safer monthly
-        spend moves. Illustrative model output, not advice.
-      </p>
-      <div className="mt-4 grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        <MoneyField
-          label="Healthcare increase / month"
-          value={care.healthcareIncrease}
-          onChange={(v) => setCare((c) => ({ ...c, healthcareIncrease: v }))}
-        />
-        <MoneyField
-          label="Long-term care / month"
-          value={care.ltc}
-          onChange={(v) => setCare((c) => ({ ...c, ltc: v }))}
-        />
-        <SelectField
-          label="Duration"
-          value={String(care.durationYears)}
-          onChange={(v) => setCare((c) => ({ ...c, durationYears: Number(v) }))}
-          options={CARE_DURATIONS.map((d) => ({
-            value: String(d),
-            label: `${d} years`,
-          }))}
-        />
-        <SelectField
-          label="Start age"
-          value={String(care.startAge)}
-          onChange={(v) => setCare((c) => ({ ...c, startAge: Number(v) }))}
-          options={CARE_START_AGES.map((a) => ({
-            value: String(a),
-            label: `Age ${a}`,
-          }))}
-        />
-      </div>
-
-      <div className="mt-4 grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
-        <StatCard
-          label="Base safer spend"
-          value={formatMoneyMonth(baseSpend)}
-          tone="navy"
-        />
-        <StatCard
-          label="After care shock"
-          value={formatMoneyMonth(afterSpend)}
-          tone={impact < 0 ? "red" : "emerald"}
-        />
-        <StatCard
-          label="Estimated impact"
-          value={formatDeltaMonth(impact)}
-          tone={impact < 0 ? "red" : "emerald"}
-        />
-        <StatCard
-          label="Care gap"
-          value={formatMoney(careGap)}
-          sub={
-            needsBuffer
-              ? "Buffer or family support may help"
-              : "Within modelled range"
-          }
-          tone="amber"
-        />
-      </div>
-
-      <div className="mt-4 rounded-xl2 border border-enough-line bg-enough-navy/5 p-4">
-        <div className="font-bold text-enough-navy text-sm">
-          Funding sequence to review
-        </div>
-        <p className="text-xs text-enough-slate mt-0.5 mb-2">
-          Options to discuss — not a recommended action.
-        </p>
-        <ol className="text-sm text-enough-ink space-y-1 list-decimal list-inside">
-          {FUNDING_SEQUENCE.map((s) => (
-            <li key={s} className="leading-snug">
-              {s}
-            </li>
-          ))}
-        </ol>
-      </div>
-
-      <div className="mt-3 flex flex-wrap gap-2">
-        <button
-          type="button"
-          onClick={() => setShowAdviser((s) => !s)}
-          className="btn-ghost text-sm"
-        >
-          {showAdviser ? "Hide" : "Discuss options with a licensed adviser"}
-        </button>
-        <Link to="/report" className="btn-soft text-sm">
-          Show family discussion summary
-        </Link>
-      </div>
-      {showAdviser && (
-        <p className="text-xs text-enough-slate mt-2 leading-relaxed">
-          Enough does not match you to an adviser and makes no product
-          recommendation. Raise these options with a licensed financial adviser.
-        </p>
-      )}
-    </Card>
-  );
-}
 
 function CrisisStress({
   inputs,
@@ -855,11 +623,7 @@ function ExtraResultsModules({
         <InflationCard inputs={inputs} />
         <LifestyleSummary inputs={inputs} />
       </div>
-      <HealthcareStress
-        inputs={inputs}
-        baseSpend={baseSpend}
-        isMrTan={isMrTan}
-      />
+      <HealthcareConditions inputs={inputs} baseSpend={baseSpend} />
       <CrisisStress inputs={inputs} baseSpend={baseSpend} isMrTan={isMrTan} />
       <LifespanSensitivity
         inputs={inputs}
@@ -955,7 +719,7 @@ function StressTestSection({
         </p>
       </div>
 
-      {/* Options to discuss — non-advisory prompts */}
+      {/* What we suggest — own the advice, stay product-neutral */}
       <div className="mt-3">
         <button
           type="button"
@@ -963,14 +727,14 @@ function StressTestSection({
           className="btn-ghost text-sm"
           aria-expanded={showOptions}
         >
-          {showOptions ? "Hide options" : "Discuss options"}
+          {showOptions ? "Hide suggestions" : "What we suggest"}
         </button>
         {showOptions && (
           <div className="mt-3 rounded-xl2 border border-enough-line bg-white p-4">
-            <div className="font-bold text-enough-navy">Options to discuss</div>
+            <div className="font-bold text-enough-navy">What we suggest</div>
             <p className="text-xs text-enough-slate mt-1 leading-relaxed">
-              These are discussion prompts, not financial advice or product
-              recommendations.
+              Our advice on the moves to weigh — you decide. We stay neutral on
+              the specific product.
             </p>
             <ul className="mt-2 space-y-1.5 text-sm text-enough-ink">
               {optionsToDiscuss.map((o) => (
@@ -1150,8 +914,9 @@ function CustomResults({ analysis }: { analysis: FullAnalysis }) {
       />
 
       {/* Decision-shape sections apply to any plan */}
-      <WithdrawalSequenceSection />
-      <TopUpSection />
+      <GapCloser inputs={inputs} gap={gap} />
+      <FundingSequence inputs={inputs} centralSpend={safe.centralSpend} />
+      <ProtectionReferral inputs={inputs} />
 
       <CurveSection
         title="Spend-confidence curve"

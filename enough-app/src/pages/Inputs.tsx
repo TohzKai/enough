@@ -28,6 +28,11 @@ import {
   syncLifestyleToSpend,
 } from "../data/lifestyle";
 import {
+  LIFESTYLE_PERSONAS,
+  personaTotal,
+  type LifestylePersona,
+} from "../data/lifestylePersonas";
+import {
   connectedAccounts,
   singpassPullSteps,
   spendableTotal,
@@ -147,7 +152,8 @@ function ConnectPanel() {
             <p className="text-enough-slate mt-2 leading-relaxed">
               One consented pull via Singpass brings in your CPF, bank, SRS and
               investments through SGFinDex — no typing, always current. We never
-              see your password, and we make no product recommendations.
+              see your password, and we're product-neutral — advice, never a
+              sales pitch.
             </p>
             <div className="mt-3 flex flex-wrap gap-2 text-xs">
               <Pill tone="navy">CPF Board</Pill>
@@ -270,12 +276,18 @@ function ConnectPanel() {
 function LifestyleSection({
   lifestyle,
   onChange,
+  onApplyPersona,
 }: {
   lifestyle: PlanInputs["lifestyle"];
   onChange: (key: LifestyleBucketKey, amount: number) => void;
+  onApplyPersona: (p: LifestylePersona) => void;
 }) {
   const [showAdvanced, setShowAdvanced] = useState(false);
   const totals = layerTotals(lifestyle);
+  // Highlight a persona when the current buckets still match its suggestion exactly.
+  const activePersona = LIFESTYLE_PERSONAS.find((p) =>
+    LIFESTYLE_BUCKETS.every((b) => lifestyle[b.key] === p.lifestyle[b.key]),
+  )?.key;
   const tiles: { label: string; value: number; cls: string }[] = [
     { label: "Essentials", value: totals.essential, cls: "text-enough-navy" },
     {
@@ -299,8 +311,47 @@ function LifestyleSection({
           5 · Lifestyle spending
         </h3>
         <span className="text-xs text-enough-slate">
-          Build the monthly lifestyle
+          Pick a starting point, then adjust
         </span>
+      </div>
+
+      {/* Lifestyle chooser — suggests a full set of buckets in one click */}
+      <div className="mb-4">
+        <div className="text-xs font-semibold uppercase tracking-wide text-enough-slate mb-2">
+          Start from a lifestyle
+        </div>
+        <div className="grid sm:grid-cols-3 gap-2">
+          {LIFESTYLE_PERSONAS.map((p) => {
+            const active = activePersona === p.key;
+            return (
+              <button
+                key={p.key}
+                type="button"
+                onClick={() => onApplyPersona(p)}
+                className={`text-left rounded-xl2 border px-3 py-2.5 transition-colors ${
+                  active
+                    ? "border-enough-emerald bg-enough-emerald/5 ring-1 ring-enough-emerald/40"
+                    : "border-enough-line hover:bg-enough-navy/5"
+                }`}
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-bold text-enough-navy text-sm">
+                    {p.label}
+                  </span>
+                  <span className="text-sm font-extrabold text-enough-emeraldDark">
+                    {formatMoneyMonth(personaTotal(p))}
+                  </span>
+                </div>
+                <div className="text-xs text-enough-slate mt-0.5 leading-snug">
+                  {p.blurb}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+        <div className="text-xs text-enough-slate mt-2">
+          Suggested budgets to start from — adjust them to fit your life.
+        </div>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
@@ -396,6 +447,13 @@ export function Inputs() {
   // Any lifestyle bucket edit re-derives the engine spending fields + desiredSpend.
   const onLifestyleChange = (key: LifestyleBucketKey, amount: number) => {
     const lifestyle = { ...inputs.lifestyle, [key]: amount };
+    setInputs({ ...inputs, lifestyle, ...syncLifestyleToSpend(lifestyle) });
+  };
+
+  // Apply a lifestyle persona's suggested buckets in one click, but keep the
+  // user's own housing cost (that is driven by housing status, not lifestyle).
+  const applyPersona = (p: LifestylePersona) => {
+    const lifestyle = { ...p.lifestyle, housing: inputs.lifestyle.housing };
     setInputs({ ...inputs, lifestyle, ...syncLifestyleToSpend(lifestyle) });
   };
 
@@ -611,20 +669,10 @@ export function Inputs() {
               <LifestyleSection
                 lifestyle={inputs.lifestyle}
                 onChange={onLifestyleChange}
+                onApplyPersona={applyPersona}
               />
 
-              <Group title="6 · Life goals">
-                <MoneyField
-                  label="Retirement trip (one-off)"
-                  value={inputs.retirementTrip}
-                  onChange={(v) => setField("retirementTrip", v)}
-                  help="Modelled by setting the amount aside today."
-                />
-                <MoneyField
-                  label="Other one-off goal"
-                  value={inputs.otherGoal}
-                  onChange={(v) => setField("otherGoal", v)}
-                />
+              <Group title="6 · Bequest (optional)">
                 <MoneyField
                   label="Bequest target"
                   value={inputs.bequestTarget}
@@ -717,7 +765,7 @@ export function Inputs() {
                   )}
                 </div>
                 <p className="mt-3 text-xs text-enough-slate">
-                  Educational simulator — estimates, not guarantees.
+                  Planning advice — estimates, not guarantees.
                 </p>
               </Card>
             </div>
@@ -726,9 +774,9 @@ export function Inputs() {
       )}
 
       <Disclaimer tone="soft">
-        Educational decision-support only — not financial advice, no product
-        recommendations. The Singpass / SGFinDex connection is an illustrative
-        prototype.
+        Neutral financial planning advice — the decisions are yours to weigh. We
+        advise the move, never push a specific product. The Singpass / SGFinDex
+        connection is an illustrative prototype.
       </Disclaimer>
     </div>
   );
