@@ -23,17 +23,27 @@ export interface LifestyleBucketDef {
   layer: LifestyleLayer;
 }
 
-/** The nine buckets in display order, grouped by layer. */
+/** The nine buckets in display order, grouped by layer. `label` holds an i18n
+ * key (namespace `lifestyle`) — the presentation layer translates it, so no
+ * English sentence lives in the data model. */
 export const LIFESTYLE_BUCKETS: LifestyleBucketDef[] = [
-  { key: "essentials", label: "Essentials", layer: "essential" },
-  { key: "foodTransport", label: "Food & transport", layer: "essential" },
-  { key: "utilities", label: "Utilities & household", layer: "essential" },
-  { key: "housing", label: "Housing", layer: "essential" },
-  { key: "healthcare", label: "Healthcare", layer: "essential" },
-  { key: "discretionary", label: "Discretionary lifestyle", layer: "flexible" },
-  { key: "familySupport", label: "Family support", layer: "flexible" },
-  { key: "travelHobbies", label: "Travel & hobbies", layer: "aspirational" },
-  { key: "other", label: "Other", layer: "aspirational" },
+  { key: "essentials", label: "lifestyle.essentials", layer: "essential" },
+  {
+    key: "foodTransport",
+    label: "lifestyle.foodTransport",
+    layer: "essential",
+  },
+  { key: "utilities", label: "lifestyle.utilities", layer: "essential" },
+  { key: "housing", label: "lifestyle.housing", layer: "essential" },
+  { key: "healthcare", label: "lifestyle.healthcare", layer: "essential" },
+  { key: "discretionary", label: "lifestyle.discretionary", layer: "flexible" },
+  { key: "familySupport", label: "lifestyle.familySupport", layer: "flexible" },
+  {
+    key: "travelHobbies",
+    label: "lifestyle.travelHobbies",
+    layer: "aspirational",
+  },
+  { key: "other", label: "lifestyle.other", layer: "aspirational" },
 ];
 
 /**

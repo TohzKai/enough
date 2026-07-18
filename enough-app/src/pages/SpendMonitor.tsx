@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   Card,
   SectionTitle,
@@ -24,6 +25,7 @@ type Zone = "green" | "amber" | "red";
  * monthly range. No bank feed, no transaction import, no auto-categorisation.
  */
 export function SpendMonitor() {
+  const { t } = useTranslation();
   const { inputs, analysis } = usePlan();
   const { actuals, setActual, clearActuals } = useSpend();
   const { mode } = useViewMode();
@@ -48,11 +50,11 @@ export function SpendMonitor() {
 
   const zoneMeta: Record<
     Zone,
-    { label: string; tone: "emerald" | "amber" | "red" }
+    { labelKey: string; tone: "emerald" | "amber" | "red" }
   > = {
-    green: { label: "Within safer range", tone: "emerald" },
-    amber: { label: "Slightly above range", tone: "amber" },
-    red: { label: "Above safe range", tone: "red" },
+    green: { labelKey: "spendMonitor.zoneGreen", tone: "emerald" },
+    amber: { labelKey: "spendMonitor.zoneAmber", tone: "amber" },
+    red: { labelKey: "spendMonitor.zoneRed", tone: "red" },
   };
 
   const topGap = rows.filter((r) => r.gap > 0).sort((a, b) => b.gap - a.gap)[0];
@@ -60,33 +62,43 @@ export function SpendMonitor() {
   return (
     <div className="space-y-6">
       <SectionTitle
-        kicker={child ? "Adult-child view" : "Spending check"}
-        title="Spend Monitor"
-        subtitle="Compare what you actually spend against the safer monthly range. Manual entry — no bank feed, no auto-categorisation."
+        kicker={
+          child ? t("spendMonitor.kickerChild") : t("spendMonitor.kickerParent")
+        }
+        title={t("spendMonitor.title")}
+        subtitle={t("spendMonitor.subtitle")}
       />
 
       {/* Status hero */}
       <Card className="bg-gradient-to-br from-enough-navy to-enough-navyLight text-white border-0 !p-5">
         <div className="text-white/60 text-xs font-semibold uppercase tracking-wider">
           {child
-            ? "Dad's spending vs safer range"
-            : "Your spending vs safer range"}
+            ? t("spendMonitor.heroLabelChild")
+            : t("spendMonitor.heroLabelParent")}
         </div>
         <div className="mt-1.5 flex items-end gap-2 flex-wrap">
           <div className="text-3xl md:text-4xl font-extrabold">
             {formatMoneyMonth(totalActual)}
           </div>
-          <div className="text-white/60 text-base pb-1">actual / month</div>
+          <div className="text-white/60 text-base pb-1">
+            {t("spendMonitor.actualPerMonth")}
+          </div>
         </div>
         <div className="mt-2 text-base text-enough-emerald font-semibold">
-          Safer range: {formatRangeMonth(saferLower, saferUpper)}
+          {t("spendMonitor.saferRange", {
+            value: formatRangeMonth(saferLower, saferUpper),
+          })}
         </div>
         <div className="mt-3 flex items-center gap-3 flex-wrap">
-          <Pill tone={zoneMeta[zone].tone}>{zoneMeta[zone].label}</Pill>
+          <Pill tone={zoneMeta[zone].tone}>{t(zoneMeta[zone].labelKey)}</Pill>
           {overUpper > 0 && (
             <span className="text-white/85 text-sm">
-              {formatMoneyMonth(overUpper)} above the upper safer range.
-              {topGap ? ` Review ${topGap.label.toLowerCase()} first.` : ""}
+              {t("spendMonitor.overUpper", {
+                value: formatMoneyMonth(overUpper),
+                review: topGap
+                  ? t("spendMonitor.reviewFirst", { bucket: t(topGap.label) })
+                  : "",
+              })}
             </span>
           )}
         </div>
@@ -95,7 +107,7 @@ export function SpendMonitor() {
       {/* Planned vs actual by bucket */}
       <Card>
         <h3 className="text-base font-bold text-enough-navy mb-3">
-          Planned vs actual by bucket
+          {t("spendMonitor.plannedVsActual")}
         </h3>
         <div className="space-y-3">
           {rows.map((r) => {
@@ -111,15 +123,19 @@ export function SpendMonitor() {
                 key={r.key}
                 className="grid sm:grid-cols-[1fr_180px] gap-2 sm:gap-4 items-center"
               >
-                <div>
-                  <div className="flex justify-between text-sm">
-                    <span className="font-semibold text-enough-navy">
-                      {r.label}
+                <div className="min-w-0">
+                  <div className="flex justify-between text-sm gap-3">
+                    <span className="font-semibold text-enough-navy safe-break">
+                      {t(r.label)}
                     </span>
                     <span
-                      className={`font-bold ${over ? "text-enough-amber" : "text-enough-emeraldDark"}`}
+                      className={`font-bold whitespace-nowrap ${
+                        over ? "text-enough-amber" : "text-enough-emeraldDark"
+                      }`}
                     >
-                      {r.gap === 0 ? "on plan" : formatDeltaMonth(r.gap)}
+                      {r.gap === 0
+                        ? t("common.onPlan")
+                        : formatDeltaMonth(r.gap)}
                     </span>
                   </div>
                   <div className="mt-1 h-2 rounded-full bg-enough-navy/5 overflow-hidden">
@@ -129,12 +145,14 @@ export function SpendMonitor() {
                     />
                   </div>
                   <div className="text-xs text-enough-slate mt-0.5">
-                    Planned {formatMoneyMonth(r.planned)} · Actual{" "}
-                    {formatMoneyMonth(r.actual)}
+                    {t("spendMonitor.plannedActual", {
+                      planned: formatMoneyMonth(r.planned),
+                      actual: formatMoneyMonth(r.actual),
+                    })}
                   </div>
                 </div>
                 <MoneyField
-                  label="Actual"
+                  label={t("connect.fActual")}
                   value={r.actual}
                   onChange={(v) => setActual(r.key, v)}
                 />
@@ -143,23 +161,20 @@ export function SpendMonitor() {
           })}
         </div>
         <div className="mt-4 flex flex-wrap gap-2">
-          <Link to="/report" className="btn-emerald text-sm">
-            Update family report
+          <Link to="/report" className="btn-emerald text-sm min-h-[44px]">
+            {t("spendMonitor.updateReport")}
           </Link>
           <button
             type="button"
             onClick={clearActuals}
-            className="btn-ghost text-sm"
+            className="btn-ghost text-sm min-h-[44px]"
           >
-            Reset to planned
+            {t("spendMonitor.resetToPlanned")}
           </button>
         </div>
       </Card>
 
-      <Disclaimer tone="soft">
-        Spend Monitor is a manual planning tool. Enough does not connect to your
-        bank, import transactions, or categorise spending automatically.
-      </Disclaimer>
+      <Disclaimer tone="soft">{t("spendMonitor.disclaimer")}</Disclaimer>
     </div>
   );
 }

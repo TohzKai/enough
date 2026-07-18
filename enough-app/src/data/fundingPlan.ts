@@ -63,46 +63,38 @@ export function buildFundingPlan(
   const steps: FundingStep[] = [
     {
       account: "cash",
-      title: "Cash buffer — first, and in bad-market years",
+      title: "fundingPlan.stepCashTitle",
       amount: cashBuffer,
       amountKind: "buffer",
-      rationale:
-        "Hold about two years of the asset draw in cash so you never sell investments at a loss in a downturn.",
-      nuance:
-        "Refill it in good years — this is your sequence-of-returns defence.",
+      rationale: "fundingPlan.stepCashRationale",
+      nuance: "fundingPlan.stepCashNuance",
       tone: "emerald",
     },
     {
       account: "srs",
-      title: "SRS — inside the 10-year tax window",
+      title: "fundingPlan.stepSrsTitle",
       amount: srsPerYear,
       amountKind: "perYear",
-      rationale:
-        "Draw your SRS across the 10-year penalty-free window so withdrawals are spread and taxed efficiently.",
-      nuance:
-        "Only 50% of each SRS withdrawal is taxable — pace it to stay in a low bracket.",
+      rationale: "fundingPlan.stepSrsRationale",
+      nuance: "fundingPlan.stepSrsNuance",
       tone: "amber",
     },
     {
       account: "investments",
-      title: "Investments — the growth engine, drawn steadily",
+      title: "fundingPlan.stepInvestTitle",
       amount: investmentsPerYear,
       amountKind: "perYear",
-      rationale:
-        "Fund the rest of each year's draw from investments (bonds first, then equity), trimming with guardrails so the portfolio keeps compounding.",
-      nuance:
-        "Rebalance on withdrawal; let equity ride in good years, trim in sustained drops.",
+      rationale: "fundingPlan.stepInvestRationale",
+      nuance: "fundingPlan.stepInvestNuance",
       tone: "navy",
     },
     {
       account: "cpf",
-      title: "CPF LIFE — the guaranteed floor, kept for life",
+      title: "fundingPlan.stepCpfTitle",
       amount: cpfFloor,
       amountKind: "preserved",
-      rationale:
-        "CPF LIFE already pays a guaranteed income floor for life; the plan preserves it as the longevity backstop you can never outlive.",
-      nuance:
-        "Spend it down last, on purpose — it is the base under everything else.",
+      rationale: "fundingPlan.stepCpfRationale",
+      nuance: "fundingPlan.stepCpfNuance",
       tone: "slate",
     },
   ];
@@ -122,29 +114,24 @@ export interface ReliefScheme {
  */
 export const RELIEF_SCHEMES: ReliefScheme[] = [
   {
-    name: "Silver Support Scheme",
-    detail:
-      "Quarterly cash for lower-income seniors — paid automatically if eligible (CPF Board).",
+    name: "fundingPlan.schemeSilverName",
+    detail: "fundingPlan.schemeSilverDetail",
   },
   {
-    name: "GST Voucher",
-    detail:
-      "Cash, MediSave top-ups and U-Save utilities rebates for eligible households.",
+    name: "fundingPlan.schemeGstName",
+    detail: "fundingPlan.schemeGstDetail",
   },
   {
-    name: "CHAS & MediSave / MediShield Life",
-    detail:
-      "Subsidised outpatient care, chronic-condition support and hospital-bill coverage.",
+    name: "fundingPlan.schemeChasName",
+    detail: "fundingPlan.schemeChasDetail",
   },
   {
-    name: "Pioneer / Merdeka Generation",
-    detail:
-      "Extra healthcare and MediSave benefits for eligible birth cohorts.",
+    name: "fundingPlan.schemePioneerName",
+    detail: "fundingPlan.schemePioneerDetail",
   },
   {
-    name: "ComCare",
-    detail:
-      "Short-to-medium-term financial assistance for those who need it (MSF).",
+    name: "fundingPlan.schemeComCareName",
+    detail: "fundingPlan.schemeComCareDetail",
   },
 ];
 

@@ -6,13 +6,12 @@
  * vs day-care vs nursing home) — presented NET of the Singapore government schemes
  * that offset them, then fed into the real Monte Carlo engine.
  *
- * FIGURE PROVENANCE (see SOURCES below):
- *  - Scheme parameters (CareShield Life, Home Caregiving Grant, MediShield Life
- *    deductible/co-insurance) and typical care-setting fees are from official /
- *    published 2025–26 sources.
- *  - One-off ACUTE episode costs and the means-tested subsidy RATE are illustrative
- *    estimates (means-tested subsidies are household-income-dependent; up to 75–80%).
- * Neutral planning advice; product-neutral; costs are estimates, not guarantees.
+ * Display text (label/blurb/note and the SOURCES link labels) holds i18n KEYS;
+ * the `source` fields on CitedAmount are internal provenance citations (not
+ * rendered) and stay as short English source attributions. Scheme parameters +
+ * care fees are cited (2025–26); acute episode costs and the means-tested
+ * subsidy rate are illustrative. Neutral planning advice; product-neutral; costs
+ * are estimates, not guarantees.
  */
 
 /** A figure with its provenance. `source` is a short citation or "illustrative". */
@@ -23,14 +22,18 @@ export interface CitedAmount {
 
 export interface CareOption {
   key: "helper" | "daycare" | "nursinghome";
+  /** i18n key for the care-setting label. */
   label: string;
   gross: CitedAmount; // typical monthly fee before subsidy
+  /** i18n key for the explanatory note. */
   note: string;
 }
 
 export interface Condition {
   key: "stroke" | "dementia" | "cancer" | "frailty";
+  /** i18n key for the condition label. */
   label: string;
+  /** i18n key for the condition blurb. */
   blurb: string;
   acuteGross: CitedAmount; // one-off episode before MediShield Life
   ongoingMedical: CitedAmount; // meds/therapy/follow-up, S$/month
@@ -40,22 +43,22 @@ export interface Condition {
   defaultCare: CareOption["key"];
 }
 
-/** Short source list rendered in the UI for defensibility. */
+/** Short source list rendered in the UI for defensibility (labels are i18n keys). */
 export const SOURCES: { label: string; url: string }[] = [
   {
-    label: "CareShield Life — CPF Board",
+    label: "healthcare.srcCareShield",
     url: "https://www.cpf.gov.sg/member/healthcare-financing/careshield-life",
   },
   {
-    label: "Home Caregiving Grant — MOM/MSF",
+    label: "healthcare.srcHcg",
     url: "https://www.mom.gov.sg/passes-and-permits/work-permit-for-foreign-domestic-worker/foreign-domestic-worker-levy/levy-concession",
   },
   {
-    label: "MediShield Life — MOH",
+    label: "healthcare.srcMedishield",
     url: "https://www.moh.gov.sg/managing-expenses/schemes-and-subsidies/medishield-life/medishield-life-benefits/",
   },
   {
-    label: "Residential & day care fees/subsidies — AIC",
+    label: "healthcare.srcAic",
     url: "https://www.aic.sg/care-services/nursing-home",
   },
 ];
@@ -92,33 +95,32 @@ export const CHAS_ONGOING_COVERAGE = 0.4;
 const CARE_OPTIONS: CareOption[] = [
   {
     key: "helper",
-    label: "Helper at home",
+    label: "healthcare.careHelperLabel",
     gross: {
       amount: 1200,
       source: "MOM levy + typical FDW salary/upkeep, 2025",
     },
-    note: "Foreign domestic worker: salary + S$60 concessionary levy (eldercare) + upkeep. Home Caregiving Grant may offset when care needs are severe.",
+    note: "healthcare.careHelperNote",
   },
   {
     key: "daycare",
-    label: "Day-care centre",
+    label: "healthcare.careDaycareLabel",
     gross: { amount: 1300, source: "AIC / NTUC Health, 2025 (~S$945–1,430)" },
-    note: "Senior care centre day programme. AIC means-tested subsidy up to 80% for lower-income households.",
+    note: "healthcare.careDaycareNote",
   },
   {
     key: "nursinghome",
-    label: "Nursing home",
+    label: "healthcare.careNursingLabel",
     gross: { amount: 4500, source: "AIC / MOH, 2025 (from ~S$3,900)" },
-    note: "Residential nursing home. Means-tested subsidy up to 75% (80% if born 1969 or earlier), plus CareShield Life if severe.",
+    note: "healthcare.careNursingNote",
   },
 ];
 
 export const CONDITIONS: Condition[] = [
   {
     key: "stroke",
-    label: "Stroke",
-    blurb:
-      "A sudden event, long rehabilitation, and often ongoing help with daily activities.",
+    label: "healthcare.strokeLabel",
+    blurb: "healthcare.strokeBlurb",
     acuteGross: { amount: 18000, source: "illustrative" },
     ongoingMedical: { amount: 300, source: "illustrative" },
     durationYears: 10,
@@ -128,9 +130,8 @@ export const CONDITIONS: Condition[] = [
   },
   {
     key: "dementia",
-    label: "Dementia",
-    blurb:
-      "Gradual onset with escalating supervision and care needs over years.",
+    label: "healthcare.dementiaLabel",
+    blurb: "healthcare.dementiaBlurb",
     acuteGross: { amount: 5000, source: "illustrative" },
     ongoingMedical: { amount: 400, source: "illustrative" },
     durationYears: 8,
@@ -140,8 +141,8 @@ export const CONDITIONS: Condition[] = [
   },
   {
     key: "cancer",
-    label: "Cancer",
-    blurb: "High acute treatment cost, then ongoing follow-up and medication.",
+    label: "healthcare.cancerLabel",
+    blurb: "healthcare.cancerBlurb",
     acuteGross: { amount: 60000, source: "illustrative" },
     ongoingMedical: { amount: 800, source: "illustrative" },
     durationYears: 5,
@@ -151,9 +152,8 @@ export const CONDITIONS: Condition[] = [
   },
   {
     key: "frailty",
-    label: "General frailty",
-    blurb:
-      "Slow decline with age — the most common care journey, over the longest horizon.",
+    label: "healthcare.frailtyLabel",
+    blurb: "healthcare.frailtyBlurb",
     acuteGross: { amount: 4000, source: "illustrative" },
     ongoingMedical: { amount: 250, source: "illustrative" },
     durationYears: 12,

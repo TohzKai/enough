@@ -3,14 +3,57 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --header-height: 5rem; /* desktop sticky header height */
+    --header-height-sm: 4rem; /* mobile sticky header height */
+  }
+
   html {
     font-size: 17px; /* larger base for retiree / family readability */
     scroll-behavior: smooth;
+    /* Anchors and keyboard-focused elements must never sit behind the sticky
+       header (defect 9.10). Both page sections and any [id] get the margin. */
+    scroll-padding-top: var(--header-height);
+  }
+
+  @media (max-width: 640px) {
+    html {
+      scroll-padding-top: var(--header-height-sm);
+    }
   }
 
   body {
     @apply bg-enough-cream text-enough-ink font-sans antialiased;
     margin: 0;
+    /* Comfortable line-height for Latin and tall scripts (Tamil) alike. */
+    line-height: 1.6;
+    text-wrap: pretty;
+  }
+
+  /* Skip-to-content link: invisible until focused, then a visible panel. */
+  .skip-link {
+    position: absolute;
+    left: 0.5rem;
+    top: -3rem;
+    z-index: 100;
+    transition: top 0.15s ease-in-out;
+  }
+  .skip-link:focus {
+    top: 0.5rem;
+  }
+
+  /* Visually hidden but available to screen readers (kept here so it works
+     even outside Tailwind's utility sweep). */
+  .sr-only {
+    position: absolute !important;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   h1,
@@ -80,6 +123,35 @@
   }
   .section-sub {
     @apply mt-2 text-enough-slate text-base md:text-lg;
+  }
+
+  /* Long body copy: cap line length for readability on the now-wider page
+     (defect 9.1 — use the wider canvas for cards/charts, not for paragraphs). */
+  .readable {
+    max-width: 65ch;
+  }
+
+  /* Safe wrapping for translated strings (Chinese / Tamil / Malay). Used only
+     where a long unbroken token could overflow — never globally, to avoid
+     ugly breaks in Latin or CJK. */
+  .safe-break {
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+}
+
+/* Respect users who prefer reduced motion (requirements §11). */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }
 

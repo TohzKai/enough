@@ -38,9 +38,8 @@ export interface Preset {
 export const PRESETS: Preset[] = [
   {
     key: "conservative",
-    label: "Conservative",
-    blurb:
-      "Cautious returns, higher inflation, more cash. The safer spend is lowest here.",
+    label: "presets.conservative",
+    blurb: "presets.conservativeBlurb",
     tone: "red",
     apply: {
       cashPct: 55,
@@ -58,9 +57,8 @@ export const PRESETS: Preset[] = [
   },
   {
     key: "base",
-    label: "Base case",
-    blurb:
-      "Defensible mid-range assumptions. The default used throughout the app.",
+    label: "presets.base",
+    blurb: "presets.baseBlurb",
     tone: "amber",
     apply: {
       cashPct: 20,
@@ -78,9 +76,8 @@ export const PRESETS: Preset[] = [
   },
   {
     key: "optimistic",
-    label: "Optimistic",
-    blurb:
-      "Growth-tilted, lower inflation. The safer spend is highest here — still not a promise.",
+    label: "presets.optimistic",
+    blurb: "presets.optimisticBlurb",
     tone: "emerald",
     apply: {
       cashPct: 10,

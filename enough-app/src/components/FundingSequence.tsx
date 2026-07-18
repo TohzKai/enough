@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Card, Pill } from "./ui";
 import { formatMoney, formatMoneyMonth } from "../lib/format";
@@ -7,11 +8,11 @@ import type { PlanInputs } from "../types";
 /**
  * FundingSequence — app-review item 5, specific.
  *
- * Replaces the generic "which account to spend first" list with per-account draw
- * AMOUNTS computed from the retiree's actual balances and the engine's safer
- * spend, then surfaces the real Singapore support schemes that may help fund the
- * residual gap, and refers the customer to an insurer, IFA, or their existing adviser for whatever the plan
- * cannot safely cover. Neutral planning advice; product-neutral (no specific product pushed).
+ * Per-account draw AMOUNTS computed from the retiree's actual balances and the
+ * engine's safer spend, then the real Singapore support schemes that may help
+ * fund the residual gap, and a referral to an insurer, IFA, or the customer's
+ * existing adviser for whatever the plan cannot safely cover. Neutral planning
+ * advice; product-neutral.
  */
 
 const toneBar: Record<string, string> = {
@@ -21,13 +22,6 @@ const toneBar: Record<string, string> = {
   slate: "bg-enough-slate",
 };
 
-function amountLabel(amount: number, kind: string): string {
-  if (amount <= 0) return "—";
-  if (kind === "buffer") return `${formatMoney(amount)} buffer`;
-  if (kind === "preserved") return `${formatMoneyMonth(amount)} for life`;
-  return `${formatMoney(amount)}/year`;
-}
-
 export function FundingSequence({
   inputs,
   centralSpend,
@@ -36,19 +30,27 @@ export function FundingSequence({
   /** The engine's central safer monthly spend for this plan. */
   centralSpend: number;
 }) {
+  const { t } = useTranslation();
   const plan = buildFundingPlan(inputs, centralSpend);
+
+  const amountLabel = (amount: number, kind: string): string => {
+    if (amount <= 0) return "—";
+    if (kind === "buffer")
+      return `${formatMoney(amount)} ${t("common.buffer")}`;
+    if (kind === "preserved")
+      return `${formatMoneyMonth(amount)} ${t("common.forLife")}`;
+    return `${formatMoney(amount)}${t("common.perYear")}`;
+  };
 
   return (
     <Card>
       <h3 className="text-2xl font-bold text-enough-navy">
-        Which account to spend — and how much
+        {t("fundingPlan.title")}
       </h3>
-      <p className="text-enough-slate mt-1 max-w-3xl">
-        Tax- and longevity-aware sequencing across cash, SRS, investments and
-        CPF — with the amounts worked out from your own balances. About{" "}
-        {formatMoneyMonth(plan.assetDrawMonthly)} a month comes from your assets
-        above the CPF floor. This is the advice no single product provider can
-        give you neutrally.
+      <p className="readable text-enough-slate mt-1">
+        {t("fundingPlan.intro", {
+          value: formatMoneyMonth(plan.assetDrawMonthly),
+        })}
       </p>
 
       <div className="mt-4 space-y-3">
@@ -64,16 +66,18 @@ export function FundingSequence({
             </div>
             <div className="min-w-0 flex-1">
               <div className="flex items-start justify-between gap-3 flex-wrap">
-                <div className="font-bold text-enough-navy">{s.title}</div>
-                <div className="font-extrabold text-enough-emeraldDark whitespace-nowrap">
+                <div className="font-bold text-enough-navy safe-break">
+                  {t(s.title)}
+                </div>
+                <div className="font-extrabold text-enough-emeraldDark text-right min-w-0 safe-break">
                   {amountLabel(s.amount, s.amountKind)}
                 </div>
               </div>
               <p className="text-sm text-enough-ink mt-1 leading-relaxed">
-                {s.rationale}
+                {t(s.rationale)}
               </p>
               <p className="text-xs text-enough-slate mt-1 leading-relaxed">
-                {s.nuance}
+                {t(s.nuance)}
               </p>
             </div>
           </div>
@@ -84,16 +88,15 @@ export function FundingSequence({
       {plan.residualMonthly > 0 && (
         <div className="mt-4 rounded-xl2 border border-enough-amber/25 bg-enough-amber/5 p-4">
           <div className="flex items-center gap-2 flex-wrap">
-            <Pill tone="amber">Residual gap</Pill>
+            <Pill tone="amber">{t("common.residualGap")}</Pill>
             <span className="font-bold text-enough-navy">
-              About {formatMoneyMonth(plan.residualMonthly)} the plan can’t
-              safely fund from your own assets
+              {t("fundingPlan.residualTitle", {
+                value: formatMoneyMonth(plan.residualMonthly),
+              })}
             </span>
           </div>
-          <p className="text-xs text-enough-slate mt-1 leading-relaxed">
-            What we'd suggest looking at — you decide, and none of these are
-            eligibility promises. These are real Singapore schemes that may
-            help; check each with the relevant agency.
+          <p className="readable text-xs text-enough-slate mt-1 leading-relaxed">
+            {t("fundingPlan.residualNote")}
           </p>
           <div className="mt-3 grid sm:grid-cols-2 gap-2">
             {RELIEF_SCHEMES.map((s) => (
@@ -101,27 +104,23 @@ export function FundingSequence({
                 key={s.name}
                 className="rounded-xl2 border border-enough-line bg-white p-3"
               >
-                <div className="font-bold text-enough-navy text-sm">
-                  {s.name}
+                <div className="font-bold text-enough-navy text-sm safe-break">
+                  {t(s.name)}
                 </div>
                 <div className="text-xs text-enough-slate mt-0.5 leading-snug">
-                  {s.detail}
+                  {t(s.detail)}
                 </div>
               </div>
             ))}
           </div>
-          <p className="mt-3 text-sm text-enough-ink leading-relaxed">
-            For the part you can’t fund from assets or these schemes, working a
-            little longer or trimming the lifestyle helps. And for the risks you
-            can insure against — health, long-term care, longevity — see{" "}
-            <span className="font-semibold text-enough-navy">
-              Protection gaps
-            </span>{" "}
-            below, where Enough refers you to the right insurer or IFA.
+          <p className="readable mt-3 text-sm text-enough-ink leading-relaxed">
+            {t("fundingPlan.residualBody", {
+              protection: t("fundingPlan.protectionLink"),
+            })}
           </p>
           <div className="mt-3">
-            <Link to="/report" className="btn-soft text-sm">
-              Add this to the family report
+            <Link to="/report" className="btn-soft text-sm min-h-[44px]">
+              {t("fundingPlan.addToReport")}
             </Link>
           </div>
         </div>

@@ -36,55 +36,55 @@ export interface ConnectedAccount {
 export const connectedAccounts: ConnectedAccount[] = [
   {
     kind: "cpf",
-    source: "CPF Board",
-    label: "CPF LIFE payout (Standard)",
+    source: "connect.acctCpfSource",
+    label: "connect.acctCpfLabel",
     amount: 1550,
     isMonthly: true,
-    note: "Guaranteed income floor for life",
+    note: "connect.acctCpfNote",
     spendable: true,
   },
   {
     kind: "bank",
-    source: "DBS · via SGFinDex",
-    label: "Savings & fixed deposits",
+    source: "connect.acctBankSource",
+    label: "connect.acctBankLabel",
     amount: 40000,
-    note: "Cash buffer for bad-market years",
+    note: "connect.acctBankNote",
     spendable: true,
   },
   {
     kind: "investment",
-    source: "Endowus · Poems · via SGFinDex",
-    label: "Investments (unit trusts, shares)",
+    source: "connect.acctInvestSource",
+    label: "connect.acctInvestLabel",
     amount: 460000,
-    note: "Bonds + equity — the growth engine",
+    note: "connect.acctInvestNote",
     spendable: true,
   },
   {
     kind: "srs",
-    source: "OCBC SRS · via SGFinDex",
-    label: "SRS account",
+    source: "connect.acctSrsSource",
+    label: "connect.acctSrsLabel",
     amount: 20000,
-    note: "10-year window · 50% taxable on withdrawal",
+    note: "connect.acctSrsNote",
     spendable: true,
   },
   {
     kind: "property",
-    source: "HDB · via Myinfo",
-    label: "4-room HDB flat (paid off)",
+    source: "connect.acctPropSource",
+    label: "connect.acctPropLabel",
     amount: 520000,
-    note: "Excluded from spendable base by default — illiquid",
+    note: "connect.acctPropNote",
     spendable: false,
   },
 ];
 
-/** The ordered steps the Singpass-pull animation walks through. */
+/** The ordered steps the Singpass-pull animation walks through (i18n keys). */
 export const singpassPullSteps = [
-  "Redirecting to Singpass…",
-  "Retrieving CPF LIFE & CPF balances (CPF Board)",
-  "Retrieving bank balances (SGFinDex)",
-  "Retrieving investments & SRS (SGFinDex)",
-  "Retrieving HDB property (Myinfo)",
-  "Building your whole-wealth picture",
+  "connect.step0",
+  "connect.step1",
+  "connect.step2",
+  "connect.step3",
+  "connect.step4",
+  "connect.step5",
 ];
 
 export const spendableTotal = connectedAccounts

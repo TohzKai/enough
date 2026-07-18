@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Card, Pill, Spinner } from "./ui";
 import { formatMoneyMonth, formatDeltaMonth } from "../lib/format";
 import { runFullAnalysisSync } from "../engine";
@@ -10,9 +11,9 @@ import type { PlanInputs } from "../types";
  *
  * Shows the desired-vs-safer gap, then for each action re-runs the REAL engine
  * (reduced to 1,000 trials for responsiveness) to compute how much of the gap it
- * actually closes — raising the safer spend or lowering the desired target. The
- * "do all four" row merges every override and re-runs once more. Nothing here is
- * a hardcoded confidence number; every figure is computed from the inputs.
+ * actually closes. The "do all four" row merges every override and re-runs once
+ * more. Nothing here is a hardcoded confidence number; every figure is computed
+ * from the inputs.
  */
 
 interface Row {
@@ -70,6 +71,7 @@ export function GapCloser({
   /** The gap the page displays (desired − safer central), for a consistent header. */
   gap: number;
 }) {
+  const { t } = useTranslation();
   const [data, setData] = useState<Computed | null>(null);
 
   useEffect(() => {
@@ -90,17 +92,16 @@ export function GapCloser({
 
   return (
     <Card>
-      <h3 className="text-2xl font-bold text-enough-navy">Closing the gap</h3>
-      <p className="text-enough-slate mt-1 max-w-3xl">
-        Your desired spend is {formatMoneyMonth(gap)} above the safer number.
-        These are the levers we'd advise to close it — each figure is what the
-        engine actually computes, not a fixed promise. We advise the move and
-        stay neutral on the specific product.
+      <h3 className="text-2xl font-bold text-enough-navy">
+        {t("gapActions.closingTitle")}
+      </h3>
+      <p className="readable text-enough-slate mt-1">
+        {t("gapActions.closingIntro", { value: formatMoneyMonth(gap) })}
       </p>
 
       {!data ? (
         <div className="mt-4">
-          <Spinner label="Modelling each lever through the engine…" />
+          <Spinner label={t("gapActions.closingSpinner")} />
         </div>
       ) : (
         <>
@@ -112,27 +113,37 @@ export function GapCloser({
               >
                 <div className="flex items-start justify-between gap-4 flex-wrap">
                   <div className="min-w-0">
-                    <div className="font-bold text-enough-navy">{r.title}</div>
+                    <div className="font-bold text-enough-navy safe-break">
+                      {t(r.title)}
+                    </div>
                     <p className="text-sm text-enough-ink mt-1 leading-relaxed">
-                      {r.detail}
+                      {t(r.detail)}
                     </p>
                     <div className="mt-2 flex items-center gap-2 flex-wrap">
                       <Pill tone={r.reversible ? "navy" : "amber"}>
-                        {r.reversible ? "reversible" : "hard to reverse"}
+                        {r.reversible
+                          ? t("common.reversible")
+                          : t("common.hardToReverse")}
                       </Pill>
                       {r.safeDelta > 0 && (
                         <span className="text-xs text-enough-slate">
-                          raises safer spend {formatDeltaMonth(r.safeDelta)}
+                          {t("common.raisesSafer", {
+                            delta: formatDeltaMonth(r.safeDelta),
+                          })}
                         </span>
                       )}
                     </div>
                   </div>
                   <div className="text-right shrink-0">
-                    <div className="text-xs text-enough-slate">closes</div>
+                    <div className="text-xs text-enough-slate">
+                      {t("common.closes")}
+                    </div>
                     <div className="text-xl font-extrabold text-enough-emeraldDark whitespace-nowrap">
                       {r.gapClosed > 0 ? formatMoneyMonth(r.gapClosed) : "—"}
                     </div>
-                    <div className="text-xs text-enough-slate">of the gap</div>
+                    <div className="text-xs text-enough-slate">
+                      {t("common.ofTheGap")}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -142,27 +153,27 @@ export function GapCloser({
           <div className="mt-4 rounded-xl2 border border-enough-emerald/30 bg-enough-emerald/5 p-4 flex items-center justify-between gap-4 flex-wrap">
             <div className="min-w-0">
               <div className="font-bold text-enough-navy">
-                If you did all four (modelled together)
+                {t("gapActions.allFour")}
               </div>
-              <p className="text-sm text-enough-ink mt-0.5 leading-relaxed">
-                The levers overlap, so the combined effect is less than the sum
-                — the engine models them together.
+              <p className="readable text-sm text-enough-ink mt-0.5 leading-relaxed">
+                {t("gapActions.allFourNote")}
               </p>
             </div>
             <div className="text-right shrink-0">
-              <div className="text-xs text-enough-slate">gap remaining</div>
+              <div className="text-xs text-enough-slate">
+                {t("gapActions.gapRemaining")}
+              </div>
               <div className="text-2xl font-extrabold text-enough-navy whitespace-nowrap">
                 {formatMoneyMonth(displayedRemaining)}
               </div>
               <div className="text-xs text-enough-emeraldDark">
-                from {formatMoneyMonth(gap)} today
+                {t("gapActions.fromToday", { value: formatMoneyMonth(gap) })}
               </div>
             </div>
           </div>
 
-          <p className="mt-3 text-xs text-enough-slate leading-relaxed">
-            Modelled estimates — weigh them and decide; no plan is foolproof.
-            Enough advises the move and stays neutral on the specific product.
+          <p className="readable mt-3 text-xs text-enough-slate leading-relaxed">
+            {t("gapActions.closingFooter")}
           </p>
         </>
       )}

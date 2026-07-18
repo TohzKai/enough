@@ -26,8 +26,8 @@ export interface LifestylePersona {
 export const LIFESTYLE_PERSONAS: LifestylePersona[] = [
   {
     key: "modest",
-    label: "Modest",
-    blurb: "Covers the essentials with a little room — a frugal, steady month.",
+    label: "lifestyle.personaModest",
+    blurb: "lifestyle.personaModestBlurb",
     lifestyle: {
       essentials: 600,
       foodTransport: 300,
@@ -42,9 +42,8 @@ export const LIFESTYLE_PERSONAS: LifestylePersona[] = [
   },
   {
     key: "comfortable",
-    label: "Comfortable",
-    blurb:
-      "A relaxed lifestyle with some travel and family support — the worked example.",
+    label: "lifestyle.personaComfortable",
+    blurb: "lifestyle.personaComfortableBlurb",
     lifestyle: {
       essentials: 800,
       foodTransport: 350,
@@ -59,8 +58,8 @@ export const LIFESTYLE_PERSONAS: LifestylePersona[] = [
   },
   {
     key: "generous",
-    label: "Generous",
-    blurb: "More travel, hobbies and family support — an aspirational month.",
+    label: "lifestyle.personaGenerous",
+    blurb: "lifestyle.personaGenerousBlurb",
     lifestyle: {
       essentials: 1000,
       foodTransport: 450,

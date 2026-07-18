@@ -5,27 +5,30 @@
  * The scenarios are calibrated to the Mr Tan worked example (central safer
  * spend S$2,150/month). For a custom plan the impacts scale simply with the
  * plan's central safer spend and horizon — deliberately NO Monte Carlo rerun,
- * so the section stays fast and demo-safe (enough-risks-and-constraints.md §2.7:
- * AI explains the number; deterministic math produces it).
+ * so the section stays fast and demo-safe.
  *
- * Neutral financial planning advice; product-neutral. Wording stays honest:
- * "model shows", "estimated impact", "illustrative", estimates not guarantees —
- * we advise the move, the user weighs it and decides.
+ * Display text (label/title/description/footer) holds i18n KEYS, not English
+ * sentences; the presentation layer translates. Neutral planning advice;
+ * product-neutral. Wording stays honest: "model shows", "estimated impact",
+ * "illustrative", estimates not guarantees — we advise the move, the user
+ * weighs it and decides.
  */
 
 export type StressTone = "green" | "amber" | "red";
 
 export interface LifeEventStressTest {
   key: string;
-  /** Short category label shown in the pill. */
+  /** i18n key for the short category label shown in the pill. */
   label: string;
-  /** Scenario title. */
+  /** i18n key for the scenario title. */
   title: string;
-  /** One-line description of the what-if premise. */
+  /** i18n key for the one-line what-if premise. */
   description: string;
+  /** Interpolation vars for {@link description} (e.g. longevity target age). */
+  descriptionVars?: Record<string, string | number>;
   /** Monthly safer-spend impact (negative = reduces the safer spend). */
   impactMonthly: number;
-  /** Short closing explanation. */
+  /** i18n key for the short closing explanation. */
   footer: string;
   /** Severity tone: green = manageable, amber = moderate, red = severe shock. */
   tone: StressTone;
@@ -38,45 +41,45 @@ export interface LifeEventStressTest {
 export const lifeEventStressTests: LifeEventStressTest[] = [
   {
     key: "longevity",
-    label: "Longer life",
-    title: "Longer life",
-    description: "Plan to age 100 instead of 95.",
+    label: "stressTests.longevityLabel",
+    title: "stressTests.longevityTitle",
+    description: "stressTests.longevityDescription",
+    descriptionVars: { targetAge: 100, currentAge: 95 },
     impactMonthly: -180,
-    footer: "Longevity is usually the biggest silent risk.",
+    footer: "stressTests.longevityFooter",
     tone: "amber",
   },
   {
     key: "healthcare",
-    label: "Healthcare shock",
-    title: "Healthcare shock",
-    description: "Add S$1,500/month of care cost for 3 years.",
+    label: "stressTests.healthcareLabel",
+    title: "stressTests.healthcareTitle",
+    description: "stressTests.healthcareDescription",
     impactMonthly: -250,
-    footer:
-      "Care cost can be funded by cash buffer, family support, insurance review, or public/community support — subject to eligibility.",
+    footer: "stressTests.healthcareFooter",
     tone: "red",
   },
   {
     key: "bequest",
-    label: "Bequest target",
-    title: "Bequest target",
-    description: "Leave at least S$50,000 at the end of the plan.",
+    label: "stressTests.bequestLabel",
+    title: "stressTests.bequestTitle",
+    description: "stressTests.bequestDescription",
     impactMonthly: -120,
-    footer: "Leaving more behind usually means spending less today.",
+    footer: "stressTests.bequestFooter",
     tone: "amber",
   },
 ];
 
 /**
- * Suggestions shown in the "What we suggest" panel:
+ * i18n keys for the suggestions shown in the "What we suggest" panel:
  * framed as prompts to raise, never as recommended actions or products.
  */
 export const optionsToDiscuss: string[] = [
-  "Trim discretionary spending temporarily",
-  "Use cash buffer for short shocks",
-  "Review family support",
-  "Consider housing monetisation options such as room rental or downsizing",
-  "Close insurance gaps — Enough refers you to an insurer, IFA, or your existing adviser",
-  "Explore public or community support schemes",
+  "stressTests.suggest0",
+  "stressTests.suggest1",
+  "stressTests.suggest2",
+  "stressTests.suggest3",
+  "stressTests.suggest4",
+  "stressTests.suggest5",
 ];
 
 /** Central safer spend the base impacts are calibrated to (Mr Tan, engine). */
@@ -102,7 +105,10 @@ export function lifeEventStressTestsFor(
       impactMonthly: Math.round((t.impactMonthly * scale) / 10) * 10,
     };
     if (t.key === "longevity" && horizonAge && horizonAge > 0) {
-      next.description = `Plan to age ${horizonAge + 5} instead of ${horizonAge}.`;
+      next.descriptionVars = {
+        targetAge: horizonAge + 5,
+        currentAge: horizonAge,
+      };
     }
     return next;
   });

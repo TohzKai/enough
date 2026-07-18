@@ -23,8 +23,19 @@ export default {
         },
       },
       fontFamily: {
+        // Multilingual stack: reliable rendering for English/Malay (Latin),
+        // Simplified Chinese, and Tamil. No proprietary font files — all are
+        // open-source (Inter/Noto via Google Fonts) or common system fonts.
         sans: [
           "Inter",
+          "Noto Sans",
+          "Noto Sans SC",
+          "Noto Sans Tamil",
+          "PingFang SC",
+          "Microsoft YaHei",
+          "Latha",
+          "Vijaya",
+          "Arial",
           "system-ui",
           "-apple-system",
           "Segoe UI",
@@ -45,7 +56,19 @@ export default {
         xl2: "1rem",
       },
       maxWidth: {
-        app: "1120px",
+        // Defect 9.1 fix: the old 1120px left excessive empty space on large
+        // desktops. 1240px lets the Results page use wide screens effectively
+        // while long paragraphs stay readable via the `.readable` helper.
+        app: "1240px",
+        // Extra-wide option for analytical visualisations that benefit from
+        // the full large-screen width.
+        wide: "1320px",
+      },
+      // Sticky header height (desktop / mobile) — consumed by scroll-padding-top
+      // so anchor links and keyboard focus are never hidden behind the header.
+      spacing: {
+        "header-sm": "4rem",
+        header: "5rem",
       },
     },
   },

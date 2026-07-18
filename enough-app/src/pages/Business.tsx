@@ -1,51 +1,44 @@
+import { useTranslation } from "react-i18next";
 import { Card, SectionTitle, Disclaimer, Pill } from "../components/ui";
 
 export function Business() {
+  const { t } = useTranslation();
   return (
     <div className="space-y-6">
       <SectionTitle
-        kicker="For partners"
-        title="Enough for partners"
-        subtitle="A neutral Singapore decumulation engine — distributed through partners for whom neutrality is an asset, never a threat."
+        kicker={t("partners.kicker")}
+        title={t("partners.title")}
+        subtitle={t("partners.subtitle")}
       />
 
       {/* The honest position: wedge, not moat (yet) */}
       <Card className="bg-enough-navy text-white border-0">
         <h3 className="text-white text-xl font-bold">
-          A wedge today, a built moat tomorrow
+          {t("partners.wedgeTitle")}
         </h3>
-        <p className="text-white/85 mt-2 leading-relaxed max-w-3xl">
-          The safe-spend engine is honest, focused table stakes — the defensible
-          moat is the licence-gated, family-embedded system-of-record it
-          becomes: consented whole-wealth aggregation, tax-aware sequencing, and
-          a multi-year household relationship no product-seller can assemble.
+        <p className="readable text-white/85 mt-2 leading-relaxed">
+          {t("partners.wedgeBody")}
         </p>
       </Card>
 
       {/* Problem + Why now + Why wins */}
       <div className="grid lg:grid-cols-3 gap-4">
-        <Block title="The problem" tone="red">
-          <p>
-            Accumulation is crowded. Decumulation is under-served. No neutral
-            player owns the monthly spend decision — banks and advisers earn on
-            the products they sell.
-          </p>
+        <Block titleKey="partners.problemTitle" tone="red">
+          <p>{t("partners.problemBody")}</p>
         </Block>
-        <Block title="Why now" tone="amber">
+        <Block titleKey="partners.whyNowTitle" tone="amber">
           <ul className="list-disc pl-4 space-y-1">
-            <li>Singapore is ageing — 1 in 4 over 65 by 2030.</li>
-            <li>CPF LIFE is a floor, not a whole-wealth spending answer.</li>
-            <li>
-              The public neutral whole-wealth planner (MyMoneySense) exited.
-            </li>
-            <li>SGFinDex makes consented aggregation possible.</li>
+            <li>{t("partners.whyNow1")}</li>
+            <li>{t("partners.whyNow2")}</li>
+            <li>{t("partners.whyNow3")}</li>
+            <li>{t("partners.whyNow4")}</li>
           </ul>
         </Block>
-        <Block title="The three that survive" tone="emerald">
+        <Block titleKey="partners.threeTitle" tone="emerald">
           <ul className="list-disc pl-4 space-y-1">
-            <li>Neutral, whole-wealth aggregation.</li>
-            <li>Native CPF-LIFE / SRS / SG-tax depth.</li>
-            <li>The family / adult-child layer (uncontested).</li>
+            <li>{t("partners.three1")}</li>
+            <li>{t("partners.three2")}</li>
+            <li>{t("partners.three3")}</li>
           </ul>
         </Block>
       </div>
@@ -53,134 +46,121 @@ export function Business() {
       {/* Business model — non-bank B2B2C led + family tier */}
       <Card>
         <h3 className="text-lg font-bold text-enough-navy mb-1">
-          Channel: non-bank B2B2C led, family tier on top
+          {t("partners.channelTitle")}
         </h3>
-        <p className="text-sm text-enough-slate mb-3">
-          Flat fees only — never commission or product revenue-share. Enough
-          stays the data controller in every deal. Banks last, and only as a
-          firewalled neutral rail.
+        <p className="readable text-sm text-enough-slate mb-3">
+          {t("partners.channelBody")}
         </p>
         <div className="grid md:grid-cols-3 gap-4">
           <Channel
-            name="Employer-wellness (lead)"
+            nameKey="partners.channelWellnessName"
             tone="emerald"
-            lines={[
-              "Support sandwich-generation staff with ageing parents",
-              "Per-employee-per-year (PEPY), flat",
-              "Cleanest on neutrality + data",
-              "Reaches the adult-child buyer directly",
+            lineKeys={[
+              "partners.channelWellness1",
+              "partners.channelWellness2",
+              "partners.channelWellness3",
+              "partners.channelWellness4",
             ]}
           />
           <Channel
-            name="Fee-only IFAs"
+            nameKey="partners.channelIfaName"
             tone="amber"
-            lines={[
-              "A scalable neutral engine + a glass-box plan to hand clients",
-              "Per-adviser seat / month",
-              "Co-brandable; Enough keeps engine + data",
+            lineKeys={[
+              "partners.channelIfa1",
+              "partners.channelIfa2",
+              "partners.channelIfa3",
             ]}
           />
           <Channel
-            name="Insurers + family tier"
+            nameKey="partners.channelInsurerName"
             tone="navy"
-            lines={[
-              "Neutral need-sizing as qualified lead-gen (flat + per-lead)",
-              "Never commission on sales",
-              "Direct family tier: the adult child pays",
+            lineKeys={[
+              "partners.channelInsurer1",
+              "partners.channelInsurer2",
+              "partners.channelInsurer3",
             ]}
           />
         </div>
         <p className="text-xs text-enough-slate mt-3">
-          All figures illustrative estimates for an academic proposal. Validate
-          pricing units with partner discovery + Van Westendorp before
-          committing.
+          {t("partners.channelNote")}
         </p>
       </Card>
 
       {/* Regulatory + Pilot ask */}
       <div className="grid lg:grid-cols-2 gap-4">
-        <Block title="Regulatory path" tone="emerald">
+        <Block titleKey="partners.regTitle" tone="emerald">
           <ul className="space-y-1.5">
-            <li>
-              Pursuing the MAS Financial Adviser licence to give neutral
-              financial planning advice.
-            </li>
-            <li>Product-neutral: advise the decision, never push a product.</li>
-            <li>Flat fees, never commission — so the advice stays honest.</li>
-            <li>
-              The licence gates the moat — a Wave-1 critical-path item, not an
-              afterthought.
-            </li>
+            <li>{t("partners.reg1")}</li>
+            <li>{t("partners.reg2")}</li>
+            <li>{t("partners.reg3")}</li>
+            <li>{t("partners.reg4")}</li>
           </ul>
         </Block>
-        <Block title="Pilot ask" tone="navy">
+        <Block titleKey="partners.pilotTitle" tone="navy">
           <ul className="space-y-1.5">
-            <li>One employer-wellness or fee-only IFA partner.</li>
-            <li>Sandwich-generation staff with ageing parents.</li>
-            <li>
-              Measure connected plans, safe-spend adoption, family engagement.
-            </li>
-            <li>Goal: prove the number, build the family flywheel.</li>
+            <li>{t("partners.pilot1")}</li>
+            <li>{t("partners.pilot2")}</li>
+            <li>{t("partners.pilot3")}</li>
+            <li>{t("partners.pilot4")}</li>
           </ul>
         </Block>
       </div>
 
       <Card className="bg-enough-navy text-white border-0 text-center">
-        <div className="text-xl md:text-2xl font-bold text-enough-emerald">
-          Out-focus MoneyOwl. Out-neutral DBS. Own the family.
+        <div className="text-xl md:text-2xl font-bold text-enough-emerald safe-break">
+          {t("partners.closerTitle")}
         </div>
-        <p className="text-white/70 text-sm mt-2">
-          Neutral financial planning advice (pursuing MAS FA licensing). We
-          advise the decision, not a specific product. Estimates, not
-          guarantees. Not affiliated with CPF Board or MAS.
+        <p className="readable mx-auto text-white/70 text-sm mt-2">
+          {t("partners.closerBody")}
         </p>
       </Card>
 
-      <Disclaimer tone="soft">
-        Market and unit-economics figures are illustrative estimates for an
-        academic proposal.
-      </Disclaimer>
+      <Disclaimer tone="soft">{t("partners.disclaimer")}</Disclaimer>
     </div>
   );
 }
 
 function Block({
-  title,
+  titleKey,
   tone,
   children,
 }: {
-  title: string;
+  titleKey: string;
   tone: "emerald" | "amber" | "red" | "navy";
   children: React.ReactNode;
 }) {
+  const { t } = useTranslation();
   return (
     <Card>
-      <Pill tone={tone}>{title}</Pill>
+      <Pill tone={tone}>{t(titleKey)}</Pill>
       <div className="mt-3 text-sm text-enough-ink space-y-1.5">{children}</div>
     </Card>
   );
 }
 
 function Channel({
-  name,
+  nameKey,
   tone,
-  lines,
+  lineKeys,
 }: {
-  name: string;
+  nameKey: string;
   tone: "emerald" | "amber" | "navy";
-  lines: string[];
+  lineKeys: string[];
 }) {
+  const { t } = useTranslation();
   return (
     <div className="rounded-xl2 border border-enough-line p-4">
       <div className="flex items-center justify-between gap-2">
-        <div className="text-base font-extrabold text-enough-navy">{name}</div>
-        <Pill tone={tone}>channel</Pill>
+        <div className="text-base font-extrabold text-enough-navy safe-break">
+          {t(nameKey)}
+        </div>
+        <Pill tone={tone}>{t("common.channel")}</Pill>
       </div>
       <ul className="mt-2 space-y-1 text-sm text-enough-ink">
-        {lines.map((l) => (
-          <li key={l} className="flex gap-2">
+        {lineKeys.map((k) => (
+          <li key={k} className="flex gap-2">
             <span className="text-enough-emerald">•</span>
-            <span>{l}</span>
+            <span className="leading-snug">{t(k)}</span>
           </li>
         ))}
       </ul>

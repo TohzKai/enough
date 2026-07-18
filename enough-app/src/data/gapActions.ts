@@ -32,9 +32,8 @@ export interface GapAction {
 export const GAP_ACTIONS: GapAction[] = [
   {
     key: "cpf-floor",
-    title: "Model a higher CPF LIFE floor",
-    detail:
-      "A larger guaranteed floor (e.g. topping up towards the Enhanced Retirement Sum) means more of your essentials are covered for life, so less of your spending depends on markets.",
+    title: "gapActions.cpfFloorTitle",
+    detail: "gapActions.cpfFloorDetail",
     reversible: false,
     buildOverride: (i) => ({
       cpfLifeMonthly: i.cpfLifeMonthly + 400,
@@ -42,9 +41,8 @@ export const GAP_ACTIONS: GapAction[] = [
   },
   {
     key: "monetise-home",
-    title: "Rent out a room in the HDB flat",
-    detail:
-      "Renting a spare room adds guaranteed monthly income on top of CPF LIFE. Raising the income floor is the biggest lever of all, because it is money you never have to fund from savings.",
+    title: "gapActions.monetiseTitle",
+    detail: "gapActions.monetiseDetail",
     reversible: true,
     buildOverride: () => ({
       monetisation: "room-rental",
@@ -53,9 +51,8 @@ export const GAP_ACTIONS: GapAction[] = [
   },
   {
     key: "trim-aspirational",
-    title: "Trim the aspirational layer",
-    detail:
-      "Aspirational spending (travel, hobbies, extras) is the layer that flexes. Trimming it in the plan closes the gap directly, without touching the essentials floor.",
+    title: "gapActions.trimTitle",
+    detail: "gapActions.trimDetail",
     reversible: true,
     buildOverride: (i) => {
       const lifestyle = { ...i.lifestyle, travelHobbies: 0, other: 0 };
@@ -64,9 +61,8 @@ export const GAP_ACTIONS: GapAction[] = [
   },
   {
     key: "guardrails",
-    title: "Agree to guardrails in bad years",
-    detail:
-      "Agreeing to trim discretionary spending in down markets lets the plan sustain a slightly higher average safer spend the rest of the time — a smaller lever here, but the main defence against a bad run of early returns.",
+    title: "gapActions.guardrailsTitle",
+    detail: "gapActions.guardrailsDetail",
     reversible: true,
     buildOverride: () => ({
       spendingFlexibility: 15,

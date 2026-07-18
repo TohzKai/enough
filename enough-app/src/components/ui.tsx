@@ -83,20 +83,6 @@ export function Pill({
   return <span className={`pill ${toneMap[tone]}`}>{children}</span>;
 }
 
-/** Zone badge for the sequence-risk guardrail metaphor. */
-export function ZoneBadge({ zone }: { zone: "green" | "amber" | "red" }) {
-  const map = {
-    green: {
-      label: "Green zone",
-      cls: "bg-enough-emerald/10 text-enough-emeraldDark",
-    },
-    amber: { label: "Amber zone", cls: "bg-enough-amber/10 text-enough-amber" },
-    red: { label: "Red zone", cls: "bg-enough-red/10 text-enough-red" },
-  } as const;
-  const z = map[zone];
-  return <span className={`pill ${z.cls}`}>{z.label}</span>;
-}
-
 export function Disclaimer({
   children,
   tone = "soft",
@@ -355,26 +341,5 @@ export function ToggleField({
         )}
       </span>
     </label>
-  );
-}
-
-/** A reusable empty-state prompt shown when a user lands on a result page
- *  without having run a simulation. */
-export function NeedToRun() {
-  return (
-    <Card>
-      <div className="text-center py-8">
-        <div className="text-lg font-semibold text-enough-navy">
-          Run a simulation first
-        </div>
-        <p className="mt-2 text-enough-slate">
-          Head to the plan page, enter your details (or load Mr Tan), and run
-          the engine. Your results will appear here.
-        </p>
-        <a href="#/plan" className="btn-primary mt-5 inline-flex">
-          Build a plan
-        </a>
-      </div>
-    </Card>
   );
 }

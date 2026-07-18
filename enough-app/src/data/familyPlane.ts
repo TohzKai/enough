@@ -2,24 +2,26 @@
  * Moat pillar E — the family layer / family tier (the uncontested whitespace).
  *
  * A permissioned retiree + spouse + adult-child on ONE plan, with a co-signer flow
- * for big moves (enough-moat-and-differentiation.md §4 "The family layer (E)" +
- * enough-adult-children-research.md Part C). The adult child is the operator + likely
- * buyer; the retiree stays the beneficiary and decision-maker.
+ * for big moves. The adult child is the operator + likely buyer; the retiree
+ * stays the beneficiary and decision-maker.
  *
- * The product must stay rigorously PARENT-CENTRIC — the safe-spend number always
- * optimises the parent's wellbeing; the parent (not the child) sees and confirms the
- * number. That parent-centric integrity is what neutralises the inheritance conflict
- * (research Part C §5). All data illustrative.
+ * All display text (names, roles, permissions, co-sign detail, alerts) holds
+ * i18n KEYS; the presentation layer translates. PARENT-CENTRIC by design: the
+ * safe-spend number always optimises the parent's wellbeing; the parent (not the
+ * child) sees and confirms the number. All data illustrative.
  */
 
 export type FamilyRole = "owner" | "operator" | "viewer";
 
 export interface FamilyMember {
+  /** i18n key for the member's display name. */
   name: string;
+  /** i18n key for the relation label. */
   relation: string;
   role: FamilyRole;
+  /** i18n key for the role label. */
   roleLabel: string;
-  /** What this member can do on the plan. */
+  /** i18n keys for what this member can do on the plan. */
   permissions: string[];
   initials: string;
   tone: "navy" | "emerald" | "amber";
@@ -27,41 +29,29 @@ export interface FamilyMember {
 
 export const familyMembers: FamilyMember[] = [
   {
-    name: "Mr Tan",
-    relation: "Retiree",
+    name: "family.m1Name",
+    relation: "family.m1Relation",
     role: "owner",
-    roleLabel: "Owner · decision-maker",
-    permissions: [
-      "Sees and confirms the safe-spend number",
-      "Owns the plan and all data consent",
-      "Must approve any change to spending or accounts",
-    ],
+    roleLabel: "family.m1Role",
+    permissions: ["family.m1p1", "family.m1p2", "family.m1p3"],
     initials: "MT",
     tone: "navy",
   },
   {
-    name: "Mrs Tan",
-    relation: "Spouse",
+    name: "family.m2Name",
+    relation: "family.m2Relation",
     role: "viewer",
-    roleLabel: "Viewer",
-    permissions: [
-      "Sees the plan and the safer monthly spend range",
-      "Joins family conversations",
-      "Cannot change accounts or spending",
-    ],
+    roleLabel: "family.m2Role",
+    permissions: ["family.m2p1", "family.m2p2", "family.m2p3"],
     initials: "WT",
     tone: "emerald",
   },
   {
-    name: "Wei Ling",
-    relation: "Adult daughter",
+    name: "family.m3Name",
+    relation: "family.m3Relation",
     role: "operator",
-    roleLabel: "Operator · co-pilot",
-    permissions: [
-      "Sets up & connects accounts on Dad's behalf (with consent)",
-      "Gets alerts when the plan needs a look",
-      "Co-signs big moves — but Dad confirms the final number",
-    ],
+    roleLabel: "family.m3Role",
+    permissions: ["family.m3p1", "family.m3p2", "family.m3p3"],
     initials: "WL",
     tone: "amber",
   },
@@ -69,11 +59,16 @@ export const familyMembers: FamilyMember[] = [
 
 export interface CoSignRequest {
   id: string;
+  /** i18n key for the request title. */
   title: string;
+  /** i18n key for the request detail. */
   detail: string;
+  /** i18n key for the raiser line. */
   raisedBy: string;
-  needs: string; // who must co-sign / confirm
+  /** i18n key for who must co-sign / confirm. */
+  needs: string;
   status: "awaiting-parent" | "awaiting-child" | "approved";
+  /** i18n key for the optional parent-centric note. */
   parentCentricNote?: string;
 }
 
@@ -84,31 +79,27 @@ export interface CoSignRequest {
 export const coSignRequests: CoSignRequest[] = [
   {
     id: "cs-1",
-    title: "Raise the safer monthly spend to S$2,350",
-    detail:
-      "Guardrails earned a raise after a strong market. Wei Ling reviewed it; Dad confirms before it takes effect.",
-    raisedBy: "Wei Ling (operator)",
-    needs: "Mr Tan must confirm",
+    title: "familyPlane.cs1Title",
+    detail: "familyPlane.cs1Detail",
+    raisedBy: "familyPlane.cs1RaisedBy",
+    needs: "familyPlane.cs1Needs",
     status: "awaiting-parent",
-    parentCentricNote:
-      "Enough always optimises the parent's wellbeing — the raise is safe, so the plan surfaces it to Dad, not away from him.",
+    parentCentricNote: "familyPlane.cs1Note",
   },
   {
     id: "cs-2",
-    title: "Model a higher CPF LIFE floor",
-    detail:
-      "A larger guaranteed floor raises confidence. We advise the move; the specific product is Dad's call — and Dad decides.",
-    raisedBy: "Enough (guardrail engine)",
-    needs: "Mr Tan + Wei Ling",
+    title: "familyPlane.cs2Title",
+    detail: "familyPlane.cs2Detail",
+    raisedBy: "familyPlane.cs2RaisedBy",
+    needs: "familyPlane.cs2Needs",
     status: "awaiting-child",
   },
   {
     id: "cs-3",
-    title: "Connect OCBC SRS account via SGFinDex",
-    detail:
-      "Wei Ling connected the SRS account so withdrawal sequencing can use the 10-year window.",
-    raisedBy: "Wei Ling (operator)",
-    needs: "Consented by Mr Tan",
+    title: "familyPlane.cs3Title",
+    detail: "familyPlane.cs3Detail",
+    raisedBy: "familyPlane.cs3RaisedBy",
+    needs: "familyPlane.cs3Needs",
     status: "approved",
   },
 ];
@@ -117,17 +108,17 @@ export const coSignRequests: CoSignRequest[] = [
 export const childAlerts = [
   {
     tone: "emerald" as const,
-    title: "Dad's plan is on track",
-    body: "90% confidence to age 95. No action needed.",
+    title: "familyPlane.alert1Title",
+    body: "familyPlane.alert1Body",
   },
   {
     tone: "amber" as const,
-    title: "A safe raise is waiting for Dad to confirm",
-    body: "Markets ran above the plan line — the safer monthly spend can rise to S$2,350.",
+    title: "familyPlane.alert2Title",
+    body: "familyPlane.alert2Body",
   },
   {
     tone: "navy" as const,
-    title: "CPF top-up decision to review together",
-    body: "A larger floor would lift confidence ~3%. We advise the move, not a specific product.",
+    title: "familyPlane.alert3Title",
+    body: "familyPlane.alert3Body",
   },
 ];

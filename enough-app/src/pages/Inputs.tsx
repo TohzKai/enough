@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { usePlan } from "../store/planStore";
 import {
   Card,
@@ -39,6 +40,14 @@ import {
   type ConnectedAccount,
 } from "../data/aggregation";
 
+const kindLabelKey: Record<ConnectedAccount["kind"], string> = {
+  cpf: "connect.kindCpf",
+  bank: "connect.kindBank",
+  investment: "connect.kindInvestment",
+  srs: "connect.kindSrs",
+  property: "connect.kindProperty",
+};
+
 function Group({
   title,
   children,
@@ -48,7 +57,9 @@ function Group({
 }) {
   return (
     <Card>
-      <h3 className="text-base font-bold text-enough-navy mb-3">{title}</h3>
+      <h3 className="text-base font-bold text-enough-navy mb-3 safe-break">
+        {title}
+      </h3>
       <div className="grid gap-4 sm:grid-cols-2">{children}</div>
     </Card>
   );
@@ -63,8 +74,10 @@ function SummaryRow({
 }) {
   return (
     <div className="flex items-center justify-between gap-3">
-      <span className="text-sm text-enough-slate">{label}</span>
-      <span className="font-bold text-enough-navy text-right">{value}</span>
+      <span className="text-sm text-enough-slate safe-break">{label}</span>
+      <span className="font-bold text-enough-navy text-right whitespace-nowrap">
+        {value}
+      </span>
     </div>
   );
 }
@@ -79,6 +92,7 @@ const kindTone: Record<ConnectedAccount["kind"], "navy" | "emerald" | "amber"> =
   };
 
 function AccountRow({ acct }: { acct: ConnectedAccount }) {
+  const { t } = useTranslation();
   return (
     <div
       className={`flex items-start justify-between gap-3 rounded-xl2 border p-3 ${
@@ -89,13 +103,15 @@ function AccountRow({ acct }: { acct: ConnectedAccount }) {
     >
       <div className="min-w-0">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="font-bold text-enough-navy">{acct.label}</span>
-          {!acct.spendable && <Pill tone="navy">excluded</Pill>}
+          <span className="font-bold text-enough-navy safe-break">
+            {t(acct.label)}
+          </span>
+          {!acct.spendable && <Pill tone="navy">{t("common.excluded")}</Pill>}
         </div>
-        <div className="text-xs text-enough-slate mt-0.5">{acct.source}</div>
+        <div className="text-xs text-enough-slate mt-0.5">{t(acct.source)}</div>
         {acct.note && (
-          <div className="text-xs text-enough-slate mt-1 leading-snug">
-            {acct.note}
+          <div className="text-xs text-enough-slate mt-1 leading-snug safe-break">
+            {t(acct.note)}
           </div>
         )}
       </div>
@@ -104,11 +120,11 @@ function AccountRow({ acct }: { acct: ConnectedAccount }) {
           {formatMoney(acct.amount)}
           {acct.isMonthly && (
             <span className="text-xs font-medium text-enough-slate">
-              /month
+              {t("common.perMonth")}
             </span>
           )}
         </div>
-        <Pill tone={kindTone[acct.kind]}>{acct.kind.toUpperCase()}</Pill>
+        <Pill tone={kindTone[acct.kind]}>{t(kindLabelKey[acct.kind])}</Pill>
       </div>
     </div>
   );
@@ -116,6 +132,7 @@ function AccountRow({ acct }: { acct: ConnectedAccount }) {
 
 /** Moat A — the consented Singpass/SGFinDex aggregation flow (prototype). */
 function ConnectPanel() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { loadSample } = usePlan();
   const [phase, setPhase] = useState<"idle" | "pulling" | "connected">("idle");
@@ -142,39 +159,33 @@ function ConnectPanel() {
     return (
       <Card>
         <div className="grid md:grid-cols-[1fr_auto] gap-5 items-center">
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-xl font-bold text-enough-navy">
-                Connect your accounts with Singpass
+          <div className="min-w-0">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h3 className="text-xl font-bold text-enough-navy safe-break">
+                {t("connect.connectTitle")}
               </h3>
-              <Pill tone="emerald">recommended</Pill>
+              <Pill tone="emerald">{t("common.recommended")}</Pill>
             </div>
-            <p className="text-enough-slate mt-2 leading-relaxed">
-              One consented pull via Singpass brings in your CPF, bank, SRS and
-              investments through SGFinDex — no typing, always current. We never
-              see your password, and we're product-neutral — advice, never a
-              sales pitch.
+            <p className="readable text-enough-slate mt-2 leading-relaxed">
+              {t("connect.connectBody")}
             </p>
             <div className="mt-3 flex flex-wrap gap-2 text-xs">
-              <Pill tone="navy">CPF Board</Pill>
-              <Pill tone="emerald">Bank · SGFinDex</Pill>
-              <Pill tone="emerald">Investments · SGFinDex</Pill>
-              <Pill tone="amber">SRS</Pill>
-              <Pill tone="navy">HDB · Myinfo</Pill>
+              <Pill tone="navy">{t("connect.chipCpfBoard")}</Pill>
+              <Pill tone="emerald">{t("connect.chipBank")}</Pill>
+              <Pill tone="emerald">{t("connect.chipInvestments")}</Pill>
+              <Pill tone="amber">{t("connect.chipSrs")}</Pill>
+              <Pill tone="navy">{t("connect.chipHdb")}</Pill>
             </div>
           </div>
           <button
             onClick={connect}
-            className="btn-emerald text-base !px-6 !py-4"
+            className="btn-emerald text-base !px-6 !py-4 min-h-[52px]"
           >
-            Connect with Singpass
+            {t("connect.connectButton")}
           </button>
         </div>
-        <div className="mt-4 rounded-xl2 border border-enough-line bg-enough-navy/5 px-4 py-2.5 text-xs text-enough-slate leading-relaxed">
-          Prototype only — this simulates a consented Myinfo / SGFinDex pull.
-          Full SGFinDex access requires licensed-FI status and is a post-licence
-          step; at MVP this is Myinfo + manual entry. Never asks for your
-          banking password.
+        <div className="readable mt-4 rounded-xl2 border border-enough-line bg-enough-navy/5 px-4 py-2.5 text-xs text-enough-slate leading-relaxed">
+          {t("connect.protoNote")}
         </div>
       </Card>
     );
@@ -184,7 +195,7 @@ function ConnectPanel() {
     return (
       <Card>
         <h3 className="text-xl font-bold text-enough-navy">
-          Connecting via Singpass…
+          {t("connect.connectingTitle")}
         </h3>
         <div className="mt-4 space-y-2">
           {singpassPullSteps.map((s, i) => (
@@ -205,7 +216,7 @@ function ConnectPanel() {
               >
                 {i < step ? "✓" : ""}
               </span>
-              {s}
+              {t(s)}
             </div>
           ))}
         </div>
@@ -220,15 +231,14 @@ function ConnectPanel() {
   const monthlyFloor = connectedAccounts.find((a) => a.isMonthly);
   return (
     <Card>
-      <div className="flex items-center gap-2">
-        <Pill tone="emerald">Connected</Pill>
-        <h3 className="text-xl font-bold text-enough-navy">
-          Your whole-wealth picture
+      <div className="flex items-center gap-2 flex-wrap">
+        <Pill tone="emerald">{t("common.connected")}</Pill>
+        <h3 className="text-xl font-bold text-enough-navy safe-break">
+          {t("connect.connectedTitle")}
         </h3>
       </div>
-      <p className="text-enough-slate mt-1">
-        Pulled via Singpass / SGFinDex. This is the single view no bank can be
-        neutral about — and it's what the safe-spend number is built on.
+      <p className="readable text-enough-slate mt-1">
+        {t("connect.connectedBody")}
       </p>
 
       <div className="mt-4 space-y-2.5">
@@ -240,33 +250,33 @@ function ConnectPanel() {
       <div className="mt-4 grid sm:grid-cols-2 gap-3">
         <div className="rounded-xl2 bg-enough-emerald/10 p-4">
           <div className="text-xs font-semibold uppercase tracking-wider text-enough-emeraldDark">
-            Spendable wealth
+            {t("connect.spendableWealth")}
           </div>
           <div className="text-2xl font-extrabold text-enough-navy mt-1">
             {formatMoney(spendableTotal)}
           </div>
           <div className="text-xs text-enough-slate mt-1">
-            Cash + investments + SRS (property excluded)
+            {t("connect.spendableWealthNote")}
           </div>
         </div>
         <div className="rounded-xl2 bg-enough-navy/5 p-4">
           <div className="text-xs font-semibold uppercase tracking-wider text-enough-navy">
-            Guaranteed floor
+            {t("connect.guaranteedFloor")}
           </div>
           <div className="text-2xl font-extrabold text-enough-navy mt-1">
             {monthlyFloor ? formatMoneyMonth(monthlyFloor.amount) : "—"}
           </div>
           <div className="text-xs text-enough-slate mt-1">
-            CPF LIFE — income you can't outlive
+            {t("connect.guaranteedFloorNote")}
           </div>
         </div>
       </div>
 
       <button
         onClick={() => navigate("/result")}
-        className="btn-emerald w-full mt-4 text-base"
+        className="btn-emerald w-full mt-4 text-base min-h-[52px]"
       >
-        See my safer monthly spend →
+        {t("common.seeMySaferSpend")}
       </button>
     </Card>
   );
@@ -282,6 +292,7 @@ function LifestyleSection({
   onChange: (key: LifestyleBucketKey, amount: number) => void;
   onApplyPersona: (p: LifestylePersona) => void;
 }) {
+  const { t } = useTranslation();
   const [showAdvanced, setShowAdvanced] = useState(false);
   const totals = layerTotals(lifestyle);
   // Highlight a persona when the current buckets still match its suggestion exactly.
@@ -289,36 +300,44 @@ function LifestyleSection({
     LIFESTYLE_BUCKETS.every((b) => lifestyle[b.key] === p.lifestyle[b.key]),
   )?.key;
   const tiles: { label: string; value: number; cls: string }[] = [
-    { label: "Essentials", value: totals.essential, cls: "text-enough-navy" },
     {
-      label: "Flexible",
+      label: t("lifestyle.layerEssentials"),
+      value: totals.essential,
+      cls: "text-enough-navy",
+    },
+    {
+      label: t("lifestyle.layerFlexible"),
       value: totals.flexible,
       cls: "text-enough-emeraldDark",
     },
     {
-      label: "Aspirational",
+      label: t("lifestyle.layerAspirational"),
       value: totals.aspirational,
       cls: "text-enough-amber",
     },
-    { label: "Total / month", value: totals.total, cls: "text-enough-navy" },
+    {
+      label: t("lifestyle.layerTotal"),
+      value: totals.total,
+      cls: "text-enough-navy",
+    },
   ];
   const byLayer = (layer: LifestyleLayer) =>
     LIFESTYLE_BUCKETS.filter((b) => b.layer === layer);
   return (
     <Card>
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-3 gap-2 flex-wrap">
         <h3 className="text-base font-bold text-enough-navy">
-          5 · Lifestyle spending
+          {t("connect.group5")}
         </h3>
         <span className="text-xs text-enough-slate">
-          Pick a starting point, then adjust
+          {t("connect.lifestylePickHint")}
         </span>
       </div>
 
       {/* Lifestyle chooser — suggests a full set of buckets in one click */}
       <div className="mb-4">
         <div className="text-xs font-semibold uppercase tracking-wide text-enough-slate mb-2">
-          Start from a lifestyle
+          {t("connect.startFromLifestyle")}
         </div>
         <div className="grid sm:grid-cols-3 gap-2">
           {LIFESTYLE_PERSONAS.map((p) => {
@@ -327,44 +346,45 @@ function LifestyleSection({
               <button
                 key={p.key}
                 type="button"
+                aria-pressed={active}
                 onClick={() => onApplyPersona(p)}
-                className={`text-left rounded-xl2 border px-3 py-2.5 transition-colors ${
+                className={`min-h-[44px] text-left rounded-xl2 border px-3 py-2.5 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-enough-blue/40 ${
                   active
                     ? "border-enough-emerald bg-enough-emerald/5 ring-1 ring-enough-emerald/40"
                     : "border-enough-line hover:bg-enough-navy/5"
                 }`}
               >
                 <div className="flex items-center justify-between gap-2">
-                  <span className="font-bold text-enough-navy text-sm">
-                    {p.label}
+                  <span className="font-bold text-enough-navy text-sm safe-break">
+                    {t(p.label)}
                   </span>
-                  <span className="text-sm font-extrabold text-enough-emeraldDark">
+                  <span className="text-sm font-extrabold text-enough-emeraldDark whitespace-nowrap">
                     {formatMoneyMonth(personaTotal(p))}
                   </span>
                 </div>
-                <div className="text-xs text-enough-slate mt-0.5 leading-snug">
-                  {p.blurb}
+                <div className="text-xs text-enough-slate mt-0.5 leading-snug safe-break">
+                  {t(p.blurb)}
                 </div>
               </button>
             );
           })}
         </div>
         <div className="text-xs text-enough-slate mt-2">
-          Suggested budgets to start from — adjust them to fit your life.
+          {t("connect.lifestyleNote")}
         </div>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
-        {tiles.map((t) => (
+        {tiles.map((tile) => (
           <div
-            key={t.label}
+            key={tile.label}
             className="rounded-xl2 border border-enough-line bg-enough-navy/5 px-3 py-2 text-center"
           >
-            <div className="text-[11px] font-semibold uppercase tracking-wide text-enough-slate">
-              {t.label}
+            <div className="text-[11px] font-semibold uppercase tracking-wide text-enough-slate safe-break">
+              {tile.label}
             </div>
-            <div className={`text-sm font-extrabold ${t.cls}`}>
-              {formatMoneyMonth(t.value)}
+            <div className={`text-sm font-extrabold ${tile.cls}`}>
+              {formatMoneyMonth(tile.value)}
             </div>
           </div>
         ))}
@@ -374,7 +394,7 @@ function LifestyleSection({
         {[...byLayer("essential"), ...byLayer("flexible")].map((b) => (
           <MoneyField
             key={b.key}
-            label={b.label}
+            label={t(b.label)}
             value={lifestyle[b.key]}
             onChange={(v) => onChange(b.key, v)}
           />
@@ -384,18 +404,19 @@ function LifestyleSection({
       <button
         type="button"
         onClick={() => setShowAdvanced((s) => !s)}
-        className="mt-4 text-sm font-semibold text-enough-navy hover:text-enough-emeraldDark"
+        aria-expanded={showAdvanced}
+        className="mt-4 text-sm font-semibold text-enough-navy hover:text-enough-emeraldDark min-h-[44px]"
       >
         {showAdvanced
-          ? "Hide aspirational buckets ▲"
-          : "Show aspirational buckets (travel, hobbies, other) ▼"}
+          ? t("connect.hideAspirational")
+          : t("connect.showAspirational")}
       </button>
       {showAdvanced && (
         <div className="grid gap-4 sm:grid-cols-2 mt-3">
           {byLayer("aspirational").map((b) => (
             <MoneyField
               key={b.key}
-              label={b.label}
+              label={t(b.label)}
               value={lifestyle[b.key]}
               onChange={(v) => onChange(b.key, v)}
             />
@@ -407,6 +428,7 @@ function LifestyleSection({
 }
 
 export function Inputs() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { inputs, setField, setInputs, loadSample, run, status, progress } =
     usePlan();
@@ -425,20 +447,20 @@ export function Inputs() {
     });
   };
 
-  const onHousingStatusChange = (status: HousingStatus) => {
+  const onHousingStatusChange = (hs: HousingStatus) => {
     const defaultCost =
-      status === "paid-off"
+      hs === "paid-off"
         ? 0
-        : status === "mortgage"
+        : hs === "mortgage"
           ? 1200
-          : status === "renting"
+          : hs === "renting"
             ? 1500
             : 800;
     // Housing cost lives in the lifestyle "housing" bucket; sync derives monthlyHousingCost.
     const lifestyle = { ...inputs.lifestyle, housing: defaultCost };
     setInputs({
       ...inputs,
-      housingStatus: status,
+      housingStatus: hs,
       lifestyle,
       ...syncLifestyleToSpend(lifestyle),
     });
@@ -465,19 +487,19 @@ export function Inputs() {
     navigate("/result");
   };
 
-  const activePreset =
+  const activePresetKey =
     PRESETS.find(
       (p) =>
         inputs.equityPct === p.apply.equityPct &&
         inputs.equityReturn === p.apply.equityReturn,
-    )?.label ?? "Custom";
+    )?.label ?? "presets.custom";
 
   return (
     <div className="space-y-5">
       <SectionTitle
-        kicker="Connect"
-        title="Bring your accounts together"
-        subtitle="Connect once with Singpass for a whole-wealth view — or type the key numbers in yourself."
+        kicker={t("connect.kicker")}
+        title={t("connect.title")}
+        subtitle={t("connect.subtitle")}
       />
 
       {/* Moat A — consented aggregation is the primary path */}
@@ -487,18 +509,17 @@ export function Inputs() {
       <button
         type="button"
         onClick={() => setShowManual((s) => !s)}
-        className="text-sm font-semibold text-enough-navy hover:text-enough-emeraldDark"
+        aria-expanded={showManual}
+        className="text-sm font-semibold text-enough-navy hover:text-enough-emeraldDark min-h-[44px]"
       >
-        {showManual
-          ? "Hide manual entry ▲"
-          : "Prefer to type it in yourself? ▼"}
+        {showManual ? t("connect.manualToggleHide") : t("connect.manualToggle")}
       </button>
 
       {showManual && (
         <>
           <div className="flex flex-wrap items-center gap-2">
-            <button onClick={loadSample} className="btn-soft">
-              Load sample profile
+            <button onClick={loadSample} className="btn-soft min-h-[44px]">
+              {t("connect.loadSample")}
             </button>
           </div>
 
@@ -506,12 +527,12 @@ export function Inputs() {
             {/* ---- Form ---- */}
             <div className="space-y-5">
               <Card>
-                <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center justify-between mb-2 gap-2 flex-wrap">
                   <div className="text-sm font-bold text-enough-navy">
-                    Assumption preset
+                    {t("connect.presetHeading")}
                   </div>
                   <span className="text-xs text-enough-slate">
-                    Selected: {activePreset}
+                    {t("common.selected", { value: t(activePresetKey) })}
                   </span>
                 </div>
                 <div className="grid sm:grid-cols-3 gap-2">
@@ -523,20 +544,21 @@ export function Inputs() {
                       <button
                         key={p.key}
                         type="button"
+                        aria-pressed={active}
                         onClick={() =>
                           setInputs(withPreset(inputs, p.key as PresetKey))
                         }
-                        className={`text-left rounded-xl2 border px-3 py-2 transition-colors ${
+                        className={`min-h-[44px] text-left rounded-xl2 border px-3 py-2 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-enough-blue/40 ${
                           active
                             ? "border-enough-navy bg-enough-navy/5"
                             : "border-enough-line hover:bg-enough-navy/5"
                         }`}
                       >
                         <div className="font-bold text-enough-navy text-sm">
-                          {p.label}
+                          {t(p.label)}
                         </div>
                         <div className="text-xs text-enough-slate">
-                          {p.apply.equityPct}% eq
+                          {p.apply.equityPct}% {t("common.eq")}
                         </div>
                       </button>
                     );
@@ -544,115 +566,115 @@ export function Inputs() {
                 </div>
               </Card>
 
-              <Group title="1 · Retiree profile">
+              <Group title={t("connect.group1")}>
                 <NumberField
-                  label="Current age"
+                  label={t("connect.fCurrentAge")}
                   value={inputs.age}
                   onChange={(v) => setField("age", v)}
-                  suffix="yrs"
+                  suffix={t("common.yrs")}
                 />
                 <Slider
-                  label="Plan to age"
+                  label={t("connect.fPlanToAge")}
                   value={inputs.horizonAge}
                   min={85}
                   max={105}
                   step={1}
                   onChange={(v) => setField("horizonAge", v)}
-                  format={(v) => `${v} yrs`}
-                  help="Longer life usually lowers the safer monthly spend."
+                  format={(v) => t("format.years", { n: v })}
+                  help={t("connect.fPlanToAgeHelp")}
                 />
                 <SelectField<Gender>
-                  label="Gender"
+                  label={t("connect.fGender")}
                   value={inputs.gender}
                   onChange={(v) => setField("gender", v)}
                   options={[
-                    { value: "male", label: "Male" },
-                    { value: "female", label: "Female (+2 yrs longevity)" },
+                    { value: "male", label: t("connect.fGenderMale") },
+                    { value: "female", label: t("connect.fGenderFemale") },
                   ]}
                 />
                 <NumberField
-                  label="Spouse age (optional)"
+                  label={t("connect.fSpouseAge")}
                   value={inputs.spouseAge}
                   onChange={(v) => setField("spouseAge", v)}
-                  suffix="yrs"
-                  help="Joint planning if included."
+                  suffix={t("common.yrs")}
+                  help={t("connect.fSpouseAgeHelp")}
                 />
               </Group>
 
-              <Group title="2 · CPF LIFE">
+              <Group title={t("connect.group2")}>
                 <MoneyField
-                  label="Monthly CPF LIFE payout"
+                  label={t("connect.fCpfPayout")}
                   value={inputs.cpfLifeMonthly}
                   onChange={(v) => setField("cpfLifeMonthly", v)}
                 />
                 <SelectField<CpfPlan>
-                  label="CPF LIFE plan"
+                  label={t("connect.fCpfPlan")}
                   value={inputs.cpfPlan}
                   onChange={onPlanChange}
                   options={[
-                    { value: "Standard", label: "Standard (level nominal)" },
-                    { value: "Basic", label: "Basic (level nominal)" },
+                    { value: "Standard", label: t("presets.cpfStandard") },
+                    { value: "Basic", label: t("presets.cpfBasic") },
                     {
                       value: "Escalating",
-                      label: "Escalating (starts lower, +2%/yr)",
+                      label: t("presets.cpfEscalating"),
                     },
                   ]}
-                  help="A longevity floor, not an inflation hedge."
+                  help={t("connect.fCpfPlanHelp")}
                 />
               </Group>
 
-              <Group title="3 · Housing">
+              <Group title={t("connect.group3")}>
                 <SelectField<HousingStatus>
-                  label="Housing status"
+                  label={t("connect.fHousingStatus")}
                   value={inputs.housingStatus}
                   onChange={onHousingStatusChange}
                   options={[
-                    { value: "paid-off", label: "Paid off" },
-                    { value: "mortgage", label: "Still paying mortgage" },
-                    { value: "renting", label: "Renting" },
-                    { value: "other", label: "Other" },
+                    { value: "paid-off", label: t("presets.housingPaidOff") },
+                    { value: "mortgage", label: t("presets.housingMortgage") },
+                    { value: "renting", label: t("presets.housingRenting") },
+                    { value: "other", label: t("presets.housingOther") },
                   ]}
-                  help="Housing cost is included in spending. Paid off means S$0 monthly cost."
+                  help={t("connect.fHousingStatusHelp")}
                 />
                 <MoneyField
-                  label="Monthly housing cost"
+                  label={t("connect.fMonthlyHousing")}
                   value={inputs.lifestyle.housing}
                   onChange={(v) => onLifestyleChange("housing", v)}
-                  help="Mortgage, rent, or other — 0 if paid off."
+                  help={t("connect.fMonthlyHousingHelp")}
                 />
               </Group>
 
-              <Group title="4 · Cash and investments">
+              <Group title={t("connect.group4")}>
                 <MoneyField
-                  label="Cash"
+                  label={t("connect.fCash")}
                   value={inputs.cash}
                   onChange={(v) => setField("cash", v)}
                 />
                 <MoneyField
-                  label="Investments"
+                  label={t("connect.fInvestments")}
                   value={inputs.investments}
                   onChange={(v) => setField("investments", v)}
                 />
                 <MoneyField
-                  label="SRS"
+                  label={t("connect.fSrs")}
                   value={inputs.srs}
                   onChange={(v) => setField("srs", v)}
                 />
                 <div className="sm:col-span-2 grid grid-cols-3 gap-3">
                   <NumberField
-                    label="Cash %"
+                    label={t("connect.fCashPct")}
                     value={inputs.cashPct}
                     onChange={(v) => setField("cashPct", v)}
                     suffix="%"
                   />
                   <NumberField
-                    label="Bonds %"
+                    label={t("connect.fBondsPct")}
                     value={inputs.bondPct}
                     onChange={(v) => setField("bondPct", v)}
                     suffix="%"
                   />
                   <NumberField
-                    label="Equity %"
+                    label={t("connect.fEquityPct")}
                     value={inputs.equityPct}
                     onChange={(v) => setField("equityPct", v)}
                     suffix="%"
@@ -660,8 +682,9 @@ export function Inputs() {
                 </div>
                 {!allocOk && (
                   <div className="sm:col-span-2 text-sm font-semibold text-enough-amber">
-                    Asset mix should add to 100% (currently{" "}
-                    {allocTotal.toFixed(0)}%).
+                    {t("connect.allocWarning", {
+                      value: allocTotal.toFixed(0),
+                    })}
                   </div>
                 )}
               </Group>
@@ -672,30 +695,30 @@ export function Inputs() {
                 onApplyPersona={applyPersona}
               />
 
-              <Group title="6 · Bequest (optional)">
+              <Group title={t("connect.group6")}>
                 <MoneyField
-                  label="Bequest target"
+                  label={t("connect.fBequestTarget")}
                   value={inputs.bequestTarget}
                   onChange={(v) => setField("bequestTarget", v)}
-                  help="Minimum to leave at the horizon."
+                  help={t("connect.fBequestTargetHelp")}
                 />
               </Group>
 
-              <Group title="7 · Assumptions">
+              <Group title={t("connect.group7")}>
                 <NumberField
-                  label="General / lifestyle inflation"
+                  label={t("connect.fGeneralInflation")}
                   value={inputs.generalInflation}
                   onChange={(v) => setField("generalInflation", v)}
                   suffix="%"
                   step={0.1}
                 />
                 <NumberField
-                  label="Healthcare inflation"
+                  label={t("connect.fHealthcareInflation")}
                   value={inputs.healthcareInflation}
                   onChange={(v) => setField("healthcareInflation", v)}
                   suffix="%"
                   step={0.5}
-                  help="Healthcare costs usually rise faster than general inflation."
+                  help={t("connect.fHealthcareInflationHelp")}
                 />
               </Group>
             </div>
@@ -704,27 +727,27 @@ export function Inputs() {
             <div className="lg:sticky lg:top-24">
               <Card className="shadow-pop">
                 <div className="text-xs font-bold uppercase tracking-wider text-enough-emerald mb-3">
-                  Plan summary
+                  {t("connect.summaryHeading")}
                 </div>
                 <div className="space-y-2.5">
                   <SummaryRow
-                    label="Total assets"
+                    label={t("connect.sumTotalAssets")}
                     value={formatMoney(totalAssets)}
                   />
                   <SummaryRow
-                    label="CPF LIFE payout"
+                    label={t("connect.sumCpfPayout")}
                     value={formatMoneyMonth(inputs.cpfLifeMonthly)}
                   />
                   <SummaryRow
-                    label="Desired spend"
+                    label={t("connect.sumDesiredSpend")}
                     value={formatMoneyMonth(inputs.desiredSpend)}
                   />
                   <SummaryRow
-                    label="Housing cost"
+                    label={t("connect.sumHousingCost")}
                     value={formatMoneyMonth(inputs.monthlyHousingCost)}
                   />
                   <SummaryRow
-                    label="Cash/Bonds/Equity"
+                    label={t("connect.sumAlloc")}
                     value={
                       <span
                         className={
@@ -743,7 +766,7 @@ export function Inputs() {
                   {running || status === "computing" ? (
                     <div className="rounded-xl2 bg-enough-navy/5 p-3">
                       <div className="text-sm font-semibold text-enough-navy">
-                        Running simulation…
+                        {t("connect.runningSim")}
                       </div>
                       <div className="mt-2">
                         <ProgressBar value={progress} />
@@ -753,19 +776,19 @@ export function Inputs() {
                     <button
                       onClick={calculate}
                       disabled={!allocOk}
-                      className="btn-emerald w-full text-base"
+                      className="btn-emerald w-full text-base min-h-[52px]"
                     >
-                      Calculate safer spend
+                      {t("connect.calculate")}
                     </button>
                   )}
                   {!allocOk && (
                     <div className="mt-2 text-xs font-semibold text-enough-amber">
-                      Asset mix should add to 100%.
+                      {t("connect.allocWarning100")}
                     </div>
                   )}
                 </div>
                 <p className="mt-3 text-xs text-enough-slate">
-                  Planning advice — estimates, not guarantees.
+                  {t("connect.planningAdviceNote")}
                 </p>
               </Card>
             </div>
@@ -773,11 +796,7 @@ export function Inputs() {
         </>
       )}
 
-      <Disclaimer tone="soft">
-        Neutral financial planning advice — the decisions are yours to weigh. We
-        advise the move, never push a specific product. The Singpass / SGFinDex
-        connection is an illustrative prototype.
-      </Disclaimer>
+      <Disclaimer tone="soft">{t("connect.disclaimer")}</Disclaimer>
     </div>
   );
 }
