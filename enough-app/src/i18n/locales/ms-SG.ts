@@ -79,9 +79,9 @@ const msSG = {
     heroParent:
       "Satu nombor yang tenang — berapa banyak anda boleh belanjakan dengan selamat setiap bulan, daripada CPF, simpanan dan gaya hidup yang anda inginkan. Diterangkan dalam bahasa mudah. Nasihat neutral — bukan promosi produk.",
     heroChild:
-      "Bantu ibu bapa anda membelanjakan persaraan mereka dengan yakin. Sambung akaun mereka sekali, pantau dengan amaran, dan tandatangani bersama perubahan besar — sementara mereka kekal mengawal nombor itu.",
+      "Lihat pelan persaraan ibu bapa anda hanya apabila mereka memilih untuk berkongsi dengan anda. Akaun adalah baca sahaja, dan ibu bapa anda kekal mengawal sepenuhnya.",
     ctaParent: "Mulakan pelan saya",
-    ctaChild: "Sediakan untuk ibu bapa saya",
+    ctaChild: "Lihat pelan ibu bapa yang dikongsi",
     seeExample: "Lihat contoh kerja",
     pillarNeutralTitle: "Neutral, seluruh kekayaan",
     pillarNeutralBody:
@@ -91,7 +91,7 @@ const msSG = {
       "CPF LIFE sebagai lantai yang dijamin, SRS dikeluarkan dalam tetingkap 10-tahunnya, penjujukan yang sedar akan cukai dan jangka hayat merentas setiap akaun.",
     pillarFamilyTitle: "Untuk seluruh keluarga",
     pillarFamilyBody:
-      "Pelan yang dikebenarkan untuk pesara, pasangan, dan anak dewasa — anak membantu menyediakannya, tetapi ibu bapa sentiasa mengesahkan nombor itu.",
+      "Akses keluarga adalah pilihan dan berdasarkan kebenaran. Ibu bapa boleh berkongsi pelan baca sahaja dengan pasangan atau anak dewasa dan menarik balik akses pada bila-bila masa.",
     permissionTitle: "Kebenaran untuk membelanjakan",
     permissionBody:
       "CPF, bank dan penasihat semuanya membantu rakyat Singapura menabung. Pandangan perbelanjaan neutral lebih sukar apabila penyedia juga menjual produk. Enough memberi tumpuan kepada keputusan perbelanjaan bulanan.",
@@ -227,9 +227,10 @@ const msSG = {
       "Sambung akaun anda dahulu, atau muat profil sampel untuk melihat Enough dalam tindakan.",
     connectAccounts: "Sambung akaun",
     loadSample: "Muat profil sampel",
-    oversightTitle:
-      "Pengawasan tanpa gangguan — Ayah masih mengesahkan setiap nombor",
-    goToFamily: "Pergi ke pelan keluarga untuk tandatangan bersama →",
+    oversightTitle: "Gambaran pelan dikongsi",
+    oversightBody:
+      "Akses baca sahaja yang diberikan oleh Ayah. Ayah kekal sebagai pemilik tunggal pelan dan pembuat keputusan.",
+    goToFamily: "Lihat tetapan akses keluarga →",
     kickerParent: "Keputusan anda",
     kickerChild: "Keputusan ibu bapa anda",
     titleParent: "Julat perbelanjaan bulanan lebih selamat anda",
@@ -296,13 +297,13 @@ const msSG = {
       "CPF LIFE adalah lantai jangka hayat, belum tentu lindung nilai inflasi. Perbelanjaan dinaikkan dari semasa ke semasa.",
     lifestyleTitle: "Lapisan gaya hidup",
     nextTitleParent: "Jadikan ini perbualan keluarga",
-    nextTitleChild: "Libatkan keluarga untuk tandatangan bersama",
+    nextTitleChild: "Semak ringkasan keluarga dikongsi",
     nextBodyParent:
       "Buka laporan satu halaman yang tenang dan boleh dicetak untuk dikongsi di rumah.",
     nextBodyChild:
-      "Semak dan tandatangani bersama kenaikan selamat pada pelan keluarga — Ayah mengesahkan.",
+      "Lihat maklumat yang dikongsi oleh Ayah. Tiada perubahan boleh dibuat dari paparan anak dewasa.",
     nextCtaParent: "Buka laporan keluarga →",
-    nextCtaChild: "Buka pelan keluarga →",
+    nextCtaChild: "Buka laporan keluarga dikongsi →",
     curveTitleDemo: "Produk itu adalah lengkung",
     curveTitleCustom: "Lengkung perbelanjaan-keyakinan",
     curveSub:
@@ -689,6 +690,8 @@ const msSG = {
     plannedActual: "Dirancang {{planned}} · Sebenar {{actual}}",
     updateReport: "Kemas kini laporan keluarga",
     resetToPlanned: "Set semula kepada dirancang",
+    readOnlyNotice:
+      "Paparan dikongsi baca sahaja. Hanya ibu bapa boleh mengemas kini rekod perbelanjaan.",
     disclaimer:
       "Monitor Perbelanjaan adalah alat perancangan manual. Enough tidak menyambung ke bank anda, mengimport transaksi, atau mengkategorikan perbelanjaan secara automatik.",
   },
@@ -697,76 +700,79 @@ const msSG = {
     kicker: "Tingkat keluarga",
     title: "Satu pelan, seluruh keluarga",
     subtitle:
-      "Pelan yang dikebenarkan untuk pesara, pasangan, dan anak dewasa — anak membantu menyediakannya, tetapi ibu bapa sentiasa mengesahkan nombor itu.",
+      "Perkongsian adalah pilihan. Ibu bapa kekal mengawal dan boleh menarik balik akses pada bila-bila masa.",
     pillParent: "Paparan ibu bapa",
     pillChild: "Paparan anak dewasa",
     parentTag: "Keyakinan tanpa pemantauan",
-    childTag: "Pengawasan tanpa gangguan",
+    childTag: "Paparan dikongsi baca sahaja",
     parentBody:
-      "Anak-anak anda boleh membantu anda menyediakan sesuatu dan memantau, tetapi mereka tidak pernah boleh menggerakkan wang anda atau menukar nombor anda tanpa anda. Anda lihat dan sahkan segalanya. Pelan sentiasa di pihak anda.",
+      "Perkongsian adalah pilihan. Beri Wei Ling akses baca sahaja kepada bahagian terpilih pelan persaraan anda. Anda boleh menarik balik akses pada bila-bila masa.",
     childBody:
-      "Anda sediakan dan sambung akaun, dapat amaran apabila pelan perlu dilihat, dan tandatangani bersama perubahan besar — tetapi nombor akhir sentiasa untuk Ayah sahkan. Peraturan berpusat-ibu bapa itu yang mengekalkan Enough boleh dipercayai.",
+      "Akses baca sahaja yang diberikan oleh Mr Tan. Anda boleh melihat maklumat yang dikongsi oleh Mr Tan. Mr Tan kekal sebagai pemilik tunggal pelan dan pembuat keputusan.",
     whoOnPlan: "Siada dalam pelan",
-    coSignerHeading: "Aliran tandatangan bersama",
-    coSignerIntro:
-      "Perubahan besar — kenaikan perbelanjaan, tambah nilai CPF, menyambung akaun — dihalakan melalui kelulusan berkongsi. Pengendali boleh naikkan dan semak; pemilik mengesahkan.",
+    accessHeading: "Akses anak dewasa",
+    accessIntro:
+      "Perkongsian adalah pilihan. Beri Wei Ling akses baca sahaja kepada bahagian terpilih pelan persaraan anda. Anda boleh menarik balik akses pada bila-bila masa.",
+    accessGrantedBody:
+      "Wei Ling boleh melihat pelan dikongsi tetapi tidak boleh mengedit input, menyambung akaun, meluluskan keputusan atau menukar nombor perbelanjaan lebih selamat.",
+    accessChildBody:
+      "Anda boleh melihat maklumat yang dikongsi oleh Mr Tan. Mr Tan kekal sebagai pemilik tunggal pelan dan pembuat keputusan.",
+    accessNotShared: "Tidak dikongsi",
+    accessGranted: "Akses diberikan",
+    accessGrantedByParent: "Akses baca sahaja yang diberikan oleh Mr Tan",
+    accessReadOnlyBadge: "Baca sahaja",
+    grantButton: "Beri akses baca sahaja",
+    revokeButton: "Tarik balik akses",
+    permissionBullets: {
+      canViewSafer: "Boleh melihat hasil perbelanjaan bulanan lebih selamat",
+      canViewAlerts: "Boleh melihat amaran terpilih dan laporan keluarga",
+      cannotEdit: "Tidak boleh mengedit maklumat kewangan atau perbelanjaan",
+      cannotApprove:
+        "Tidak boleh meluluskan, mengesahkan atau bertindak bagi pihak ibu bapa",
+      canRevoke: "Akses boleh ditarik balik oleh ibu bapa pada bila-bila masa",
+    },
     moatTitle: "Lapisan keluarga adalah tanah yang tidak dicabar",
     moatBody:
-      "Tiada pesaing Singapura atau global yang dikaji menawarkan ini. Ia menyelesaikan masalah kemasukan data warga emas (anak mengendalikan), membetulkan kesanggupan membayar (anak yang bimbang membayar), dan mewujudkan ikatan dalam isi rumah yang kalkulator tidak boleh salin.",
+      "Akses keluarga berdasarkan kebenaran dan boleh ditarik balik. Paparan dikongsi baca sahaja mengekalkan hubungan keluarga tanpa melepaskan kawalan.",
     openReport: "Buka laporan keluarga →",
     backToResults: "Kembali ke keputusan",
     disclaimer:
-      "Prototaip ilustrasi tingkat keluarga. Peranan, kebenaran dan aliran tandatangan bersama ditunjukkan dengan data sampel — bukan akaun langsung.",
+      "Prototaip ilustrasi tingkat keluarga. Perkongsian adalah pilihan, berdasarkan kebenaran dan boleh ditarik balik — bukan akaun langsung.",
+    parentPermissionRequired:
+      "Kebenaran ibu bapa diperlukan sebelum akses anak dewasa tersedia.",
+    gateOpenSettingsCta: "Buka tetapan akses ibu bapa",
+    gateReturnHomeCta: "Kembali ke halaman utama ibu bapa",
+    accessGrantedConfirmation: "Akses baca sahaja diberikan kepada Wei Ling.",
+    accessGrantedHint: "Paparan anak dewasa kini tersedia dalam bar navigasi.",
+    gateTitle: "Kebenaran ibu bapa diperlukan",
+    gateBody: "Pelan persaraan ini belum dikongsi dengan anak dewasa. Ibu bapa mesti memberi akses baca sahaja sebelum sebarang maklumat pelan boleh dilihat.",
+    gatePrivacyNote: "Perkongsian adalah pilihan. Ibu bapa kekal mengawal dan boleh menarik balik akses pada bila-bila masa.",
+    gateReturnCta: "Kembali ke paparan ibu bapa",
+    lockedUntilGranted: "Dikunci sehingga ibu bapa memberi kebenaran",
     m1Name: "Mr Tan",
     m1Relation: "Pesara",
-    m1Role: "Pemilik · pembuat keputusan",
-    m1p1: "Lihat dan sahkan nombor perbelanjaan selamat",
-    m1p2: "Memiliki pelan dan semua persetujuan data",
-    m1p3: "Mesti meluluskan sebarang perubahan kepada perbelanjaan atau akaun",
+    m1Role: "Pemilik · pembuat keputusan tunggal",
+    m1p1: "Memiliki pelan dan semua persetujuan data",
+    m1p2: "Mengawal siapa boleh melihat pelan",
+    m1p3: "Boleh memberi atau menarik balik akses keluarga pada bila-bila masa",
     m2Name: "Mrs Tan",
     m2Relation: "Pasangan",
-    m2Role: "Penonton",
-    m2p1: "Lihat pelan dan julat perbelanjaan bulanan lebih selamat",
+    m2Role: "Penonton berdasarkan kebenaran",
+    m2p1: "Lihat pelan dan julat perbelanjaan bulanan lebih selamat apabila kebenaran diberikan",
     m2p2: "Sertai perbualan keluarga",
-    m2p3: "Tidak boleh menukar akaun atau perbelanjaan",
+    m2p3: "Baca sahaja — tidak boleh mengedit, meluluskan atau menukar pelan",
     m3Name: "Wei Ling",
     m3Relation: "Anak perempuan dewasa",
-    m3Role: "Pengendali · pembantu bersama",
-    m3p1: "Sediakan & sambung akaun bagi pihak Ayah (dengan persetujuan)",
-    m3p2: "Dapat amaran apabila pelan perlu dilihat",
-    m3p3: "Tandatangani bersama perubahan besar — tetapi Ayah mengesahkan nombor akhir",
-    csAwaitingParent: "Menunggu pengesahan Ayah",
-    csAwaitingChild: "Menunggu semakan + pengesahan",
-    csApproved: "Diluluskan",
-    csRaisedBy: "Dinaikkan oleh",
-    csNeeds: "Memerlukan",
-    csParentCentric: "Berpusat-ibu bapa:",
-    csConfirmAsDad: "Sahkan (sebagai Ayah)",
-    csReviewConfirm: "Semak & sahkan",
-    csNotNow: "Bukan sekarang",
+    m3Role: "Penonton baca sahaja pilihan",
+    m3p1: "Boleh melihat maklumat pelan terpilih selepas Ayah memberi akses",
+    m3p2: "Boleh menerima amaran terpilih",
+    m3p3: "Tidak boleh mengedit, meluluskan atau bertindak bagi pihak Ayah",
   },
 
   familyPlane: {
-    cs1Title: "Naikkan perbelanjaan bulanan lebih selamat ke S$2,350",
-    cs1Detail:
-      "Pelindung mendapat kenaikan selepas pasaran kukuh. Wei Ling telah menyemaknya; Ayah mengesahkan sebelum ia berkuat kuasa.",
-    cs1RaisedBy: "Wei Ling (pengendali)",
-    cs1Needs: "Mr Tan mesti sahkan",
-    cs1Note:
-      "Enough sentiasa mengoptimumkan kesejahteraan ibu bapa — kenaikan adalah selamat, jadi pelan menonjolkannya kepada Ayah, bukan menjauhkannya.",
-    cs2Title: "Modelkan lantai CPF LIFE yang lebih tinggi",
-    cs2Detail:
-      "Lantai dijamin yang lebih besar menaikkan keyakinan. Kami menasihati langkah itu; produk tertentu adalah keputusan Ayah — dan Ayah memutuskan.",
-    cs2RaisedBy: "Enough (enjin pelindung)",
-    cs2Needs: "Mr Tan + Wei Ling",
-    cs3Title: "Sambung akaun OCBC SRS melalui SGFinDex",
-    cs3Detail:
-      "Wei Ling telah menyambung akaun SRS supaya penjujukan pengeluaran boleh menggunakan tetingkap 10-tahun.",
-    cs3RaisedBy: "Wei Ling (pengendali)",
-    cs3Needs: "Disahkan oleh Mr Tan",
     alert1Title: "Pelan Ayah di landasan",
     alert1Body: "90% keyakinan ke umur 95. Tiada tindakan diperlukan.",
-    alert2Title: "Kenaikan selamat menunggu Ayah untuk disahkan",
+    alert2Title: "Kenaikan selamat tersedia",
     alert2Body:
       "Pasaran berjalan di atas garis pelan — perbelanjaan bulanan lebih selamat boleh naik ke S$2,350.",
     alert3Title: "Keputusan tambah nilai CPF untuk disemak bersama",

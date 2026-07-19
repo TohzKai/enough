@@ -143,12 +143,15 @@ function OversightStrip() {
   };
   return (
     <Card className="!p-4">
-      <div className="flex items-center gap-2 mb-3 flex-wrap">
+      <div className="flex items-center gap-2 mb-1 flex-wrap">
         <Pill tone="amber">{t("navigation.adultChildView")}</Pill>
         <span className="text-sm font-semibold text-enough-navy">
           {t("results.oversightTitle")}
         </span>
       </div>
+      <p className="text-xs text-enough-slate mb-3 leading-snug safe-break">
+        {t("results.oversightBody")}
+      </p>
       <div className="grid sm:grid-cols-3 gap-2.5">
         {childAlerts.map((a) => (
           <div
@@ -319,8 +322,11 @@ function MrTanResults() {
               {child ? t("results.nextBodyChild") : t("results.nextBodyParent")}
             </p>
           </div>
+          {/* Adult-child view: CTA is read-only and points to the shared
+              family report (not /family which contains the Grant / Revoke
+              controls). Parent view continues to land on /report. */}
           <Link
-            to={child ? "/family" : "/report"}
+            to={child ? "/report" : "/report"}
             className="btn-emerald min-h-[44px]"
           >
             {child ? t("results.nextCtaChild") : t("results.nextCtaParent")}

@@ -1,17 +1,19 @@
 /**
  * Moat pillar E — the family layer / family tier (the uncontested whitespace).
  *
- * A permissioned retiree + spouse + adult-child on ONE plan, with a co-signer flow
- * for big moves. The adult child is the operator + likely buyer; the retiree
- * stays the beneficiary and decision-maker.
+ * Permission model:
+ *  - The retiree (parent) is the SOLE plan owner and decision-maker.
+ *  - The adult child is an OPTIONAL, read-only viewer.
+ *  - Access for the adult child requires the parent's explicit permission.
+ *  - The parent can revoke access at any time.
+ *  - The adult child never edits, approves or acts on the parent's behalf.
  *
- * All display text (names, roles, permissions, co-sign detail, alerts) holds
- * i18n KEYS; the presentation layer translates. PARENT-CENTRIC by design: the
- * safe-spend number always optimises the parent's wellbeing; the parent (not the
- * child) sees and confirms the number. All data illustrative.
+ * All display text (names, roles, permissions, alerts) holds i18n KEYS; the
+ * presentation layer translates. PARENT-CENTRIC by design: the safe-spend
+ * number always optimises the parent's wellbeing. All data illustrative.
  */
 
-export type FamilyRole = "owner" | "operator" | "viewer";
+export type FamilyRole = "owner" | "viewer";
 
 export interface FamilyMember {
   /** i18n key for the member's display name. */
@@ -49,7 +51,7 @@ export const familyMembers: FamilyMember[] = [
   {
     name: "family.m3Name",
     relation: "family.m3Relation",
-    role: "operator",
+    role: "viewer",
     roleLabel: "family.m3Role",
     permissions: ["family.m3p1", "family.m3p2", "family.m3p3"],
     initials: "WL",
@@ -57,54 +59,10 @@ export const familyMembers: FamilyMember[] = [
   },
 ];
 
-export interface CoSignRequest {
-  id: string;
-  /** i18n key for the request title. */
-  title: string;
-  /** i18n key for the request detail. */
-  detail: string;
-  /** i18n key for the raiser line. */
-  raisedBy: string;
-  /** i18n key for who must co-sign / confirm. */
-  needs: string;
-  status: "awaiting-parent" | "awaiting-child" | "approved";
-  /** i18n key for the optional parent-centric note. */
-  parentCentricNote?: string;
-}
-
 /**
- * The co-signer flow. Note the parent-centric guarantee: even when the child
- * operates, the PARENT confirms — Enough stays on the parent's side.
+ * Read-only alerts surfaced to the adult-child view. Treated as notifications
+ * only — the adult child cannot act on them.
  */
-export const coSignRequests: CoSignRequest[] = [
-  {
-    id: "cs-1",
-    title: "familyPlane.cs1Title",
-    detail: "familyPlane.cs1Detail",
-    raisedBy: "familyPlane.cs1RaisedBy",
-    needs: "familyPlane.cs1Needs",
-    status: "awaiting-parent",
-    parentCentricNote: "familyPlane.cs1Note",
-  },
-  {
-    id: "cs-2",
-    title: "familyPlane.cs2Title",
-    detail: "familyPlane.cs2Detail",
-    raisedBy: "familyPlane.cs2RaisedBy",
-    needs: "familyPlane.cs2Needs",
-    status: "awaiting-child",
-  },
-  {
-    id: "cs-3",
-    title: "familyPlane.cs3Title",
-    detail: "familyPlane.cs3Detail",
-    raisedBy: "familyPlane.cs3RaisedBy",
-    needs: "familyPlane.cs3Needs",
-    status: "approved",
-  },
-];
-
-/** Alerts the adult-child operator sees (the oversight-without-intrusion face). */
 export const childAlerts = [
   {
     tone: "emerald" as const,

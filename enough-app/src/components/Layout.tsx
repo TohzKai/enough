@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { NavLink, Outlet, Link } from "react-router-dom";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { NavLink, Outlet, Link, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useViewMode, type ViewMode } from "../store/viewMode";
 import { LanguageSelector } from "./LanguageSelector";
@@ -22,7 +22,16 @@ function navClass({ isActive }: { isActive: boolean }) {
   }`;
 }
 
-/** Parent vs Adult-child face toggle — the product's two faces. */
+/** Items the adult-child view must never expose (the adult child cannot
+ *  connect accounts or edit the parent's plan). */
+const HIDDEN_IN_CHILD = new Set(["/plan"]);
+
+/**
+ * Parent vs Adult-child face toggle — the product's two faces.
+ * Both buttons are always reachable for presentation purposes. The actual
+ * financial content in child mode is gated behind explicit parent permission
+ * (see the PermissionGate wrapper below).
+ */
 function ViewToggle({ className = "" }: { className?: string }) {
   const { t } = useTranslation();
   const { mode, setMode } = useViewMode();
@@ -48,6 +57,69 @@ function ViewToggle({ className = "" }: { className?: string }) {
     >
       {btn("parent", t("navigation.parentView"))}
       {btn("child", t("navigation.adultChildView"))}
+    </div>
+  );
+}
+
+/**
+ * Permission gate for the adult-child view. When the user has switched to
+ * the child mode but the parent has not (yet) granted read-only access, this
+ * replaces the page content with a privacy-respecting status page — no
+ * financial information is rendered. When access is granted, the page
+ * content flows through untouched.
+ *
+ * NOTE: this is an illustrative permission flow for the educational
+ * prototype. localStorage is the only mechanism gating the content; it is
+ * NOT real authentication or security.
+ */
+function PermissionGate({ children }: { children: ReactNode }) {
+  const { t } = useTranslation();
+  const { mode, adultChildAccessGranted, setMode } = useViewMode();
+  const navigate = useNavigate();
+  if (mode !== "child" || adultChildAccessGranted) return <>{children}</>;
+  // Primary CTA: route to the Family page (where the parent grants access).
+  const openAccessSettings = () => {
+    setMode("parent");
+    navigate("/family#adult-child-access");
+  };
+  // Secondary CTA: return to the parent home page.
+  const returnToParentHome = () => {
+    setMode("parent");
+    navigate("/");
+  };
+  return (
+    <div className="mx-auto max-w-app px-4 md:px-6 py-10 md:py-14">
+      <div className="mx-auto max-w-2xl rounded-xl2 border border-enough-amber/30 bg-enough-amberSoft p-6 md:p-8 shadow-card">
+        <div className="inline-flex items-center gap-2 rounded-full bg-white/70 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-enough-amber">
+          <span aria-hidden="true">🔒</span>
+          <span>{t("family.lockedUntilGranted")}</span>
+        </div>
+        <h1 className="mt-4 text-3xl md:text-4xl font-extrabold text-enough-navy leading-tight safe-break">
+          {t("family.gateTitle")}
+        </h1>
+        <p className="mt-4 readable text-base text-enough-ink leading-relaxed safe-break">
+          {t("family.gateBody")}
+        </p>
+        <div className="mt-5 rounded-xl2 bg-white/70 px-4 py-3 text-sm text-enough-slate leading-relaxed safe-break">
+          {t("family.gatePrivacyNote")}
+        </div>
+        <div className="mt-6 flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={openAccessSettings}
+            className="btn-emerald min-h-[44px]"
+          >
+            {t("family.gateOpenSettingsCta")}
+          </button>
+          <button
+            type="button"
+            onClick={returnToParentHome}
+            className="btn-ghost min-h-[44px]"
+          >
+            {t("family.gateReturnHomeCta")}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -78,6 +150,16 @@ export function Layout() {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuBtnRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
+  const { mode } = useViewMode();
+  const child = mode === "child";
+
+  // The adult-child view is read-only — the parent must explicitly grant
+  // permission, and even then the child can never connect or edit the plan.
+  // Hide the Connect destination in child mode.
+  const visibleNav = useMemo(
+    () => NAV.filter((n) => !(child && HIDDEN_IN_CHILD.has(n.to))),
+    [child],
+  );
 
   // Focus trap + Escape handling for the mobile navigation drawer.
   useEffect(() => {
@@ -142,9 +224,11 @@ export function Layout() {
               to="/"
               className="flex items-center gap-2.5 shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 rounded-xl2"
             >
-              <div className="h-9 w-9 rounded-xl bg-enough-emerald flex items-center justify-center font-extrabold text-white text-lg">
-                e
-              </div>
+              <img
+                src="/enough-logo.png"
+                alt={t("common.brand")}
+                className="brand-icon block h-9 w-9 shrink-0 object-contain rounded-xl"
+              />
               <div className="leading-tight min-w-0">
                 <div className="text-lg font-extrabold tracking-tight">
                   {t("common.brand")}
@@ -164,7 +248,7 @@ export function Layout() {
                 className="hidden xl:flex items-center gap-1"
                 aria-label={t("accessibility.primaryNav")}
               >
-                {NAV.map((n) => (
+                {visibleNav.map((n) => (
                   <NavLink
                     key={n.to}
                     to={n.to}
@@ -259,7 +343,7 @@ export function Layout() {
                 className="flex flex-col gap-1 p-4"
                 aria-label={t("accessibility.mobileNav")}
               >
-                {NAV.map((n) => (
+                {visibleNav.map((n) => (
                   <NavLink
                     key={n.to}
                     to={n.to}
@@ -291,11 +375,15 @@ export function Layout() {
         )}
       </header>
 
-      {/* Page content */}
+      {/* Page content — wrapped in the permission gate so the adult-child view
+          renders a privacy page instead of any financial information when the
+          parent has not granted access. */}
       <main id="main-content" className="flex-1" tabIndex={-1}>
-        <div className="mx-auto max-w-app px-4 md:px-6 py-8 md:py-10">
-          <Outlet />
-        </div>
+        <PermissionGate>
+          <div className="mx-auto max-w-app px-4 md:px-6 py-8 md:py-10">
+            <Outlet />
+          </div>
+        </PermissionGate>
       </main>
 
       {/* Footer with disclaimer + secondary "For partners" link */}

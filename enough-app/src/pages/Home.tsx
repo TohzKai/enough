@@ -13,8 +13,11 @@ export function Home() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { mode } = useViewMode();
-  const startPlan = () => navigate("/plan");
   const child = mode === "child";
+  // Adult-child view cannot connect or set up the parent's plan — it is a
+  // read-only shared view, so the main CTA in child mode lands on the result
+  // page (the already-shared plan) instead of /plan.
+  const startPlan = () => navigate(child ? "/result" : "/plan");
 
   return (
     <div className="space-y-12">

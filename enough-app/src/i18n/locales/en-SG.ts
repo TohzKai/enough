@@ -84,9 +84,9 @@ const enSG = {
     heroParent:
       "One calm number — how much you can safely spend each month, from your CPF, savings and the lifestyle you want. Explained in plain words. Neutral advice — never a product pitch.",
     heroChild:
-      "Help your parents spend their retirement with confidence. Connect their accounts once, keep watch with alerts, and co-sign the big moves — while they stay in control of the number.",
+      "View your parent's retirement plan only when they choose to share it with you. Access is read-only, and your parent remains fully in control.",
     ctaParent: "Start my plan",
-    ctaChild: "Set up for my parent",
+    ctaChild: "View shared parent plan",
     seeExample: "See a worked example",
     pillarNeutralTitle: "Neutral, whole-wealth",
     pillarNeutralBody:
@@ -96,7 +96,7 @@ const enSG = {
       "CPF LIFE as your guaranteed floor, SRS drawn inside its 10-year window, tax- and longevity-aware sequencing across every account.",
     pillarFamilyTitle: "For the whole family",
     pillarFamilyBody:
-      "A permissioned plan for the retiree, spouse, and adult child — the child helps set it up, but the parent always confirms the number.",
+      "Family access is optional and permission-based. A parent may share a read-only plan with a spouse or adult child and revoke access at any time.",
     permissionTitle: "The permission to spend",
     permissionBody:
       "CPF, banks and advisers all help Singaporeans save. A neutral spending view is harder when providers also sell products. Enough focuses on the monthly spend decision.",
@@ -235,9 +235,10 @@ const enSG = {
     connectAccounts: "Connect accounts",
     loadSample: "Load sample profile",
     // Oversight strip (adult-child)
-    oversightTitle:
-      "Oversight without intrusion — Dad still confirms every number",
-    goToFamily: "Go to the family plan to co-sign →",
+    oversightTitle: "Shared plan overview",
+    oversightBody:
+      "Read-only access granted by Dad. Dad remains the sole plan owner and decision-maker.",
+    goToFamily: "View family access settings →",
     // Section title
     kickerParent: "Your result",
     kickerChild: "Your parent's result",
@@ -313,12 +314,12 @@ const enSG = {
     lifestyleTitle: "Lifestyle layers",
     // Next action
     nextTitleParent: "Turn this into a family conversation",
-    nextTitleChild: "Bring the family in to co-sign",
+    nextTitleChild: "Review the shared family summary",
     nextBodyParent: "Open a calm, printable one-page report to share at home.",
     nextBodyChild:
-      "Review and co-sign the safe raise on the family plan — Dad confirms.",
+      "View the information Dad has chosen to share. No changes can be made from adult-child view.",
     nextCtaParent: "Open family report →",
-    nextCtaChild: "Open family plan →",
+    nextCtaChild: "Open shared family report →",
     // Curve
     curveTitleDemo: "The product is the curve",
     curveTitleCustom: "Spend-confidence curve",
@@ -711,6 +712,8 @@ const enSG = {
     plannedActual: "Planned {{planned}} · Actual {{actual}}",
     updateReport: "Update family report",
     resetToPlanned: "Reset to planned",
+    readOnlyNotice:
+      "Read-only shared view. Only the parent can update spending records.",
     disclaimer:
       "Spend Monitor is a manual planning tool. Enough does not connect to your bank, import transactions, or categorise spending automatically.",
   },
@@ -719,83 +722,84 @@ const enSG = {
     kicker: "Family tier",
     title: "One plan, the whole family",
     subtitle:
-      "A permissioned plan for the retiree, spouse, and adult child — the child helps set it up, but the parent always confirms the number.",
+      "Sharing is optional. The parent remains in control and can revoke access at any time.",
     pillParent: "Parent view",
     pillChild: "Adult-child view",
     parentTag: "Confidence without surveillance",
-    childTag: "Oversight without intrusion",
+    childTag: "Read-only shared view",
     parentBody:
-      "Your children can help you set things up and keep watch, but they can never move your money or change your number without you. You see and confirm everything. The plan is always on your side.",
+      "Sharing is optional. Grant Wei Ling read-only access to selected parts of your retirement plan. You can revoke access at any time.",
     childBody:
-      "You set up and connect the accounts, get alerts when the plan needs a look, and co-sign the big moves — but the final number is always Dad's to confirm. That parent-centric rule is what keeps Enough trustworthy.",
+      "Read-only access granted by Mr Tan. You can view the information Mr Tan has shared. Mr Tan remains the sole plan owner and decision-maker.",
     whoOnPlan: "Who's on the plan",
-    coSignerHeading: "Co-signer flow",
-    coSignerIntro:
-      "Big moves — a spending raise, a CPF top-up, connecting an account — route through a shared approval. The operator can raise and review; the owner confirms.",
+    accessHeading: "Adult-child access",
+    accessIntro:
+      "Sharing is optional. Grant Wei Ling read-only access to selected parts of your retirement plan. You can revoke access at any time.",
+    accessGrantedBody:
+      "Wei Ling can view the shared plan but cannot edit inputs, connect accounts, approve decisions or change the safer-spend number.",
+    accessChildBody:
+      "You can view the information Mr Tan has shared. Mr Tan remains the sole plan owner and decision-maker.",
+    accessNotShared: "Not shared",
+    accessGranted: "Access granted",
+    accessGrantedByParent: "Read-only access granted by Mr Tan",
+    accessReadOnlyBadge: "Read-only",
+    grantButton: "Grant read-only access",
+    revokeButton: "Revoke access",
+    permissionBullets: {
+      canViewSafer: "Can view the safer monthly spending result",
+      canViewAlerts: "Can view selected alerts and the family report",
+      cannotEdit: "Cannot edit financial information or spending",
+      cannotApprove: "Cannot approve, confirm or act on the parent's behalf",
+      canRevoke: "Access can be revoked by the parent at any time",
+    },
     moatTitle: "The family layer is the uncontested ground",
     moatBody:
-      "No Singapore or global competitor surveyed offers this. It solves the senior data-entry problem (the child operates), fixes willingness-to-pay (the worried child pays), and creates a within-household bond a calculator can't copy.",
+      "Family access is permission-based and revocable. A read-only shared view keeps the family loop without giving up control.",
     openReport: "Open the family report →",
     backToResults: "Back to results",
     disclaimer:
-      "Illustrative prototype of the family tier. Roles, permissions and co-signer flows are demonstrated with sample data — not a live account.",
+      "Illustrative prototype of the family tier. Sharing is optional, permission-based, and revocable — not a live account.",
+    parentPermissionRequired:
+      "Parent permission is required before adult-child access is available.",
+    gateOpenSettingsCta: "Open Parent access settings",
+    gateReturnHomeCta: "Return to Parent home",
+    accessGrantedConfirmation: "Read-only access granted to Wei Ling.",
+    accessGrantedHint: "The Adult-child view is now available in the navbar.",
+    gateTitle: "Parent permission required",
+    gateBody: "This retirement plan has not been shared with the adult child. The parent must grant read-only access before any plan information can be viewed.",
+    gatePrivacyNote: "Sharing is optional. The parent remains in control and may revoke access at any time.",
+    gateReturnCta: "Return to Parent view",
+    lockedUntilGranted: "Locked until parent grants permission",
     // member labels
     m1Name: "Mr Tan",
     m1Relation: "Retiree",
-    m1Role: "Owner · decision-maker",
-    m1p1: "Sees and confirms the safe-spend number",
-    m1p2: "Owns the plan and all data consent",
-    m1p3: "Must approve any change to spending or accounts",
+    m1Role: "Owner · sole decision-maker",
+    m1p1: "Owns the plan and all data consent",
+    m1p2: "Controls who can view the plan",
+    m1p3: "Can grant or revoke family access at any time",
     m2Name: "Mrs Tan",
     m2Relation: "Spouse",
-    m2Role: "Viewer",
-    m2p1: "Sees the plan and the safer monthly spend range",
+    m2Role: "Permission-based viewer",
+    m2p1: "Sees the plan and the safer monthly spend range when permission is granted",
     m2p2: "Joins family conversations",
-    m2p3: "Cannot change accounts or spending",
+    m2p3: "Read-only — cannot edit, approve or change the plan",
     m3Name: "Wei Ling",
     m3Relation: "Adult daughter",
-    m3Role: "Operator · co-pilot",
-    m3p1: "Sets up & connects accounts on Dad's behalf (with consent)",
-    m3p2: "Gets alerts when the plan needs a look",
-    m3p3: "Co-signs big moves — but Dad confirms the final number",
-    // cosign
-    csAwaitingParent: "Awaiting Dad's confirmation",
-    csAwaitingChild: "Awaiting review + confirm",
-    csApproved: "Approved",
-    csRaisedBy: "Raised by",
-    csNeeds: "Needs",
-    csParentCentric: "Parent-centric:",
-    csConfirmAsDad: "Confirm (as Dad)",
-    csReviewConfirm: "Review & confirm",
-    csNotNow: "Not now",
+    m3Role: "Optional read-only viewer",
+    m3p1: "Can view selected plan information after Dad grants access",
+    m3p2: "Can receive selected alerts",
+    m3p3: "Cannot edit, approve or act on Dad's behalf",
   },
 
   familyPlane: {
-    cs1Title: "Raise the safer monthly spend to S$2,350",
-    cs1Detail:
-      "Guardrails earned a raise after a strong market. Wei Ling reviewed it; Dad confirms before it takes effect.",
-    cs1RaisedBy: "Wei Ling (operator)",
-    cs1Needs: "Mr Tan must confirm",
-    cs1Note:
-      "Enough always optimises the parent's wellbeing — the raise is safe, so the plan surfaces it to Dad, not away from him.",
-    cs2Title: "Model a higher CPF LIFE floor",
-    cs2Detail:
-      "A larger guaranteed floor raises confidence. We advise the move; the specific product is Dad's call — and Dad decides.",
-    cs2RaisedBy: "Enough (guardrail engine)",
-    cs2Needs: "Mr Tan + Wei Ling",
-    cs3Title: "Connect OCBC SRS account via SGFinDex",
-    cs3Detail:
-      "Wei Ling connected the SRS account so withdrawal sequencing can use the 10-year window.",
-    cs3RaisedBy: "Wei Ling (operator)",
-    cs3Needs: "Consented by Mr Tan",
     alert1Title: "Dad's plan is on track",
     alert1Body: "90% confidence to age 95. No action needed.",
-    alert2Title: "A safe raise is waiting for Dad to confirm",
+    alert2Title: "A safe raise is available",
     alert2Body:
       "Markets ran above the plan line — the safer monthly spend can rise to S$2,350.",
-    alert3Title: "CPF top-up decision to review together",
+    alert3Title: "CPF top-up decision worth reviewing",
     alert3Body:
-      "A larger floor would lift confidence ~3%. We advise the move, not a specific product.",
+      "A larger floor would lift confidence ~3%. Dad may want to review this option.",
   },
 
   report: {

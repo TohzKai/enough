@@ -31,11 +31,7 @@ import {
   PROTECTION_REFERRALS,
   applicableProtections,
 } from "../../data/protection";
-import {
-  familyMembers,
-  coSignRequests,
-  childAlerts,
-} from "../../data/familyPlane";
+import { familyMembers, childAlerts } from "../../data/familyPlane";
 import { connectedAccounts, singpassPullSteps } from "../../data/aggregation";
 import {
   lifeEventStressTests,
@@ -263,13 +259,6 @@ describe("data-file translation keys all resolve in en-SG", () => {
       add(m.relation);
       add(m.roleLabel);
       add(m.permissions);
-    });
-    coSignRequests.forEach((r) => {
-      add(r.title);
-      add(r.detail);
-      add(r.raisedBy);
-      add(r.needs);
-      add(r.parentCentricNote);
     });
     childAlerts.forEach((a) => {
       add(a.title);

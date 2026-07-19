@@ -1,13 +1,9 @@
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Card, SectionTitle, Pill, Disclaimer } from "../components/ui";
 import { useViewMode } from "../store/viewMode";
-import {
-  familyMembers,
-  coSignRequests,
-  type FamilyMember,
-  type CoSignRequest,
-} from "../data/familyPlane";
+import { familyMembers, type FamilyMember } from "../data/familyPlane";
 
 const avatarTone: Record<FamilyMember["tone"], string> = {
   navy: "bg-enough-navy",
@@ -47,61 +43,148 @@ function MemberCard({ m }: { m: FamilyMember }) {
   );
 }
 
-function CoSignCard({ r }: { r: CoSignRequest }) {
+/**
+ * Permission-management card: the only place the parent toggles adult-child
+ * access. Adult-child view shows a read-only summary (no Grant / Revoke).
+ *
+ * Anchored at `#adult-child-access` so the locked screen in PermissionGate can
+ * route directly here (`/family#adult-child-access`) and the card scrolls
+ * into view + briefly highlights for the presentation demo.
+ */
+function AdultChildAccessCard() {
   const { t } = useTranslation();
-  const statusMeta: Record<
-    CoSignRequest["status"],
-    { labelKey: string; tone: "amber" | "navy" | "emerald" }
-  > = {
-    "awaiting-parent": { labelKey: "family.csAwaitingParent", tone: "amber" },
-    "awaiting-child": { labelKey: "family.csAwaitingChild", tone: "navy" },
-    approved: { labelKey: "family.csApproved", tone: "emerald" },
+  const {
+    mode,
+    adultChildAccessGranted,
+    grantAdultChildAccess,
+    revokeAdultChildAccess,
+  } = useViewMode();
+  const child = mode === "child";
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [highlight, setHighlight] = useState(false);
+  // Brief confirmation banner after Grant is clicked. Auto-dismisses.
+  const [justGranted, setJustGranted] = useState(false);
+
+  // If the URL hash points at us on mount, smooth-scroll into view and
+  // briefly highlight the card so it is obvious during the demo.
+  useEffect(() => {
+    if (
+      typeof window !== "undefined" &&
+      window.location.hash === "#adult-child-access"
+    ) {
+      cardRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      setHighlight(true);
+      const t = window.setTimeout(() => setHighlight(false), 2400);
+      return () => window.clearTimeout(t);
+    }
+    return;
+  }, []);
+
+  const onGrant = () => {
+    grantAdultChildAccess();
+    setJustGranted(true);
+    window.setTimeout(() => setJustGranted(false), 4000);
   };
-  const meta = statusMeta[r.status];
+
+  const onRevoke = () => {
+    revokeAdultChildAccess();
+    setJustGranted(false);
+  };
+
   return (
-    <Card>
-      <div className="flex items-start justify-between gap-3 flex-wrap">
-        <div className="min-w-0">
-          <div className="font-bold text-enough-navy safe-break">
-            {t(r.title)}
+    <section
+      id="adult-child-access"
+      ref={cardRef}
+      className={`scroll-mt-28 rounded-xl2 transition-shadow ${
+        highlight
+          ? "ring-2 ring-enough-emerald shadow-pop"
+          : "ring-0 ring-transparent"
+      }`}
+    >
+      <Card
+        className={
+          child
+            ? "border-enough-amber/30 bg-enough-amber/5"
+            : "border-enough-navy/20 bg-enough-navy/5"
+        }
+      >
+        <div className="flex items-center justify-between gap-3 flex-wrap">
+          <div className="flex items-center gap-2 flex-wrap">
+            <Pill tone={child ? "amber" : "navy"}>
+              {child
+                ? t("family.accessReadOnlyBadge")
+                : adultChildAccessGranted
+                  ? t("family.accessGranted")
+                  : t("family.accessNotShared")}
+            </Pill>
+            <span className="font-semibold text-enough-navy">
+              {t("family.accessHeading")}
+            </span>
           </div>
-          <p className="text-sm text-enough-ink mt-1 leading-relaxed">
-            {t(r.detail)}
-          </p>
         </div>
-        <Pill tone={meta.tone}>{t(meta.labelKey)}</Pill>
-      </div>
-      <div className="mt-3 flex flex-wrap gap-4 text-xs text-enough-slate">
-        <span>
-          {t("family.csRaisedBy")}{" "}
-          <strong className="text-enough-navy">{t(r.raisedBy)}</strong>
-        </span>
-        <span>
-          {t("family.csNeeds")}{" "}
-          <strong className="text-enough-navy">{t(r.needs)}</strong>
-        </span>
-      </div>
-      {r.parentCentricNote && (
-        <div className="mt-3 rounded-xl2 border border-enough-emerald/20 bg-enough-emerald/5 px-3 py-2 text-xs text-enough-ink leading-relaxed">
-          <strong className="text-enough-emeraldDark">
-            {t("family.csParentCentric")}
-          </strong>{" "}
-          {t(r.parentCentricNote)}
-        </div>
-      )}
-      {r.status !== "approved" && (
-        <div className="mt-3 flex gap-2">
-          <button className="btn-emerald !py-2 !px-4 text-sm min-h-[44px]">
-            {r.status === "awaiting-parent"
-              ? t("family.csConfirmAsDad")
-              : t("family.csReviewConfirm")}
-          </button>
-          <button className="btn-ghost !py-2 !px-4 text-sm min-h-[44px]">
-            {t("family.csNotNow")}
-          </button>
-        </div>
-      )}
-    </Card>
+
+        <p className="readable text-sm text-enough-ink mt-3 leading-relaxed">
+          {child
+            ? t("family.accessChildBody")
+            : adultChildAccessGranted
+              ? t("family.accessGrantedBody")
+              : t("family.accessIntro")}
+        </p>
+
+        <ul className="mt-3 space-y-1.5 text-sm text-enough-ink">
+          {[
+            "canViewSafer",
+            "canViewAlerts",
+            "cannotEdit",
+            "cannotApprove",
+            "canRevoke",
+          ].map((k) => (
+            <li key={k} className="flex gap-2">
+              <span className="text-enough-emerald">•</span>
+              <span className="leading-snug">
+                {t(`family.permissionBullets.${k}`)}
+              </span>
+            </li>
+          ))}
+        </ul>
+
+        {/* Parent-only success confirmation. */}
+        {!child && justGranted && (
+          <div
+            role="status"
+            aria-live="polite"
+            className="mt-4 rounded-xl2 border border-enough-emerald/30 bg-enough-emerald/10 px-4 py-3 text-sm text-enough-ink leading-relaxed safe-break"
+          >
+            <strong className="text-enough-emeraldDark">
+              {t("family.accessGrantedConfirmation")}
+            </strong>{" "}
+            {t("family.accessGrantedHint")}
+          </div>
+        )}
+
+        {!child && (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {!adultChildAccessGranted ? (
+              <button
+                type="button"
+                onClick={onGrant}
+                className="btn-emerald min-h-[44px]"
+              >
+                {t("family.grantButton")}
+              </button>
+            ) : (
+              <button
+                type="button"
+                onClick={onRevoke}
+                className="btn-ghost min-h-[44px]"
+              >
+                {t("family.revokeButton")}
+              </button>
+            )}
+          </div>
+        )}
+      </Card>
+    </section>
   );
 }
 
@@ -151,19 +234,10 @@ export function Family() {
         </div>
       </div>
 
-      {/* Co-signer flow */}
+      {/* Adult-child access — the parent's permission toggle (or a read-only
+          summary in the adult-child view). */}
       <div>
-        <h3 className="text-lg font-bold text-enough-navy mb-1">
-          {t("family.coSignerHeading")}
-        </h3>
-        <p className="readable text-sm text-enough-slate mb-3">
-          {t("family.coSignerIntro")}
-        </p>
-        <div className="grid md:grid-cols-2 gap-4">
-          {coSignRequests.map((r) => (
-            <CoSignCard key={r.id} r={r} />
-          ))}
-        </div>
+        <AdultChildAccessCard />
       </div>
 
       {/* Why it matters (moat) */}

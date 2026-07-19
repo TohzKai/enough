@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { usePlan } from "../store/planStore";
+import { useViewMode } from "../store/viewMode";
 import {
   Card,
   SectionTitle,
@@ -432,8 +433,17 @@ export function Inputs() {
   const navigate = useNavigate();
   const { inputs, setField, setInputs, loadSample, run, status, progress } =
     usePlan();
+  const { mode } = useViewMode();
   const [running, setRunning] = useState(false);
   const [showManual, setShowManual] = useState(false);
+
+  // Route guard: the adult-child view is read-only and must never reach
+  // Connect. The Connect page lets the user edit financial inputs, change
+  // spending assumptions and (in the prototype) load the worked-example
+  // household — none of which the adult child is permitted to do.
+  if (mode === "child") {
+    return <Navigate to="/result" replace />;
+  }
 
   const totalAssets = inputs.cash + inputs.investments + inputs.srs;
   const allocTotal = inputs.cashPct + inputs.bondPct + inputs.equityPct;

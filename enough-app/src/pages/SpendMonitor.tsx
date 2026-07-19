@@ -69,6 +69,17 @@ export function SpendMonitor() {
         subtitle={t("spendMonitor.subtitle")}
       />
 
+      {/* Read-only banner in child mode — the adult child cannot edit spending
+          records or update the family report. */}
+      {child && (
+        <div
+          role="status"
+          className="rounded-xl2 border border-enough-amber/30 bg-enough-amber/10 px-4 py-3 text-sm text-enough-ink leading-relaxed safe-break"
+        >
+          {t("spendMonitor.readOnlyNotice")}
+        </div>
+      )}
+
       {/* Status hero */}
       <Card className="bg-gradient-to-br from-enough-navy to-enough-navyLight text-white border-0 !p-5">
         <div className="text-white/60 text-xs font-semibold uppercase tracking-wider">
@@ -151,27 +162,41 @@ export function SpendMonitor() {
                     })}
                   </div>
                 </div>
-                <MoneyField
-                  label={t("connect.fActual")}
-                  value={r.actual}
-                  onChange={(v) => setActual(r.key, v)}
-                />
+                {child ? (
+                  // Read-only display: no MoneyField editor, no setActual call.
+                  <div className="rounded-xl2 border border-enough-line bg-white px-3 py-2 text-right">
+                    <div className="text-xs text-enough-slate">
+                      {t("connect.fActual")}
+                    </div>
+                    <div className="font-bold text-enough-ink whitespace-nowrap">
+                      {formatMoneyMonth(r.actual)}
+                    </div>
+                  </div>
+                ) : (
+                  <MoneyField
+                    label={t("connect.fActual")}
+                    value={r.actual}
+                    onChange={(v) => setActual(r.key, v)}
+                  />
+                )}
               </div>
             );
           })}
         </div>
-        <div className="mt-4 flex flex-wrap gap-2">
-          <Link to="/report" className="btn-emerald text-sm min-h-[44px]">
-            {t("spendMonitor.updateReport")}
-          </Link>
-          <button
-            type="button"
-            onClick={clearActuals}
-            className="btn-ghost text-sm min-h-[44px]"
-          >
-            {t("spendMonitor.resetToPlanned")}
-          </button>
-        </div>
+        {!child && (
+          <div className="mt-4 flex flex-wrap gap-2">
+            <Link to="/report" className="btn-emerald text-sm min-h-[44px]">
+              {t("spendMonitor.updateReport")}
+            </Link>
+            <button
+              type="button"
+              onClick={clearActuals}
+              className="btn-ghost text-sm min-h-[44px]"
+            >
+              {t("spendMonitor.resetToPlanned")}
+            </button>
+          </div>
+        )}
       </Card>
 
       <Disclaimer tone="soft">{t("spendMonitor.disclaimer")}</Disclaimer>
