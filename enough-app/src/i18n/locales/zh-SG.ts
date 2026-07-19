@@ -39,6 +39,8 @@ const zhSG = {
     yrs: "年",
     eq: "等同",
     selected: "已选：{{value}}",
+  
+    report: "家庭报告",
   },
 
   format: {
@@ -64,10 +66,10 @@ const zhSG = {
 
   navigation: {
     home: "首页",
-    connect: "连接",
+    connect: "规划设置",
     results: "结果",
     spendMonitor: "支出监控",
-    family: "家庭",
+    family: "家庭访问",
     parentView: "长辈视图",
     adultChildView: "成年子女视图",
     forPartners: "合作伙伴",
@@ -217,6 +219,13 @@ const zhSG = {
     kindProperty: "房产",
     // Actual input label (Spend Monitor share)
     fActual: "实际",
+  
+    workflowStep1: "设置规划",
+    workflowStep2: "查看安全支出",
+    workflowStep3: "跟踪支出",
+    workflowHintPlan: "第 1 步 / 共 3 步 — 收集您的假设。",
+    workflowHintResult: "第 2 步 / 共 3 步 — 查看安全月支出。",
+    workflowHintSpend: "第 3 步 / 共 3 步 — 将实际支出与安全区间对比。",
   },
 
   results: {
@@ -355,6 +364,44 @@ const zhSG = {
     seqSteady: "平稳市场",
     seqBadEarly: "早期市况不佳",
     seqBadLate: "晚期市况不佳",
+  
+    tabOverview: "概览",
+    tabStress: "压力测试",
+    tabAction: "行动计划",
+    tabAnalytics: "分析",
+    analyticsTitle: "数字是如何算出的",
+    analyticsSub: "深入了解安全月支出估算背后的取舍与假设。",
+    curveTitleOverview: "支出与概率",
+    curveSubOverview: "更高的月支出改善今天的生活方式，但会降低规划维持的估算概率。",
+    nextStepsTitle: "接下来您想做什么？",
+    actionTrackSpending: "跟踪每月支出",
+    actionTrackSpendingBody: "每月将实际支出与安全区间对比。",
+    actionOpenReport: "打开家庭报告",
+    actionOpenReportBody: "打开一份可打印或另存为 PDF 的从容一页摘要。",
+    actionManageAccess: "管理家庭访问",
+    actionManageAccessBody: "选择是否允许配偶或成年子女查看规划。",
+    actionViewSpending: "查看共享支出",
+    actionViewSpendingBody: "查看 Mr Tan 分享的信息。成年子女视图下不可进行任何修改。",
+    actionOpenSharedReport: "打开共享的家庭报告",
+    actionManageAccessChild: "查看家庭访问",
+    illustrativeGuardrailPill: "示意性护栏情景",
+    illustrativeGuardrailTitle: "示例：持续的投资组合增长可能支持更高的支出",
+    illustrativeGuardrailBody: "本示例展示一个预先约定的护栏如何在持续投资组合增长后调整支出。并非基于实时市场数据。",
+    tabBackOverview: "返回概览",
+    tabViewActionPlan: "查看行动计划",
+    tabBackStress: "返回压力测试",
+    tabBackAnalytics: "返回概览",
+    nextStepsPrimaryLabel: "主要",
+    nextStepsSecondaryLabel: "次要",
+    nextStepsTertiaryLabel: "可选",
+    illustrativeWorkedExampleLabel: "示意性示例",
+    illustrativeWorkedExampleNote: "以下数字为示意性演示示例，并非由实时引擎驱动。您自建的自定义规划由引擎计算。",
+    optionsToExplore: "可探索的选项",
+    optionsToExploreNote: "Enough 仅模拟影响。您决定是否与相关机构或持牌顾问进一步了解该选项。",
+    providersHeading: "示意性持牌提供商",
+    providersNote: "所列提供商名称仅为示例，并非已确认的合作伙伴或推荐。",
+    workflowProgress: "第 2 步 / 共 3 步",
+    workflowHintResult: "第 2 步 / 共 3 步 — 查看安全月支出。",
   },
 
   guardrails: {
@@ -665,6 +712,12 @@ const zhSG = {
     readOnlyNotice: "只读共享视图。只有长辈才能更新支出记录。",
     disclaimer:
       "支出监控是手工规划工具。Enough 不连接您的银行、不导入交易、不自动分类支出。",
+  
+    workflowProgress: "第 3 步 / 共 3 步",
+    backToResults: "返回结果",
+    openFamilyReport: "打开家庭报告",
+    purposeSubtitle: "查看本月实际支出是否仍在安全区间内。",
+    explanatoryNote: "支出监控不会自动重新计算整个退休规划。如有长期变化，请更新规划假设。",
   },
 
   family: {
@@ -736,6 +789,9 @@ const zhSG = {
     m3p1: "爸爸授权后可查看选定的规划信息",
     m3p2: "可接收选定的提醒",
     m3p3: "不可编辑、批准或代爸爸行事",
+  
+    familyAccessTitle: "家庭访问",
+    familyAccessSubtitle: "选择谁可以查看规划。分享是可选、只读且由父母控制。",
   },
 
   familyPlane: {
@@ -781,6 +837,13 @@ const zhSG = {
     disclaimer:
       "中立理财规划建议（正在申请 MAS FA 牌照）。我们建议的是决策方向，不是特定产品。仅为估算，并非保证——基于既定假设的示意性结果。请仔细思量，再做出重大财务决策。",
     saveAsPdf: '使用浏览器的"打印"对话框，选择"另存为 PDF"即可分享本报告。',
+  
+    actionPrint: "打印或另存为 PDF",
+    actionBackToResults: "返回结果",
+    actionOpenSpendMonitor: "打开支出监控",
+    actionManageFamilyAccess: "管理家庭访问",
+    newSubtitle: "一页摘要：安全支出规划、关键风险与当前支出位置。",
+    sharedByParent: "由父母分享（只读）。",
   },
 
   partners: {

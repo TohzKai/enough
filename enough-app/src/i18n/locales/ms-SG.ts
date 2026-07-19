@@ -38,6 +38,8 @@ const msSG = {
     yrs: "thn",
     eq: "sama",
     selected: "Dipilih: {{value}}",
+  
+    report: "Laporan keluarga",
   },
 
   format: {
@@ -64,10 +66,10 @@ const msSG = {
 
   navigation: {
     home: "Laman utama",
-    connect: "Sambung",
+    connect: "Persediaan Pelan",
     results: "Keputusan",
     spendMonitor: "Monitor Perbelanjaan",
-    family: "Keluarga",
+    family: "Akses Keluarga",
     parentView: "Paparan ibu bapa",
     adultChildView: "Paparan anak dewasa",
     forPartners: "Untuk rakan kongsi",
@@ -218,6 +220,13 @@ const msSG = {
     kindSrs: "SRS",
     kindProperty: "HARTA",
     fActual: "Sebenar",
+  
+    workflowStep1: "Sediakan pelan",
+    workflowStep2: "Lihat perbelanjaan lebih selamat",
+    workflowStep3: "Jejak perbelanjaan",
+    workflowHintPlan: "Langkah 1 daripada 3 — kumpulkan andaian anda.",
+    workflowHintResult: "Langkah 2 daripada 3 — semak perbelanjaan bulanan lebih selamat.",
+    workflowHintSpend: "Langkah 3 daripada 3 — bandingkan perbelanjaan sebenar dengan julat lebih selamat.",
   },
 
   results: {
@@ -349,6 +358,44 @@ const msSG = {
     seqSteady: "Pasaran stabil",
     seqBadEarly: "Pasaran buruk AWAL",
     seqBadLate: "Pasaran buruk AKHIR",
+  
+    tabOverview: "Gambaran",
+    tabStress: "Ujian Tekanan",
+    tabAction: "Pelan Tindakan",
+    tabAnalytics: "Analitis",
+    analyticsTitle: "Bagaimana nombor dikira",
+    analyticsSub: "Terokai pertukaran dan andaian di sebalik anggaran perbelanjaan lebih selamat.",
+    curveTitleOverview: "Perbelanjaan lwn keyakinan",
+    curveSubOverview: "Perbelanjaan bulanan yang lebih tinggi meningkatkan gaya hidup hari ini tetapi menurunkan kebarangkalian jangka hayat pelan.",
+    nextStepsTitle: "Apa yang anda ingin lakukan seterusnya?",
+    actionTrackSpending: "Jejak perbelanjaan bulanan",
+    actionTrackSpendingBody: "Bandingkan perbelanjaan sebenar dengan julat lebih selamat setiap bulan.",
+    actionOpenReport: "Buka laporan keluarga",
+    actionOpenReportBody: "Buka ringkasan satu halaman yang tenang untuk dicetak atau disimpan sebagai PDF.",
+    actionManageAccess: "Urus akses keluarga",
+    actionManageAccessBody: "Pilih sama ada pasangan atau anak dewasa boleh melihat pelan.",
+    actionViewSpending: "Lihat perbelanjaan dikongsi",
+    actionViewSpendingBody: "Lihat maklumat yang dikongsi oleh Encik Tan. Tiada perubahan boleh dibuat dari paparan anak dewasa.",
+    actionOpenSharedReport: "Buka laporan keluarga dikongsi",
+    actionManageAccessChild: "Lihat akses keluarga",
+    illustrativeGuardrailPill: "Senario pelindung ilustrasi",
+    illustrativeGuardrailTitle: "Contoh: pertumbuhan portfolio mampan mungkin menyokong perbelanjaan lebih tinggi",
+    illustrativeGuardrailBody: "Ini menunjukkan bagaimana pelindung yang dipersetujui sebelum ini boleh melaras perbelanjaan selepas pertumbuhan portfolio mampan. Bukan berdasarkan data pasaran langsung.",
+    tabBackOverview: "Kembali ke Gambaran",
+    tabViewActionPlan: "Lihat pelan tindakan",
+    tabBackStress: "Kembali ke Ujian Tekanan",
+    tabBackAnalytics: "Kembali ke Gambaran",
+    nextStepsPrimaryLabel: "Utama",
+    nextStepsSecondaryLabel: "Sekunder",
+    nextStepsTertiaryLabel: "Pilihan",
+    illustrativeWorkedExampleLabel: "Contoh kerja ilustrasi",
+    illustrativeWorkedExampleNote: "Angka di bawah adalah contoh kerja ilustrasi pembentangan, tidak dipacu oleh enjin langsung. Pelan tersuai yang anda bina sendiri dikira oleh enjin.",
+    optionsToExplore: "Pilihan untuk diterokai",
+    optionsToExploreNote: "Enough hanya memodelkan kesan. Anda memutuskan sama ada untuk meneroka pilihan dengan agensi berkaitan atau penasihat berlesen.",
+    providersHeading: "Penyedia berlesen ilustrasi",
+    providersNote: "Nama penyedia ditunjukkan adalah contoh sahaja dan bukan rakan kongsi atau cadangan yang disahkan.",
+    workflowProgress: "Langkah 2 daripada 3",
+    workflowHintResult: "Langkah 2 daripada 3 — semak perbelanjaan bulanan lebih selamat.",
   },
 
   guardrails: {
@@ -694,6 +741,12 @@ const msSG = {
       "Paparan dikongsi baca sahaja. Hanya ibu bapa boleh mengemas kini rekod perbelanjaan.",
     disclaimer:
       "Monitor Perbelanjaan adalah alat perancangan manual. Enough tidak menyambung ke bank anda, mengimport transaksi, atau mengkategorikan perbelanjaan secara automatik.",
+  
+    workflowProgress: "Langkah 3 daripada 3",
+    backToResults: "Kembali ke keputusan",
+    openFamilyReport: "Buka laporan keluarga",
+    purposeSubtitle: "Periksa sama ada perbelanjaan sebenar bulan ini kekal dalam julat lebih selamat.",
+    explanatoryNote: "Monitor Perbelanjaan tidak mengira semula keseluruhan pelan persaraan secara automatik. Kemas kini andaian pelan apabila terdapat perubahan kekal.",
   },
 
   family: {
@@ -767,6 +820,9 @@ const msSG = {
     m3p1: "Boleh melihat maklumat pelan terpilih selepas Ayah memberi akses",
     m3p2: "Boleh menerima amaran terpilih",
     m3p3: "Tidak boleh mengedit, meluluskan atau bertindak bagi pihak Ayah",
+  
+    familyAccessTitle: "Akses Keluarga",
+    familyAccessSubtitle: "Pilih siapa yang boleh melihat pelan. Perkongsian adalah pilihan, baca sahaja dan dikawal oleh ibu bapa.",
   },
 
   familyPlane: {
@@ -818,6 +874,13 @@ const msSG = {
       "Nasihat perancangan kewangan neutral (sedang mendapatkan lesen MAS FA). Kami menasihati keputusan, bukan produk tertentu. Anggaran, bukan jaminan — keputusan ilustrasi berdasarkan anggapan yang dinyatakan. Fikirkan dan buat keputusan sendiri sebelum keputusan kewangan utama.",
     saveAsPdf:
       'Gunakan dialog Cetak pelayar anda dan pilih "Save as PDF" untuk berkongsi laporan ini.',
+  
+    actionPrint: "Cetak atau simpan sebagai PDF",
+    actionBackToResults: "Kembali ke keputusan",
+    actionOpenSpendMonitor: "Buka Monitor Perbelanjaan",
+    actionManageFamilyAccess: "Urus akses keluarga",
+    newSubtitle: "Ringkasan satu halaman: pelan perbelanjaan lebih selamat, risiko utama dan kedudukan perbelanjaan semasa.",
+    sharedByParent: "Dikongsi oleh ibu bapa (baca sahaja).",
   },
 
   partners: {

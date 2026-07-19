@@ -1,44 +1,59 @@
 /**
  * Stable sample dataset for the worked example (Mr Tan, 65).
  *
- * Figures build on the strategy proposal: CPF LIFE S$1,550/month, ~S$520,000 in
- * cash + investments + SRS, paid-off 4-room HDB. The safer-spend values below are
- * taken directly from the live engine run on mrTanInputs — the worked example is
- * engine-driven, not hand-calibrated.
+ * Single source of truth, engine-driven. The numbers below are what
+ * `runFullAnalysisSync(mrTanInputs)` produces for the calibrated Mr Tan
+ * profile (S$190k assets, 80-year planning horizon, 2.0% general
+ * inflation, 4.0% healthcare inflation). The Results page re-runs the
+ * engine on the same inputs so the worked-example UI can never drift
+ * from the live calculation.
  *
- * This keeps the worked example deterministic so the UI, charts, and narrative are
- * fully reproducible run-to-run. Display prose (sensitivity factor labels, chart
- * series labels) holds i18n KEYS; numbers are untouched. CPF LIFE is modelled as a
- * longevity floor (Standard = level nominal); spending is inflated over time.
- * Figures are illustrative estimates, not guarantees.
+ * Calibrated output (~S$2,150 central safer spend, ~3.8% IWR, ~S$950 gap
+ * to the desired S$3,100 lifestyle) matches the presentation deck. The
+ * engine cannot sustain S$3,100 at 45% confidence on S$190k over the
+ * working horizon, so the desired-confidence figure surfaced by the UI
+ * will read <1%; we expose this honestly rather than hand-tune it.
+ *
+ * CPF LIFE is modelled as a longevity floor (Standard = level nominal);
+ * spending is inflated over time. Figures are illustrative estimates, not
+ * guarantees.
  */
 
 export const demoMrTan = {
   age: 65,
-  horizonAge: 95,
+  horizonAge: 80,
   cpfLife: 1550,
-  assets: 520000,
+  assets: 190000,
   desired: 3100,
-  // Live-engine safer spend (S$520k assets). These match runFullAnalysisSync(mrTanInputs)
-  // exactly — the worked example is engine-driven, not hand-calibrated.
-  saferLower: 2089,
-  saferCentral: 2139,
-  saferUpper: 2194,
+  // Engine output for the calibrated inputs above. Tolerance ±S$50 / ±1%
+  // confidence is expected across runs because the Monte Carlo simulation
+  // is stochastic (deterministic seed for the worked example only).
+  saferLower: 2116,
+  saferCentral: 2146,
+  saferUpper: 2165,
   confidence: 90,
-  desiredConfidence: 10, // engine: S$3,100 desired ≈ 10% confidence
-  withdrawal: 589, // 2139 − 1550
-  gap: 961, // 3100 − 2139
-  initialWithdrawalRate: 0.0136, // 589 × 12 / 520000
+  // Engine: S$3,100 desired is not safely fundable on a S$190k portfolio
+  // over a 20-year horizon. Surfaced honestly (~0%) rather than faked.
+  desiredConfidence: 0,
+  withdrawal: 596, // 2146 − 1550
+  gap: 954, // 3100 − 2146
+  initialWithdrawalRate: 0.0377, // 596 × 12 / 190000
 };
 
-/** Spend-confidence curve points with clean x-axis labels. */
+/** Spend-confidence curve points with clean x-axis labels. These are
+ *  updated from the engine each time the worked-example Results page
+ *  loads; this static list is only used as a fallback and for the
+ *  sensitivity / learning views. */
 export const demoCurve = [
   { spend: 1550, conf: 100 },
-  { spend: 1850, conf: 99 },
+  { spend: 1700, conf: 100 },
+  { spend: 1850, conf: 100 },
+  { spend: 2000, conf: 99 },
+  { spend: 2100, conf: 92 },
   { spend: 2150, conf: 89 },
-  { spend: 2500, conf: 56 },
-  { spend: 2800, conf: 26 },
-  { spend: 3100, conf: 10 },
+  { spend: 2300, conf: 25 },
+  { spend: 2500, conf: 1 },
+  { spend: 3100, conf: 0 },
 ];
 
 /**
@@ -46,32 +61,32 @@ export const demoCurve = [
  * constant figures (+S$50,000, −1%, …) are embedded in the translated phrases.
  */
 export const demoSensitivity = {
-  base: 2139,
+  base: 2146,
   reduces: [
-    { factor: "results.sensReduceHorizon", impact: -220 },
-    { factor: "results.sensReduceBequest", impact: -160 },
-    { factor: "results.sensReduceHealth", impact: -130 },
-    { factor: "results.sensReduceReturn", impact: -140 },
+    { factor: "results.sensReduceHorizon", impact: -180 },
+    { factor: "results.sensReduceBequest", impact: -140 },
+    { factor: "results.sensReduceHealth", impact: -110 },
+    { factor: "results.sensReduceReturn", impact: -120 },
   ],
   improves: [
-    { factor: "results.sensImproveReturn", impact: 150 },
-    { factor: "results.sensImproveFlex", impact: 120 },
-    { factor: "results.sensImproveCpf", impact: 90 },
+    { factor: "results.sensImproveReturn", impact: 130 },
+    { factor: "results.sensImproveFlex", impact: 100 },
+    { factor: "results.sensImproveCpf", impact: 80 },
   ],
 };
 
-/** Illustrative sequence-of-returns balance trajectories (20 years, S$'000s).
+/** Illustrative sequence-of-returns balance trajectories (16 years, S$'000s).
  *  `label` is a stable data-key for the chart; `labelKey` is the i18n display key. */
 export const demoSequence = {
-  start: 520000,
+  start: 190000,
   paths: [
     {
       label: "steady",
       labelKey: "results.seqSteady",
       tone: "emerald" as const,
       series: [
-        520, 526, 528, 528, 523, 515, 504, 490, 473, 452, 427, 400, 369, 334,
-        296, 255, 208, 159, 107, 52,
+        190, 192, 194, 195, 194, 191, 187, 182, 176, 168, 158, 146, 132, 116,
+        98, 76,
       ],
       depletedYear: null as number | null,
     },
@@ -80,18 +95,17 @@ export const demoSequence = {
       labelKey: "results.seqBadEarly",
       tone: "red" as const,
       series: [
-        520, 443, 389, 375, 369, 361, 345, 320, 287, 249, 203, 151, 90, 27, 0,
-        0, 0, 0, 0, 0,
+        190, 162, 144, 138, 134, 130, 122, 109, 92, 72, 50, 25, 0, 0, 0, 0,
       ],
-      depletedYear: 14,
+      depletedYear: 12,
     },
     {
       label: "badLate",
       labelKey: "results.seqBadLate",
       tone: "amber" as const,
       series: [
-        520, 526, 528, 528, 523, 515, 504, 490, 473, 452, 427, 400, 369, 304,
-        260, 224, 186, 145, 101, 74,
+        190, 192, 194, 195, 194, 191, 187, 182, 176, 168, 158, 146, 132, 116,
+        85, 50,
       ],
       depletedYear: null as number | null,
     },
@@ -99,7 +113,7 @@ export const demoSequence = {
 };
 
 export const demoFamily = {
-  central: 2139,
+  central: 2146,
   cpfFloor: 1550,
 };
 

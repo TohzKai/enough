@@ -197,8 +197,8 @@ export function Family() {
     <div className="space-y-6">
       <SectionTitle
         kicker={t("family.kicker")}
-        title={t("family.title")}
-        subtitle={t("family.subtitle")}
+        title={t("family.familyAccessTitle")}
+        subtitle={t("family.familyAccessSubtitle")}
       />
 
       {/* Two-face intro */}

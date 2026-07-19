@@ -43,6 +43,8 @@ const enSG = {
     yrs: "yrs",
     eq: "eq",
     selected: "Selected: {{value}}",
+  
+    report: "Family report",
   },
 
   format: {
@@ -69,10 +71,10 @@ const enSG = {
 
   navigation: {
     home: "Home",
-    connect: "Connect",
+    connect: "Plan Setup",
     results: "Results",
     spendMonitor: "Spend Monitor",
-    family: "Family",
+    family: "Family Access",
     parentView: "Parent view",
     adultChildView: "Adult-child view",
     forPartners: "For partners",
@@ -225,6 +227,13 @@ const enSG = {
     kindProperty: "PROPERTY",
     // Actual input label (Spend Monitor share)
     fActual: "Actual",
+  
+    workflowStep1: "Set up plan",
+    workflowStep2: "See safer spend",
+    workflowStep3: "Track spending",
+    workflowHintPlan: "Step 1 of 3 — collect your assumptions.",
+    workflowHintResult: "Step 2 of 3 — review the safer monthly spend.",
+    workflowHintSpend: "Step 3 of 3 — compare actual spending with the safer range.",
   },
 
   results: {
@@ -374,6 +383,44 @@ const enSG = {
     seqSteady: "Steady market",
     seqBadEarly: "Bad market EARLY",
     seqBadLate: "Bad market LATE",
+  
+    tabOverview: "Overview",
+    tabStress: "Stress Tests",
+    tabAction: "Action Plan",
+    tabAnalytics: "Analytics",
+    analyticsTitle: "How the number was calculated",
+    analyticsSub: "Explore the trade-offs and assumptions behind the safer-spend estimate.",
+    curveTitleOverview: "Spend versus confidence",
+    curveSubOverview: "Higher monthly spending improves lifestyle today but lowers the estimated probability that the plan lasts.",
+    nextStepsTitle: "What would you like to do next?",
+    actionTrackSpending: "Track monthly spending",
+    actionTrackSpendingBody: "Compare actual spending with the safer range each month.",
+    actionOpenReport: "Open family report",
+    actionOpenReportBody: "Open a calm one-page summary to print or save as PDF.",
+    actionManageAccess: "Manage family access",
+    actionManageAccessBody: "Choose whether a spouse or adult child may view the plan.",
+    actionViewSpending: "View shared spending",
+    actionViewSpendingBody: "View the information Mr Tan has shared. No changes can be made from adult-child view.",
+    actionOpenSharedReport: "Open shared family report",
+    actionManageAccessChild: "View family access",
+    illustrativeGuardrailPill: "Illustrative guardrail scenario",
+    illustrativeGuardrailTitle: "Example: sustained portfolio growth may support a higher spend",
+    illustrativeGuardrailBody: "This demonstrates how a pre-agreed guardrail could adjust spending after sustained portfolio growth. It is not based on live market data.",
+    tabBackOverview: "Back to Overview",
+    tabViewActionPlan: "View action plan",
+    tabBackStress: "Back to Stress Tests",
+    tabBackAnalytics: "Back to Overview",
+    nextStepsPrimaryLabel: "Primary",
+    nextStepsSecondaryLabel: "Secondary",
+    nextStepsTertiaryLabel: "Optional",
+    illustrativeWorkedExampleLabel: "Illustrative worked example",
+    illustrativeWorkedExampleNote: "The figures below are an illustrative presentation worked example, not driven by the live engine. Custom plans you build yourself are calculated by the engine.",
+    optionsToExplore: "Options to explore",
+    optionsToExploreNote: "Enough models the impact. You decide whether to explore the option with the relevant agency or a licensed adviser.",
+    providersHeading: "Illustrative licensed providers",
+    providersNote: "Provider names shown are examples only and are not confirmed partners or recommendations.",
+    workflowProgress: "Step 2 of 3",
+    workflowHintResult: "Step 2 of 3 — review the safer monthly spend.",
   },
 
   guardrails: {
@@ -716,6 +763,12 @@ const enSG = {
       "Read-only shared view. Only the parent can update spending records.",
     disclaimer:
       "Spend Monitor is a manual planning tool. Enough does not connect to your bank, import transactions, or categorise spending automatically.",
+  
+    workflowProgress: "Step 3 of 3",
+    backToResults: "Back to results",
+    openFamilyReport: "Open family report",
+    purposeSubtitle: "Check whether this month’s actual spending remains within the safer range.",
+    explanatoryNote: "The Spend Monitor does not recalculate the full retirement plan automatically. Update the plan assumptions when there is a lasting change.",
   },
 
   family: {
@@ -789,6 +842,9 @@ const enSG = {
     m3p1: "Can view selected plan information after Dad grants access",
     m3p2: "Can receive selected alerts",
     m3p3: "Cannot edit, approve or act on Dad's behalf",
+  
+    familyAccessTitle: "Family Access",
+    familyAccessSubtitle: "Choose who may view the plan. Sharing is optional, read-only and controlled by the parent.",
   },
 
   familyPlane: {
@@ -840,6 +896,13 @@ const enSG = {
       "Neutral financial planning advice (pursuing MAS FA licensing). We advise the decision, not a specific product. Estimates, not guarantees — illustrative result based on stated assumptions. Think it through and make your own call before major financial decisions.",
     saveAsPdf:
       'Use your browser\'s Print dialog and choose "Save as PDF" to share this report.',
+  
+    actionPrint: "Print or save as PDF",
+    actionBackToResults: "Back to results",
+    actionOpenSpendMonitor: "Open Spend Monitor",
+    actionManageFamilyAccess: "Manage family access",
+    newSubtitle: "A one-page summary of the safer-spend plan, key risks and current spending position.",
+    sharedByParent: "Shared by the parent (read-only).",
   },
 
   partners: {

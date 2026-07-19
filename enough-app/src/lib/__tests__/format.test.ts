@@ -104,18 +104,20 @@ describe("years formatting", () => {
 /* ---------- Financial regression (requirements §16 #18–24) ---------- */
 // The Mr Tan worked-example figures are the source-of-truth display values.
 // i18n must never change them; these guard the "do not change the financial
-// model" invariant.
+// model" invariant. Calibrated to the presentation profile: S$190k assets,
+// 20-year horizon (age 65 → 85), 2.0% general inflation, 4.0% healthcare
+// inflation. See `src/data/mrTan.ts` for the calibration rationale.
 describe("Mr Tan financial figures are unchanged", () => {
-  it("keeps the safer monthly spend range S$2,089 to S$2,194", () => {
-    expect(demoMrTan.saferLower).toBe(2089);
-    expect(demoMrTan.saferUpper).toBe(2194);
+  it("keeps the safer monthly spend range S$2,116 to S$2,165", () => {
+    expect(demoMrTan.saferLower).toBe(2116);
+    expect(demoMrTan.saferUpper).toBe(2165);
     expect(formatRangeMonth(demoMrTan.saferLower, demoMrTan.saferUpper)).toBe(
-      "S$2,089 to S$2,194/month",
+      "S$2,116 to S$2,165/month",
     );
   });
 
-  it("keeps the suggested central spend S$2,139", () => {
-    expect(demoMrTan.saferCentral).toBe(2139);
+  it("keeps the suggested central spend S$2,146", () => {
+    expect(demoMrTan.saferCentral).toBe(2146);
   });
 
   it("keeps the confidence at approximately 90%", () => {
@@ -127,9 +129,9 @@ describe("Mr Tan financial figures are unchanged", () => {
 
   it("keeps the CPF LIFE floor, extra withdrawal, desired spend and gap", () => {
     expect(demoMrTan.cpfLife).toBe(1550);
-    expect(demoMrTan.withdrawal).toBe(589);
+    expect(demoMrTan.withdrawal).toBe(596);
     expect(demoMrTan.desired).toBe(3100);
-    expect(demoMrTan.gap).toBe(961);
+    expect(demoMrTan.gap).toBe(954);
     // The derived relationships must still hold.
     expect(demoMrTan.withdrawal).toBe(
       demoMrTan.saferCentral - demoMrTan.cpfLife,

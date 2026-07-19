@@ -12,6 +12,7 @@ import { useSpend } from "../store/spendStore";
 import { useViewMode } from "../store/viewMode";
 import { LIFESTYLE_BUCKETS } from "../data/lifestyle";
 import { demoMrTan } from "../data/demoDataset";
+import { PlanProgress } from "../components/PlanProgress";
 import {
   formatMoneyMonth,
   formatRangeMonth,
@@ -66,8 +67,24 @@ export function SpendMonitor() {
           child ? t("spendMonitor.kickerChild") : t("spendMonitor.kickerParent")
         }
         title={t("spendMonitor.title")}
-        subtitle={t("spendMonitor.subtitle")}
+        subtitle={t("spendMonitor.purposeSubtitle")}
       />
+
+      {/* Workflow indicator + helper navigation for the three-step flow. */}
+      <PlanProgress currentStep={3} hintKey="spendMonitor.workflowProgress" />
+
+      <div className="no-print flex flex-wrap gap-2">
+        <Link to="/result" className="btn-ghost min-h-[44px]">
+          {t("spendMonitor.backToResults")}
+        </Link>
+        <Link to="/report" className="btn-soft min-h-[44px]">
+          {t("spendMonitor.openFamilyReport")}
+        </Link>
+      </div>
+
+      <p className="readable text-sm text-enough-slate leading-relaxed safe-break">
+        {t("spendMonitor.explanatoryNote")}
+      </p>
 
       {/* Read-only banner in child mode — the adult child cannot edit spending
           records or update the family report. */}

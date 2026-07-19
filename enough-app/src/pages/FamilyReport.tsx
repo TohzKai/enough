@@ -17,9 +17,12 @@ import {
   totalLifestyle,
 } from "../data/lifestyle";
 import { useSpend } from "../store/spendStore";
+import { useViewMode } from "../store/viewMode";
 
 export function FamilyReport() {
   const { t } = useTranslation();
+  const { mode } = useViewMode();
+  const child = mode === "child";
   const handlePrint = () => window.print();
   // Illustrative safer-spend impact magnitudes (Mr Tan sample) — single source
   // of truth shared with the Results-page stress-test cards.
@@ -38,11 +41,26 @@ export function FamilyReport() {
         <SectionTitle
           kicker={t("report.kicker")}
           title={t("report.title")}
-          subtitle={t("report.subtitle")}
+          subtitle={t("report.newSubtitle")}
         />
-        <button onClick={handlePrint} className="btn-primary min-h-[44px]">
-          {t("report.print")}
-        </button>
+        {/* Top-of-page actions. Primary: Print. Secondaries: navigation
+            shortcuts back to the live app. All four are hidden when printing
+            because they sit inside .no-print. They wrap / stack on small
+            screens via flex-wrap. */}
+        <div className="flex flex-wrap gap-2">
+          <button onClick={handlePrint} className="btn-emerald min-h-[44px]">
+            {t("report.actionPrint")}
+          </button>
+          <Link to="/result" className="btn-soft min-h-[44px]">
+            {t("report.actionBackToResults")}
+          </Link>
+          <Link to="/spend" className="btn-soft min-h-[44px]">
+            {t("report.actionOpenSpendMonitor")}
+          </Link>
+          <Link to="/family" className="btn-ghost min-h-[44px]">
+            {t("report.actionManageFamilyAccess")}
+          </Link>
+        </div>
       </div>
 
       <Card className="print-area">
@@ -58,6 +76,12 @@ export function FamilyReport() {
                 horizon: demoMrTan.horizonAge,
               })}
             </div>
+            {child && (
+              <div className="mt-2 inline-flex items-center gap-2 rounded-full bg-enough-amberSoft px-3 py-1 text-xs font-semibold text-enough-amber">
+                <span aria-hidden="true">🔒</span>
+                <span>{t("report.sharedByParent")}</span>
+              </div>
+            )}
           </div>
           <div className="text-right text-xs text-enough-slate">
             {t("report.headerAdvice")}
@@ -190,12 +214,6 @@ export function FamilyReport() {
           {t("report.disclaimer")}
         </p>
       </Card>
-
-      <div className="no-print">
-        <Link to="/result" className="btn-soft min-h-[44px]">
-          {t("common.backToResults")}
-        </Link>
-      </div>
 
       <Disclaimer tone="soft">
         <span className="no-print">{t("report.saveAsPdf")}</span>
