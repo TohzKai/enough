@@ -150,6 +150,32 @@ export function formatConfidence(
   );
 }
 
+/**
+ * Round a Singapore-dollar figure to the nearest S$50.
+ *
+ * The presentation deck rounds headline numbers (e.g. "about S$2,150") to
+ * avoid presenting false precision and to make the safer-spend number easier
+ * to recall. Unrounded values are still used for downstream calculations.
+ */
+export function roundToNearest50(value: number): number {
+  return Math.round(value / 50) * 50;
+}
+
+/** Format a rounded headline value, e.g. "About S$2,150/month". */
+export function formatRoundedHeadline(
+  value: number,
+  hintKey: string,
+  locale?: string,
+): string {
+  const lc = resolveLocale(locale);
+  const rounded = roundToNearest50(value);
+  const money = formatMoneyMonth(rounded, lc);
+  return (
+    i18n.t(hintKey, { value: rounded, lng: lc }) ||
+    `About ${money}`
+  );
+}
+
 /** Percentage from a fraction (0.036 → "3.6%"). `digits` sets decimal places. */
 export function pct(fraction: number, digits = 0, _locale?: string): string {
   return `${(fraction * 100).toFixed(digits)}%`;

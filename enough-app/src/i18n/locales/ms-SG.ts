@@ -40,6 +40,9 @@ const msSG = {
     selected: "Dipilih: {{value}}",
   
     report: "Laporan keluarga",
+  
+    resetPresentationDemo: "Set semula demonstrasi pembentangan",
+    resetPresentationDemoBody: "Set semula pelan sampel, rekod perbelanjaan dan tetapan akses keluarga?",
   },
 
   format: {
@@ -67,7 +70,7 @@ const msSG = {
   navigation: {
     home: "Laman utama",
     connect: "Persediaan Pelan",
-    results: "Keputusan",
+    results: "Perbelanjaan Selamat",
     spendMonitor: "Monitor Perbelanjaan",
     family: "Akses Keluarga",
     parentView: "Paparan ibu bapa",
@@ -75,11 +78,21 @@ const msSG = {
     forPartners: "Untuk rakan kongsi",
   },
 
+  navigationShort: {
+    home: "Utama",
+    plan: "Pelan",
+    results: "Belanja Selamat",
+    monitor: "Pantau",
+    family: "Keluarga",
+    parent: "Ibu bapa",
+    child: "Anak",
+  },
+
   home: {
     badge: "Pembantu bersama perbelanjaan persaraan neutral Singapura",
     heroTitle: "Berapa banyak saya benar-benar boleh belanjakan?",
     heroParent:
-      "Satu nombor yang tenang — berapa banyak anda boleh belanjakan dengan selamat setiap bulan, daripada CPF, simpanan dan gaya hidup yang anda inginkan. Diterangkan dalam bahasa mudah. Nasihat neutral — bukan promosi produk.",
+      "Satu nombor yang tenang — berapa banyak anda mungkin boleh belanjakan setiap bulan, berdasarkan CPF, simpanan dan gaya hidup yang anda inginkan. Diterangkan dalam bahasa mudah. Sokongan keputusan neutral — bukan promosi produk.",
     heroChild:
       "Lihat pelan persaraan ibu bapa anda hanya apabila mereka memilih untuk berkongsi dengan anda. Akaun adalah baca sahaja, dan ibu bapa anda kekal mengawal sepenuhnya.",
     ctaParent: "Mulakan pelan saya",
@@ -227,9 +240,13 @@ const msSG = {
     workflowHintPlan: "Langkah 1 daripada 3 — kumpulkan andaian anda.",
     workflowHintResult: "Langkah 2 daripada 3 — semak perbelanjaan bulanan lebih selamat.",
     workflowHintSpend: "Langkah 3 daripada 3 — bandingkan perbelanjaan sebenar dengan julat lebih selamat.",
+  
+    privacyTitle: "Guna maklumat sampel sahaja",
+    privacyBody: "Jangan masukkan nombor akaun sebenar, butiran pengenalan atau kata laluan ke dalam prototaip pendidikan ini.",
   },
 
   results: {
+    openFamilyReport: "Buka laporan keluarga",
     simulating: "Mensimulasikan ribuan laluan persaraan…",
     noPlanTitle: "Belum ada pelan",
     noPlanBody:
@@ -396,6 +413,53 @@ const msSG = {
     providersNote: "Nama penyedia ditunjukkan adalah contoh sahaja dan bukan rakan kongsi atau cadangan yang disahkan.",
     workflowProgress: "Langkah 2 daripada 3",
     workflowHintResult: "Langkah 2 daripada 3 — semak perbelanjaan bulanan lebih selamat.",
+  
+    closeSection: "Tutup",
+  
+    engineBadge: "Enjin dekumulasi Monte Carlo",
+    scenarioBaseline: "Pelan semasa anda",
+    safeSpendHero: "Lebih kurang S${{value}}/bulan",
+    safeSpendRange: "Julat anggaran S${{lower}}–S${{upper}} · lebih kurang {{confidence}}% keyakinan",
+    safeSpendPage: "Perbelanjaan bulanan lebih selamat anda",
+    explorePlan: "Terokai pelan anda",
+    testAScenario: "Uji senario",
+    seeWithdrawalPlan: "Lihat pelan tindakan",
+    trackMonthlySpending: "Jejak perbelanjaan bulanan",
+    manageFamilyAccess: "Urus akses keluarga",
+    howWasThisCalculated: "Bagaimana ini dikira?",
+    yourCalculatedResult: "Pelan dikira anda",
+    yourCalculatedNote: "Dikira daripada andaian yang dimasukkan. Anggaran bukan jaminan.",
+    engineExplainer: "Cara enjin berfungsi",
+    scenarioLabTitle: "Makmal Senario",
+    scenarioLabSub: "Tukar satu andaian dan lihat bagaimana ia menjejaskan perbelanjaan bulanan lebih selamat, keyakinan dan jurang pendanaan.",
+  
+    engineExplainerSub: "Lihat andaian, lengkung keyakinan dan risiko di sebalik anggaran.",
+    scenarioBaselineReminder: "Garis dasar semasa: lebih kurang S${{value}}/bulan pada keyakinan {{confidence}}%",
+    scenarioLongerLife: "Jangka hayat lebih lama",
+    scenarioLongerLifeSub: "Rancang persaraan yang lebih lama dan lihat berapa lama aset yang sama mesti bertahan.",
+    scenarioLongerLifeAge: "Rancang sehingga umur",
+    scenarioLongerLifeQuick: "Pilihan cepat",
+    scenarioHealthcare: "Penjagaan kesihatan dan jangka panjang",
+    scenarioHealthcareSub: "Uji kesan peristiwa kesihatan dan kos penjagaan berterusan.",
+    scenarioMarket: "Risiko jujukan pasaran",
+    scenarioMarketSub: "Bandingkan jatuh pasaran awal dengan jatuh yang sama kemudian dalam persaraan.",
+    scenarioTripLegacy: "Perjalanan dan pusaka",
+    scenarioTripLegacySub: "Lihat bagaimana satu perjalanan dan sasaran pusaka menjejaskan perbelanjaan lebih selamat.",
+    scenarioAfter: "Selepas senario",
+    scenarioImpact: "Kesan bulanan",
+    scenarioConfidence: "Keyakinan",
+    scenarioReset: "Set semula senario",
+    scenarioTripAsCash: "Dimodelkan sebagai dana yang diperuntukkan daripada tunai hari ini.",
+    scenarioLegacyCustom: "Sasaran pusaka tersuai",
+    scenarioAppliedLifespan: "Senario jangka hayat lebih lama digunakan",
+    scenarioAppliedHealthcare: "Senario penjagaan kesihatan digunakan",
+    scenarioAppliedTrip: "Senario perjalanan digunakan",
+    scenarioAppliedLegacy: "Senario pusaka digunakan",
+    sequenceRiskLabel: "Senario risiko jujukan ilustrasi",
+    sequenceRiskSteady: "Pasaran stabil",
+    sequenceRiskBadEarly: "Jatuh pasaran awal",
+    sequenceRiskBadLate: "Jatuh pasaran lewat",
+    sequenceRiskInsight: "Purata pulangan yang sama boleh menghasilkan hasil yang sangat berbeza apabila kerugian berlaku awal atau lewat.",
   },
 
   guardrails: {
@@ -661,7 +725,7 @@ const msSG = {
     protectionFits: "Perlindungan yang sesuai",
     whoToSee: "Siapa untuk berjumpa",
     footer:
-      "Penyedia yang ditunjukkan adalah rakan kongsi contoh ilustrasi (firma dan skim sebenar Singapura, 2025–26), bukan hubungan yang disahkan. Enough merujuk sebagai perkenalan MAS yang dibenarkan (FAA-N02); yuran rata, bukan komisen, jadi rujukan kekal neutral — anda putuskan, dan sebarang produk diatur oleh rakan kongsi berlesen.",
+      "Prototaip perancangan persaraan pendidikan. Anggaran berdasarkan andaian yang dinyatakan dan bukan jaminan atau nasihat kewangan peribadi.",
     footerEmphasis: "rakan kongsi contoh ilustrasi",
     addToReport: "Tambah ke laporan keluarga",
     r_longevity_gap: "Jangka hayat — hidup melebihi simpanan anda",
@@ -747,6 +811,10 @@ const msSG = {
     openFamilyReport: "Buka laporan keluarga",
     purposeSubtitle: "Periksa sama ada perbelanjaan sebenar bulan ini kekal dalam julat lebih selamat.",
     explanatoryNote: "Monitor Perbelanjaan tidak mengira semula keseluruhan pelan persaraan secara automatik. Kemas kini andaian pelan apabila terdapat perubahan kekal.",
+  
+    recalcTitle: "Kira semula perbelanjaan lebih selamat",
+    recalcBody: "Pelan anda telah berubah, jadi julat lebih selamat yang sebelumnya tidak lagi terkini.",
+    recalcCta: "Kira keputusan yang dikemas kini",
   },
 
   family: {
@@ -783,7 +851,9 @@ const msSG = {
       cannotApprove:
         "Tidak boleh meluluskan, mengesahkan atau bertindak bagi pihak ibu bapa",
       canRevoke: "Akses boleh ditarik balik oleh ibu bapa pada bila-bila masa",
-    },
+    
+    openFamilyReport: "Buka laporan keluarga",
+  },
     moatTitle: "Lapisan keluarga adalah tanah yang tidak dicabar",
     moatBody:
       "Akses keluarga berdasarkan kebenaran dan boleh ditarik balik. Paparan dikongsi baca sahaja mengekalkan hubungan keluarga tanpa melepaskan kawalan.",
@@ -881,6 +951,12 @@ const msSG = {
     actionManageFamilyAccess: "Urus akses keluarga",
     newSubtitle: "Ringkasan satu halaman: pelan perbelanjaan lebih selamat, risiko utama dan kedudukan perbelanjaan semasa.",
     sharedByParent: "Dikongsi oleh ibu bapa (baca sahaja).",
+  
+    recalcTitle: "Kira semula pelan anda",
+    recalcBody: "Andaian pelan anda telah berubah. Kira keputusan perbelanjaan lebih selamat yang baharu sebelum membuka laporan keluarga.",
+    recalcCta: "Kembali ke Persediaan Pelan",
+    usingDemoData: "Contoh kerja ilustrasi dikira oleh enjin Enough.",
+    usingCustomData: "Laporan dijana daripada pelan dikira semasa anda.",
   },
 
   partners: {
@@ -948,8 +1024,10 @@ const msSG = {
 
   disclaimer: {
     footer:
-      "Nasihat perancangan kewangan neutral — anda buat keputusan muktamad. Kami menasihati keputusan, bukan produk tertentu (yuran rata, bukan komisen). Anggaran, bukan jaminan. Tidak bersekutu dengan CPF Board atau MAS.",
+      "Prototaip perancangan persaraan pendidikan. Anggaran berdasarkan andaian yang dinyatakan dan bukan jaminan atau nasihat kewangan peribadi.",
   },
+
+  resultsTabs: { overview: "Gambaran", stress: "Ujian Tekanan", actions: "Pelan Tindakan", analytics: "Analitis" },
 } as const;
 
 export default msSG;

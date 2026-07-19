@@ -45,6 +45,9 @@ const enSG = {
     selected: "Selected: {{value}}",
   
     report: "Family report",
+  
+    resetPresentationDemo: "Reset presentation demo",
+    resetPresentationDemoBody: "Reset the sample plan, spending records and family-access settings?",
   },
 
   format: {
@@ -72,7 +75,7 @@ const enSG = {
   navigation: {
     home: "Home",
     connect: "Plan Setup",
-    results: "Results",
+    results: "Safe Spend",
     spendMonitor: "Spend Monitor",
     family: "Family Access",
     parentView: "Parent view",
@@ -80,11 +83,21 @@ const enSG = {
     forPartners: "For partners",
   },
 
+  navigationShort: {
+    home: "Home",
+    plan: "Plan",
+    results: "Safe Spend",
+    monitor: "Monitor",
+    family: "Family",
+    parent: "Parent",
+    child: "Child",
+  },
+
   home: {
     badge: "Singapore's neutral retirement-spending co-pilot",
     heroTitle: "How much can I really spend?",
     heroParent:
-      "One calm number — how much you can safely spend each month, from your CPF, savings and the lifestyle you want. Explained in plain words. Neutral advice — never a product pitch.",
+      "One calm number — how much you may be able to spend each month, based on your CPF, savings and desired lifestyle. Explained in plain words. Neutral decision support — never a product pitch.",
     heroChild:
       "View your parent's retirement plan only when they choose to share it with you. Access is read-only, and your parent remains fully in control.",
     ctaParent: "Start my plan",
@@ -109,7 +122,7 @@ const enSG = {
     chipInvestments: "Investments",
     saferMonthlySpend: "→ safer monthly spend",
     trustStrip:
-      'Neutral financial planning advice · Flat fees, never commission · Your data stays yours · Plain-English "why" behind every number.',
+      'Educational retirement-planning guidance · Enough models the impact; you make the decision.',
   },
 
   connect: {
@@ -160,7 +173,7 @@ const enSG = {
     allocWarning: "Asset mix should add to 100% (currently {{value}}%).",
     planningAdviceNote: "Planning advice — estimates, not guarantees.",
     disclaimer:
-      "Neutral financial planning advice — the decisions are yours to weigh. We advise the move, never push a specific product. The Singpass / SGFinDex connection is an illustrative prototype.",
+      "Educational retirement-planning guidance. Enough models the impact; you make the decision. The Singpass / SGFinDex connection is an illustrative prototype.",
     // Account row source/labels (aggregation)
     acctCpfSource: "CPF Board",
     acctCpfLabel: "CPF LIFE payout (Standard)",
@@ -234,9 +247,13 @@ const enSG = {
     workflowHintPlan: "Step 1 of 3 — collect your assumptions.",
     workflowHintResult: "Step 2 of 3 — review the safer monthly spend.",
     workflowHintSpend: "Step 3 of 3 — compare actual spending with the safer range.",
+  
+    privacyTitle: "Use sample information only",
+    privacyBody: "Do not enter real account numbers, identification details or passwords into this educational prototype.",
   },
 
   results: {
+    openFamilyReport: "Open family report",
     simulating: "Simulating thousands of retirement paths…",
     noPlanTitle: "No plan yet",
     noPlanBody:
@@ -421,6 +438,53 @@ const enSG = {
     providersNote: "Provider names shown are examples only and are not confirmed partners or recommendations.",
     workflowProgress: "Step 2 of 3",
     workflowHintResult: "Step 2 of 3 — review the safer monthly spend.",
+  
+    closeSection: "Close",
+  
+    engineBadge: "Monte Carlo decumulation engine",
+    scenarioBaseline: "Your current plan",
+    safeSpendHero: "About S${{value}}/month",
+    safeSpendRange: "Estimated range S${{lower}}–S${{upper}} · about {{confidence}}% confidence",
+    safeSpendPage: "Your safer monthly spend",
+    explorePlan: "Explore your plan",
+    testAScenario: "Test a scenario",
+    seeWithdrawalPlan: "See action plan",
+    trackMonthlySpending: "Track monthly spending",
+    manageFamilyAccess: "Manage family access",
+    howWasThisCalculated: "How was this calculated?",
+    yourCalculatedResult: "Your calculated plan",
+    yourCalculatedNote: "Calculated from the assumptions entered. Estimates are not guarantees.",
+    engineExplainer: "How the engine works",
+    scenarioLabTitle: "Scenario Lab",
+    scenarioLabSub: "Change one assumption and see how it affects the safer monthly spend, confidence and funding gap.",
+  
+    engineExplainerSub: "See the assumptions, confidence curve and risks behind the estimate.",
+    scenarioBaselineReminder: "Current baseline: about S${{value}}/month at {{confidence}}% confidence",
+    scenarioLongerLife: "Longer life",
+    scenarioLongerLifeSub: "Plan for a longer retirement and see how the same assets must last longer.",
+    scenarioLongerLifeAge: "Plan to age",
+    scenarioLongerLifeQuick: "Quick choices",
+    scenarioHealthcare: "Healthcare and long-term care",
+    scenarioHealthcareSub: "Test the effect of a health event and ongoing care costs.",
+    scenarioMarket: "Market sequence risk",
+    scenarioMarketSub: "Compare an early market fall with the same fall later in retirement.",
+    scenarioTripLegacy: "Trip and legacy",
+    scenarioTripLegacySub: "See how a one-off trip and a legacy target change the safer spend.",
+    scenarioAfter: "After scenario",
+    scenarioImpact: "Monthly impact",
+    scenarioConfidence: "Confidence",
+    scenarioReset: "Reset scenario",
+    scenarioTripAsCash: "Modelled as funds set aside from cash today.",
+    scenarioLegacyCustom: "Custom legacy target",
+    scenarioAppliedLifespan: "Longer-life scenario applied",
+    scenarioAppliedHealthcare: "Healthcare scenario applied",
+    scenarioAppliedTrip: "Trip scenario applied",
+    scenarioAppliedLegacy: "Legacy scenario applied",
+    sequenceRiskLabel: "Illustrative sequence-risk scenario",
+    sequenceRiskSteady: "Steady market",
+    sequenceRiskBadEarly: "Bad market early",
+    sequenceRiskBadLate: "Bad market late",
+    sequenceRiskInsight: "The same average return can produce very different outcomes when losses arrive early.",
   },
 
   guardrails: {
@@ -558,7 +622,7 @@ const enSG = {
       "Agreeing to trim discretionary spending in down markets lets the plan sustain a slightly higher average safer spend the rest of the time — a smaller lever here, but the main defence against a bad run of early returns.",
     closingTitle: "Closing the gap",
     closingIntro:
-      "Your desired spend is {{value}} above the safer number. These are the levers we'd advise to close it — each figure is what the engine actually computes, not a fixed promise. We advise the move and stay neutral on the specific product.",
+      "Your desired spend is {{value}} above the safer number. These are the levers Enough models for closing the gap — each figure is what the engine actually computes, not a fixed promise. You make the decision; discuss regulated products with a licensed adviser.",
     closingSpinner: "Modelling each lever through the engine…",
     allFour: "If you did all four (modelled together)",
     allFourNote:
@@ -683,7 +747,7 @@ const enSG = {
     protectionFits: "Protection that fits",
     whoToSee: "Who to see",
     footer:
-      "Providers shown are illustrative example partners (real Singapore firms and schemes, 2025–26), not confirmed relationships. Enough refers as a permitted MAS introducer (FAA-N02); flat fees, never commission, so the referral stays neutral — you decide, and any product is arranged by the licensed partner.",
+      "Educational retirement-planning prototype. Estimates are based on stated assumptions and are not guarantees or personalised financial advice.",
     footerEmphasis: "illustrative example partners",
     addToReport: "Add to the family report",
     // Referral map: risk → protection → partner. Illustrative example partners.
@@ -769,6 +833,10 @@ const enSG = {
     openFamilyReport: "Open family report",
     purposeSubtitle: "Check whether this month’s actual spending remains within the safer range.",
     explanatoryNote: "The Spend Monitor does not recalculate the full retirement plan automatically. Update the plan assumptions when there is a lasting change.",
+  
+    recalcTitle: "Recalculate your safer spend",
+    recalcBody: "Your plan has changed, so the previous safer range is no longer current.",
+    recalcCta: "Calculate updated result",
   },
 
   family: {
@@ -804,7 +872,9 @@ const enSG = {
       cannotEdit: "Cannot edit financial information or spending",
       cannotApprove: "Cannot approve, confirm or act on the parent's behalf",
       canRevoke: "Access can be revoked by the parent at any time",
-    },
+    
+    openFamilyReport: "Open family report",
+  },
     moatTitle: "The family layer is the uncontested ground",
     moatBody:
       "Family access is permission-based and revocable. A read-only shared view keeps the family loop without giving up control.",
@@ -893,7 +963,7 @@ const enSG = {
     convoBody:
       "Our CPF LIFE gives us {{cpf}} for life. Spending about {{central}} looks safer. Spending much higher means accepting more risk.",
     disclaimer:
-      "Neutral financial planning advice (pursuing MAS FA licensing). We advise the decision, not a specific product. Estimates, not guarantees — illustrative result based on stated assumptions. Think it through and make your own call before major financial decisions.",
+      "Educational retirement-planning prototype. Estimates are based on stated assumptions and are not guarantees or personalised financial advice. Think it through and make your own call before major financial decisions.",
     saveAsPdf:
       'Use your browser\'s Print dialog and choose "Save as PDF" to share this report.',
   
@@ -903,6 +973,12 @@ const enSG = {
     actionManageFamilyAccess: "Manage family access",
     newSubtitle: "A one-page summary of the safer-spend plan, key risks and current spending position.",
     sharedByParent: "Shared by the parent (read-only).",
+  
+    recalcTitle: "Recalculate your plan",
+    recalcBody: "Your plan assumptions have changed. Calculate a new safer-spend result before opening the family report.",
+    recalcCta: "Return to Plan Setup",
+    usingDemoData: "Illustrative worked example calculated by the Enough engine.",
+    usingCustomData: "Report generated from your current calculated plan.",
   },
 
   partners: {
@@ -963,8 +1039,10 @@ const enSG = {
 
   disclaimer: {
     footer:
-      "Neutral financial planning advice — you make the final call. We advise the decision, not a specific product (flat fees, never commission). Estimates, not guarantees. Not affiliated with CPF Board or MAS.",
+      "Educational retirement-planning prototype. Estimates are based on stated assumptions and are not guarantees or personalised financial advice.",
   },
+
+  resultsTabs: { overview: "Overview", stress: "Stress Tests", actions: "Action Plan", analytics: "Analytics" },
 } as const;
 
 export default enSG;

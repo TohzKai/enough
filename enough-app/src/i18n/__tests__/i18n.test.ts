@@ -11,6 +11,7 @@ import {
   i18n,
   LOCALES,
   LOCALE_NAMES,
+  LOCALE_SHORT_NAMES,
   STORAGE_KEY,
   detectInitialLocale,
   changeLocale,
@@ -205,6 +206,148 @@ describe("changing language preserves app state", () => {
 });
 
 /* ---------- Data-file key correctness: every data-driven key resolves ---------- */
+describe("compact header translations", () => {
+  it("all compact navigation keys resolve in every locale", () => {
+    const keys = [
+      "navigationShort.home",
+      "navigationShort.plan",
+      "navigationShort.results",
+      "navigationShort.monitor",
+      "navigationShort.family",
+      "navigationShort.parent",
+      "navigationShort.child",
+    ];
+    for (const locale of LOCALES) {
+      for (const key of keys) {
+        const value = String(i18n.t(key, { lng: locale }));
+        expect(value, `locale=${locale} key=${key}`).not.toBe(key);
+        expect(
+          value.trim().length,
+          `locale=${locale} key=${key}`,
+        ).toBeGreaterThan(0);
+      }
+    }
+  });
+
+  it("every locale has a compact language name", () => {
+    for (const locale of LOCALES) {
+      expect(LOCALE_SHORT_NAMES[locale].trim().length).toBeGreaterThan(0);
+    }
+  });
+});
+
+describe("required Results-page translation keys resolve in every locale", () => {
+  const requiredResultKeys = [
+    "results.safeSpendPage",
+    "results.engineBadge",
+    "results.scenarioBaseline",
+    "results.safeSpendHero",
+    "results.safeSpendRange",
+    "results.explorePlan",
+    "results.testAScenario",
+    "results.scenarioLabSub",
+    "results.seeWithdrawalPlan",
+    "results.trackMonthlySpending",
+    "results.openFamilyReport",
+    "results.manageFamilyAccess",
+    "resultsTabs.overview",
+    "resultsTabs.stress",
+    "resultsTabs.actions",
+    "resultsTabs.analytics",
+  ];
+
+  it("resolves every required Results translation in all locales", () => {
+    for (const locale of LOCALES) {
+      for (const key of requiredResultKeys) {
+        const value = String(i18n.t(key, { lng: locale }));
+        expect(value, `locale=${locale} key=${key}`).not.toBe(key);
+        expect(
+          value.trim().length,
+          `locale=${locale} key=${key}`,
+        ).toBeGreaterThan(0);
+      }
+    }
+  });
+});
+
+describe("Scenario Lab translation keys resolve in every locale", () => {
+  const requiredScenarioKeys = [
+    "results.scenarioLabTitle",
+    "results.scenarioLabSub",
+    "results.scenarioBaselineReminder",
+    "results.scenarioBaseline",
+    "results.scenarioAfter",
+    "results.scenarioImpact",
+    "results.scenarioConfidence",
+    "results.scenarioReset",
+    "results.scenarioLongerLife",
+    "results.scenarioLongerLifeSub",
+    "results.scenarioLongerLifeAge",
+    "results.scenarioLongerLifeQuick",
+    "results.scenarioHealthcare",
+    "results.scenarioHealthcareSub",
+    "results.scenarioMarket",
+    "results.scenarioMarketSub",
+    "results.scenarioTripLegacy",
+    "results.scenarioTripLegacySub",
+    "results.scenarioTripAsCash",
+    "results.scenarioLegacyCustom",
+    "results.scenarioAppliedLifespan",
+    "results.scenarioAppliedHealthcare",
+    "results.scenarioAppliedTrip",
+    "results.scenarioAppliedLegacy",
+    "results.sequenceRiskLabel",
+    "results.sequenceRiskSteady",
+    "results.sequenceRiskBadEarly",
+    "results.sequenceRiskBadLate",
+    "results.sequenceRiskInsight",
+    "results.engineExplainerSub",
+  ];
+
+  it("resolves every Scenario Lab translation in every locale", () => {
+    for (const locale of LOCALES) {
+      for (const key of requiredScenarioKeys) {
+        const value = String(i18n.t(key, { lng: locale }));
+        expect(value, `locale=${locale} key=${key}`).not.toBe(key);
+        expect(
+          value.trim().length,
+          `locale=${locale} key=${key}`,
+        ).toBeGreaterThan(0);
+      }
+    }
+  });
+});
+
+describe("prototype keys (reset, privacy, recalc) resolve in every locale", () => {
+  const requiredPrototypeKeys = [
+    "common.resetPresentationDemo",
+    "common.resetPresentationDemoBody",
+    "connect.privacyTitle",
+    "connect.privacyBody",
+    "report.recalcTitle",
+    "report.recalcBody",
+    "report.recalcCta",
+    "report.usingDemoData",
+    "report.usingCustomData",
+    "spendMonitor.recalcTitle",
+    "spendMonitor.recalcBody",
+    "spendMonitor.recalcCta",
+  ];
+
+  it("resolves every prototype key in every locale", () => {
+    for (const locale of LOCALES) {
+      for (const key of requiredPrototypeKeys) {
+        const value = String(i18n.t(key, { lng: locale }));
+        expect(value, `locale=${locale} key=${key}`).not.toBe(key);
+        expect(
+          value.trim().length,
+          `locale=${locale} key=${key}`,
+        ).toBeGreaterThan(0);
+      }
+    }
+  });
+});
+
 describe("data-file translation keys all resolve in en-SG", () => {
   const keys = new Set<string>();
   const add = (k: string | string[] | undefined) => {

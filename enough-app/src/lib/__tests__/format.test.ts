@@ -16,6 +16,7 @@ import {
   formatMonthlySGD,
   formatYears,
   s$,
+  roundToNearest50,
 } from "../format";
 import { LOCALES } from "../../i18n";
 import { demoMrTan } from "../../data/demoDataset";
@@ -104,20 +105,40 @@ describe("years formatting", () => {
 /* ---------- Financial regression (requirements §16 #18–24) ---------- */
 // The Mr Tan worked-example figures are the source-of-truth display values.
 // i18n must never change them; these guard the "do not change the financial
-// model" invariant. Calibrated to the presentation profile: S$190k assets,
-// 20-year horizon (age 65 → 85), 2.0% general inflation, 4.0% healthcare
+// model" invariant. Calibrated to the presentation profile: S$414k assets,
+// 30-year horizon (age 65 → 95), 2.0% general inflation, 4.0% healthcare
 // inflation. See `src/data/mrTan.ts` for the calibration rationale.
+describe("roundToNearest50", () => {
+  it("rounds to the nearest S$50 (Math.round behaviour)", () => {
+    // JavaScript Math.round rounds half-values (.5) towards +Infinity.
+    // 2125 / 50 = 42.5 → 43 (round up) → 2150. 2175 / 50 = 43.5 → 44 → 2200.
+    expect(roundToNearest50(0)).toBe(0);
+    expect(roundToNearest50(2148)).toBe(2150);
+    expect(roundToNearest50(2125)).toBe(2150);
+    expect(roundToNearest50(2175)).toBe(2200);
+    expect(roundToNearest50(224)).toBe(200);
+    expect(roundToNearest50(225)).toBe(250);
+    expect(roundToNearest50(-130)).toBe(-150);
+    expect(roundToNearest50(1)).toBe(0);
+    expect(roundToNearest50(24)).toBe(0);
+    expect(roundToNearest50(25)).toBe(50);
+    expect(roundToNearest50(74)).toBe(50);
+    expect(roundToNearest50(75)).toBe(100);
+    expect(roundToNearest50(76)).toBe(100);
+  });
+});
+
 describe("Mr Tan financial figures are unchanged", () => {
-  it("keeps the safer monthly spend range S$2,116 to S$2,165", () => {
-    expect(demoMrTan.saferLower).toBe(2116);
-    expect(demoMrTan.saferUpper).toBe(2165);
+  it("keeps the safer monthly spend range S$2,099 to S$2,194", () => {
+    expect(demoMrTan.saferLower).toBe(2099);
+    expect(demoMrTan.saferUpper).toBe(2194);
     expect(formatRangeMonth(demoMrTan.saferLower, demoMrTan.saferUpper)).toBe(
-      "S$2,116 to S$2,165/month",
+      "S$2,099 to S$2,194/month",
     );
   });
 
-  it("keeps the suggested central spend S$2,146", () => {
-    expect(demoMrTan.saferCentral).toBe(2146);
+  it("keeps the suggested central spend S$2,148", () => {
+    expect(demoMrTan.saferCentral).toBe(2148);
   });
 
   it("keeps the confidence at approximately 90%", () => {
@@ -129,9 +150,9 @@ describe("Mr Tan financial figures are unchanged", () => {
 
   it("keeps the CPF LIFE floor, extra withdrawal, desired spend and gap", () => {
     expect(demoMrTan.cpfLife).toBe(1550);
-    expect(demoMrTan.withdrawal).toBe(596);
+    expect(demoMrTan.withdrawal).toBe(598);
     expect(demoMrTan.desired).toBe(3100);
-    expect(demoMrTan.gap).toBe(954);
+    expect(demoMrTan.gap).toBe(952);
     // The derived relationships must still hold.
     expect(demoMrTan.withdrawal).toBe(
       demoMrTan.saferCentral - demoMrTan.cpfLife,

@@ -29,6 +29,17 @@ export const LOCALE_NAMES: Record<AppLocale, string> = {
   "ta-SG": "தமிழ்",
 };
 
+/**
+ * Compact short codes for the compact header language selector. The full
+ * native name lives in LOCALE_NAMES and is used in the dropdown options.
+ */
+export const LOCALE_SHORT_NAMES: Record<AppLocale, string> = {
+  "en-SG": "EN",
+  "zh-SG": "中文",
+  "ms-SG": "BM",
+  "ta-SG": "தமிழ்",
+};
+
 /** localStorage key that stores the user's chosen locale. */
 export const STORAGE_KEY = "enough.locale";
 

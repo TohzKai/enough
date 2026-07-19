@@ -4,29 +4,29 @@ import { DEFAULT_LIFESTYLE } from "./lifestyle";
 /**
  * Mr Tan — the canonical worked example.
  *
- * Figures are calibrated so the live Monte Carlo engine (see
+ * Calibrated so the live Monte Carlo engine (see
  * `src/engine/simulation.ts` and `runFullAnalysis`) naturally produces the
- * presentation-day profile:
- *   - Investable assets: ~S$190,000
- *   - Safer range: ~S$2,000–S$2,350/month
- *   - Central safer spend: ~S$2,150/month
- *   - Gap to desired spend (S$3,100): ~S$950/month
- *   - Initial withdrawal rate on portfolio: ~3.8%
- *   - Plan-survival confidence (at the central safer spend): 90%
+ * presentation-day profile at horizon 95:
+ *   - Investable assets: ~S$414,000
+ *   - Safer range: ~S$2,099–S$2,194 / month
+ *   - Central safer spend: ~S$2,148 / month (rounded display: S$2,150)
+ *   - Plan-survival confidence (at central): 90%
+ *   - Gap to desired spend (S$3,100): ~S$952 / month
+ *   - Initial withdrawal rate: ~1.7%
+ *   - Desired-spend confidence at S$3,100: ~4% (low, not 45%)
  *
- * The engine calibrates these figures by:
- *   - Dropping portfolio from the previous S$520k to S$190k,
- *   - Shortening planning horizon to 80 (age 65 → 85),
- *   - Lowering general inflation from 2.7% to 2.0%,
- *   - Lowering healthcare inflation from 5.0% to 4.0%.
+ * The engine is calibrated to a 30-year horizon (age 65 → 95). General
+ * inflation is dropped from the default 2.7% to 2.0% and healthcare
+ * inflation from 5.0% to 4.0% so the safer spend sits at ~S$2,150. The
+ * presentation deck quotes "about S$2,150/month" — the UI rounds the
+ * engine output to the nearest S$50 (`roundToNearest50`) so users see
+ * the rounded figure.
  *
- * IMPORTANT — the engine is too honest to support "S$3,100 desired at ~45%
- * confidence" on a S$190k portfolio over a 30-year horizon. With the calibrated
- * inputs the engine's success probability at S$3,100/month is <1%, not 45%.
- * The "45% confidence for the desired lifestyle" figure on the slides is
- * therefore unachievable without unrealistic returns, and we have chosen to
- * keep the engine truthful: the worked example surfaces the real ~0% confidence
- * at S$3,100 and explicitly frames the S$950 gap as the action item.
+ * IMPORTANT — the engine's confidence for the S$3,100 desired lifestyle is
+ * ~4%, not the 45% that appears in the slides. We have chosen to keep the
+ * engine truthful: the worked example surfaces the real low desired-
+ * confidence and frames the S$952 gap as the action item, rather than
+ * hand-tuning a 45% result that the engine cannot produce.
  *
  * CPF LIFE is a LONGEVITY floor, not an inflation floor. Standard payouts are
  * level in nominal terms; their real value erodes with inflation. Only the
@@ -40,10 +40,7 @@ export const mrTanInputs: PlanInputs = {
   // Personal
   age: 65,
   gender: "male",
-  // Horizon shortened to 80 (vs the previous 95) so the engine's safer spend
-  // sits in the presentation band on a S$190k portfolio. See the file header
-  // for the calibration rationale.
-  horizonAge: 80,
+  horizonAge: 95,
   spouseIncluded: true,
   spouseAge: 63,
 
@@ -52,10 +49,11 @@ export const mrTanInputs: PlanInputs = {
   cpfPlan: "Standard",
   payoutGrowthAnnual: 0,
 
-  // Assets — total S$190,000 (calibrated for the presentation profile).
-  cash: 15000,
-  investments: 160000,
-  srs: 15000,
+  // Assets — total S$414,000, calibrated so the engine produces the
+  // presentation profile at a 30-year horizon (age 65 → 95).
+  cash: 41400,
+  investments: 331200,
+  srs: 41400,
   cashPct: 20,
   bondPct: 40,
   equityPct: 40,
@@ -78,7 +76,9 @@ export const mrTanInputs: PlanInputs = {
   // Lifestyle buckets (single source for the spending fields above; sum = S$3,100)
   lifestyle: { ...DEFAULT_LIFESTYLE },
 
-  // Base-case assumptions (see presets.ts for Conservative / Optimistic variants)
+  // Base-case assumptions (see presets.ts for Conservative / Optimistic variants).
+  // Inflation is reduced from the project default (2.7% / 5.0%) so the engine's
+  // safer spend at 90% confidence sits at the presentation band (~S$2,150).
   confidence: 90,
   generalInflation: 2.0,
   healthcareInflation: 4.0,

@@ -30,8 +30,9 @@ export interface ConnectedAccount {
 
 /**
  * The accounts a consented Singpass/SGFinDex pull would surface for Mr Tan.
- * Balances reconcile to the aligned worked example (S$520k spendable + CPF LIFE
- * floor + an excluded primary residence).
+ * Balances reconcile to the calibrated worked example (S$414k spendable
+ * + CPF LIFE floor + an excluded primary residence). Mirrors the assets
+ * in `src/data/mrTan.ts`.
  */
 export const connectedAccounts: ConnectedAccount[] = [
   {
@@ -47,7 +48,7 @@ export const connectedAccounts: ConnectedAccount[] = [
     kind: "bank",
     source: "connect.acctBankSource",
     label: "connect.acctBankLabel",
-    amount: 40000,
+    amount: 41400,
     note: "connect.acctBankNote",
     spendable: true,
   },
@@ -55,7 +56,7 @@ export const connectedAccounts: ConnectedAccount[] = [
     kind: "investment",
     source: "connect.acctInvestSource",
     label: "connect.acctInvestLabel",
-    amount: 460000,
+    amount: 331200,
     note: "connect.acctInvestNote",
     spendable: true,
   },
@@ -63,7 +64,7 @@ export const connectedAccounts: ConnectedAccount[] = [
     kind: "srs",
     source: "connect.acctSrsSource",
     label: "connect.acctSrsLabel",
-    amount: 20000,
+    amount: 41400,
     note: "connect.acctSrsNote",
     spendable: true,
   },

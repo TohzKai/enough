@@ -2,38 +2,45 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Card, SectionTitle, Disclaimer } from "../components/ui";
 import {
-  s$,
   s$month,
   formatConfidence,
-  formatMoney,
   formatMoneyMonth,
   formatRangeMonth,
 } from "../lib/format";
-import { demoMrTan, demoFamily, cpfWording } from "../data/demoDataset";
-import { lifeEventStressTests } from "../data/lifeEvents";
-import {
-  DEFAULT_LIFESTYLE,
-  layerTotals,
-  totalLifestyle,
-} from "../data/lifestyle";
+import { cpfWording } from "../data/demoDataset";
+import { layerTotals, totalLifestyle } from "../data/lifestyle";
 import { useSpend } from "../store/spendStore";
 import { useViewMode } from "../store/viewMode";
+import { usePlan } from "../store/planStore";
 
 export function FamilyReport() {
   const { t } = useTranslation();
   const { mode } = useViewMode();
+  const { inputs, analysis, planMode } = usePlan();
   const child = mode === "child";
   const handlePrint = () => window.print();
-  // Illustrative safer-spend impact magnitudes (Mr Tan sample) — single source
-  // of truth shared with the Results-page stress-test cards.
-  const stressMag = (key: string) =>
-    Math.abs(
-      lifeEventStressTests.find((tt) => tt.key === key)?.impactMonthly ?? 0,
-    );
-  const layers = layerTotals(DEFAULT_LIFESTYLE);
+
+  // The report uses the current plan's inputs + analysis, not the demo
+  // dataset. Demo and custom plans both flow through this report.
+
+  // Custom-plan report: if the user has edited inputs since the last
+  // engine run, do NOT silently fall back to demo figures. Force a
+  // recalculation first.
+  const staleCustom = planMode === "custom" && !analysis;
+  if (staleCustom) {
+    return <RecalculateRequired />;
+  }
+
+  // Build the report data object from the current plan.
+  const saferLower = analysis?.safe.lowerSpend ?? 0;
+  const saferCentral = analysis?.safe.centralSpend ?? 0;
+  const saferUpper = analysis?.safe.upperSpend ?? 0;
+  const confidence = (analysis?.safe.confidence ?? 0) / 100;
+
+  const layers = layerTotals(inputs.lifestyle);
   const { actuals } = useSpend();
   const totalActual = totalLifestyle(actuals);
-  const overUpper = Math.max(0, totalActual - demoMrTan.saferUpper);
+  const overUpper = Math.max(0, totalActual - saferUpper);
 
   return (
     <div className="space-y-5">
@@ -61,6 +68,11 @@ export function FamilyReport() {
             {t("report.actionManageFamilyAccess")}
           </Link>
         </div>
+        <div className="no-print mt-3 rounded-xl2 border border-enough-navy/20 bg-enough-navy/5 px-4 py-2.5 text-xs text-enough-ink leading-snug safe-break">
+          {planMode === "demo"
+            ? t("report.usingDemoData")
+            : t("report.usingCustomData")}
+        </div>
       </div>
 
       <Card className="print-area">
@@ -72,8 +84,8 @@ export function FamilyReport() {
             </div>
             <div className="text-enough-slate text-sm">
               {t("report.headerSub", {
-                age: demoMrTan.age,
-                horizon: demoMrTan.horizonAge,
+                age: inputs.age,
+                horizon: inputs.horizonAge,
               })}
             </div>
             {child && (
@@ -88,24 +100,20 @@ export function FamilyReport() {
           </div>
         </div>
 
-        {/* Safer range */}
+        {/* Safer range — uses CURRENT plan, not demo figures. */}
         <div className="mt-5 rounded-xl2 bg-enough-navy text-white p-4 break-inside-avoid">
           <div className="text-white/60 text-xs font-semibold uppercase tracking-wider">
             {t("report.saferLabel")}
           </div>
           <div className="mt-1 flex items-end gap-2 flex-wrap">
             <div className="text-2xl md:text-3xl font-extrabold">
-              {s$(demoMrTan.saferLower)} {t("common.rangeSeparator")}{" "}
-              {s$(demoMrTan.saferUpper)}
-            </div>
-            <div className="text-white/60 text-sm pb-1">
-              {t("common.perMonth")}
+              {formatRangeMonth(saferLower, saferUpper)}
             </div>
           </div>
           <div className="mt-1 text-sm text-enough-emerald font-semibold">
             {t("report.centralEstimate", {
-              central: s$month(demoMrTan.saferCentral),
-              confidence: formatConfidence(demoMrTan.confidence / 100),
+              central: s$month(saferCentral),
+              confidence: formatConfidence(confidence),
             })}
           </div>
         </div>
@@ -116,17 +124,14 @@ export function FamilyReport() {
             {t("results.cpfFloorLabel")}
           </div>
           <div className="text-2xl font-extrabold text-enough-navy">
-            {s$(demoMrTan.cpfLife)}{" "}
-            <span className="text-sm font-medium text-enough-slate">
-              {t("common.perMonth")}
-            </span>
+            {formatMoneyMonth(inputs.cpfLifeMonthly)}
           </div>
           <div className="text-xs text-enough-slate mt-1">
             {t(cpfWording.floor)}
           </div>
         </div>
 
-        {/* Lifestyle layers */}
+        {/* Lifestyle layers — uses CURRENT plan inputs.lifestyle. */}
         <div className="mt-5 rounded-xl2 border border-enough-line p-4 break-inside-avoid">
           <div className="text-sm font-semibold text-enough-slate">
             {t("report.lifestyleLabel")}
@@ -141,27 +146,25 @@ export function FamilyReport() {
           </p>
         </div>
 
-        {/* Healthcare & care shock */}
+        {/* Healthcare & care shock — no scenario is run by default; show
+            a neutral summary rather than fixed demo impacts. */}
         <div className="mt-5 rounded-xl2 border border-enough-line p-4 break-inside-avoid">
           <div className="text-sm font-semibold text-enough-slate">
             {t("report.healthcareLabel")}
           </div>
           <p className="text-sm text-enough-ink mt-1 leading-relaxed">
-            {t("report.healthcareBody", {
-              value: formatMoneyMonth(stressMag("healthcare")),
-            })}
+            {t("report.healthcareBody")}
           </p>
         </div>
 
-        {/* Bequest */}
+        {/* Bequest — show only the user's configured target; no fixed impact. */}
         <div className="mt-5 rounded-xl2 border border-enough-line p-4 break-inside-avoid">
           <div className="text-sm font-semibold text-enough-slate">
             {t("report.bequestLabel")}
           </div>
           <p className="text-sm text-enough-ink mt-1 leading-relaxed">
             {t("report.bequestBody", {
-              target: formatMoney(50000),
-              value: formatMoneyMonth(stressMag("bequest")),
+              target: formatMoneyMonth(inputs.bequestTarget ?? 50000),
             })}
           </p>
         </div>
@@ -176,7 +179,7 @@ export function FamilyReport() {
           </p>
         </div>
 
-        {/* Current spending check */}
+        {/* Current spending check — uses CURRENT safer range. */}
         <div className="mt-5 rounded-xl2 border border-enough-line p-4 break-inside-avoid">
           <div className="text-sm font-semibold text-enough-slate">
             {t("report.currentLabel")}
@@ -184,10 +187,7 @@ export function FamilyReport() {
           <p className="text-sm text-enough-ink mt-1 leading-relaxed">
             {t("report.currentBody", {
               actual: formatMoneyMonth(totalActual),
-              range: formatRangeMonth(
-                demoMrTan.saferLower,
-                demoMrTan.saferUpper,
-              ),
+              range: formatRangeMonth(saferLower, saferUpper),
             })}
             {overUpper > 0
               ? t("report.currentOver", {
@@ -204,8 +204,8 @@ export function FamilyReport() {
           </div>
           <p className="text-enough-ink text-sm mt-1 leading-relaxed">
             {t("report.convoBody", {
-              cpf: s$month(demoFamily.cpfFloor),
-              central: s$month(demoFamily.central),
+              cpf: s$month(inputs.cpfLifeMonthly),
+              central: s$month(saferCentral),
             })}
           </p>
         </div>
@@ -218,6 +218,39 @@ export function FamilyReport() {
       <Disclaimer tone="soft">
         <span className="no-print">{t("report.saveAsPdf")}</span>
       </Disclaimer>
+    </div>
+  );
+}
+
+/**
+ * Stale-custom report state. The user has edited a custom plan but has not
+ * recalculated yet — we must NOT fall back to the demo figures. Force a
+ * recalculation first.
+ */
+function RecalculateRequired() {
+  const { t } = useTranslation();
+  return (
+    <div className="space-y-5">
+      <div className="mx-auto max-w-2xl rounded-xl2 border border-enough-amber/30 bg-enough-amberSoft p-6 shadow-card">
+        <div className="inline-flex items-center gap-2 rounded-full bg-white/70 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-enough-amber">
+          <span aria-hidden="true">⚠</span>
+          <span>{t("report.recalcTitle")}</span>
+        </div>
+        <h1 className="mt-4 text-2xl md:text-3xl font-extrabold text-enough-navy leading-tight safe-break">
+          {t("report.recalcTitle")}
+        </h1>
+        <p className="readable mt-3 text-base text-enough-ink leading-relaxed safe-break">
+          {t("report.recalcBody")}
+        </p>
+        <div className="mt-5 flex flex-wrap gap-2">
+          <Link to="/plan" className="btn-emerald min-h-[44px]">
+            {t("report.recalcCta")}
+          </Link>
+          <Link to="/result" className="btn-ghost min-h-[44px]">
+            {t("report.actionBackToResults")}
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }

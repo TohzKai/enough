@@ -41,6 +41,9 @@ const zhSG = {
     selected: "已选：{{value}}",
   
     report: "家庭报告",
+  
+    resetPresentationDemo: "重置演示",
+    resetPresentationDemoBody: "重置示例规划、支出记录和家庭访问设置？",
   },
 
   format: {
@@ -67,7 +70,7 @@ const zhSG = {
   navigation: {
     home: "首页",
     connect: "规划设置",
-    results: "结果",
+    results: "安全支出",
     spendMonitor: "支出监控",
     family: "家庭访问",
     parentView: "长辈视图",
@@ -75,11 +78,21 @@ const zhSG = {
     forPartners: "合作伙伴",
   },
 
+  navigationShort: {
+    home: "首页",
+    plan: "规划",
+    results: "安全支出",
+    monitor: "监控",
+    family: "家庭",
+    parent: "长辈",
+    child: "子女",
+  },
+
   home: {
     badge: "新加坡中立的退休支出副驾驶",
     heroTitle: "我每月到底能花多少？",
     heroParent:
-      "一个安心的数字——根据您的 CPF、储蓄以及您想要的生活方式，告诉您每月可以稳妥花费多少。用平实的语言解释。中立的建议——绝不推销产品。",
+      "一个安心的数字——根据您的 CPF、储蓄和期望的生活方式，告诉您每月可能可以花多少。用平实的语言解释。中立的决策支持——绝不推销产品。",
     heroChild:
       "在父母选择与您分享时，查看他们的退休规划。访问为只读权限，父母始终完全掌握控制权。",
     ctaParent: "开始我的规划",
@@ -226,9 +239,13 @@ const zhSG = {
     workflowHintPlan: "第 1 步 / 共 3 步 — 收集您的假设。",
     workflowHintResult: "第 2 步 / 共 3 步 — 查看安全月支出。",
     workflowHintSpend: "第 3 步 / 共 3 步 — 将实际支出与安全区间对比。",
+  
+    privacyTitle: "仅使用示例信息",
+    privacyBody: "请勿在本教学原型中输入真实账户号码、身份证件信息或密码。",
   },
 
   results: {
+    openFamilyReport: "打开家庭报告",
     simulating: "正在模拟数千条退休路径…",
     noPlanTitle: "暂无规划",
     noPlanBody: "请先连接您的账户，或加载示例档案以体验 Enough。",
@@ -402,6 +419,53 @@ const zhSG = {
     providersNote: "所列提供商名称仅为示例，并非已确认的合作伙伴或推荐。",
     workflowProgress: "第 2 步 / 共 3 步",
     workflowHintResult: "第 2 步 / 共 3 步 — 查看安全月支出。",
+  
+    closeSection: "关闭",
+  
+    engineBadge: "蒙特卡罗去累积引擎",
+    scenarioBaseline: "您当前的规划",
+    safeSpendHero: "约 S${{value}}/月",
+    safeSpendRange: "估算区间 S${{lower}}–S${{upper}} · 约 {{confidence}}% 置信度",
+    safeSpendPage: "您的安全月支出",
+    explorePlan: "探索您的规划",
+    testAScenario: "测试一个情景",
+    seeWithdrawalPlan: "查看行动计划",
+    trackMonthlySpending: "跟踪每月支出",
+    manageFamilyAccess: "管理家庭访问",
+    howWasThisCalculated: "这是如何计算的？",
+    yourCalculatedResult: "您的计算结果",
+    yourCalculatedNote: "根据您输入的假设计算。估算并非保证。",
+    engineExplainer: "引擎原理",
+    scenarioLabTitle: "情景实验室",
+    scenarioLabSub: "改变一个假设，观察它如何影响安全月支出、置信度与资金缺口。",
+  
+    engineExplainerSub: "了解估算背后的假设、置信度曲线与风险。",
+    scenarioBaselineReminder: "当前基线：约 S${{value}}/月，{{confidence}}% 置信度",
+    scenarioLongerLife: "更长的寿命",
+    scenarioLongerLifeSub: "为更长的退休期做准备，看同样的资产需要撑多久。",
+    scenarioLongerLifeAge: "规划至年龄",
+    scenarioLongerLifeQuick: "快速选择",
+    scenarioHealthcare: "医疗与长期护理",
+    scenarioHealthcareSub: "测试一次健康事件和持续护理费用的影响。",
+    scenarioMarket: "市场时序风险",
+    scenarioMarketSub: "比较退休早期与晚期发生的市场下跌。",
+    scenarioTripLegacy: "旅行与遗产",
+    scenarioTripLegacySub: "看一次性旅行和遗产目标如何影响安全月支出。",
+    scenarioAfter: "情景后",
+    scenarioImpact: "月度影响",
+    scenarioConfidence: "置信度",
+    scenarioReset: "重置情景",
+    scenarioTripAsCash: "按今日从现金中预留资金建模。",
+    scenarioLegacyCustom: "自定义遗产目标",
+    scenarioAppliedLifespan: "已应用更长寿命情景",
+    scenarioAppliedHealthcare: "已应用医疗情景",
+    scenarioAppliedTrip: "已应用旅行情景",
+    scenarioAppliedLegacy: "已应用遗产情景",
+    sequenceRiskLabel: "示意性时序风险情景",
+    sequenceRiskSteady: "稳定市场",
+    sequenceRiskBadEarly: "早期市场下跌",
+    sequenceRiskBadLate: "晚期市场下跌",
+    sequenceRiskInsight: "相同的平均回报，在损失出现早或晚时可能产生截然不同的结果。",
   },
 
   guardrails: {
@@ -637,7 +701,7 @@ const zhSG = {
     protectionFits: "合适的保障",
     whoToSee: "该找谁",
     footer:
-      "所列合作方为示意性示例伙伴（真实的新加坡公司与计划，2025–26），并非已确认的合作关系。Enough 作为 MAS 许可的介绍方进行转介（FAA-N02）；仅收固定费用，不收佣金，因此转介保持中立——决策由您，任何产品均由持牌合作方安排。",
+      "教育性退休规划原型。估算基于既定假设，并非保证，亦非个性化财务建议。",
     footerEmphasis: "示意性示例伙伴",
     addToReport: "加入家庭报告",
     // Referral map: risk → protection → partner. Illustrative example partners.
@@ -718,6 +782,10 @@ const zhSG = {
     openFamilyReport: "打开家庭报告",
     purposeSubtitle: "查看本月实际支出是否仍在安全区间内。",
     explanatoryNote: "支出监控不会自动重新计算整个退休规划。如有长期变化，请更新规划假设。",
+  
+    recalcTitle: "重新计算安全月支出",
+    recalcBody: "您的规划已变更，之前的安区间已不再适用。",
+    recalcCta: "重新计算结果",
   },
 
   family: {
@@ -752,7 +820,9 @@ const zhSG = {
       cannotEdit: "不可编辑财务信息或支出",
       cannotApprove: "不可批准、确认或代父母行事",
       canRevoke: "父母可随时撤回访问",
-    },
+    
+    openFamilyReport: "打开家庭报告",
+  },
     moatTitle: "家庭层级是不可争议的护城河",
     moatBody:
       "家庭访问基于授权，可随时撤回。只读共享视图在不放弃控制权的前提下维系家庭联系。",
@@ -844,6 +914,12 @@ const zhSG = {
     actionManageFamilyAccess: "管理家庭访问",
     newSubtitle: "一页摘要：安全支出规划、关键风险与当前支出位置。",
     sharedByParent: "由父母分享（只读）。",
+  
+    recalcTitle: "重新计算您的规划",
+    recalcBody: "您的规划假设已变更。请重新计算安全月支出结果后再打开家庭报告。",
+    recalcCta: "返回规划设置",
+    usingDemoData: "由 Enough 引擎根据示意性示例档案计算得出。",
+    usingCustomData: "根据您当前的计算规划生成报告。",
   },
 
   partners: {
@@ -903,8 +979,10 @@ const zhSG = {
 
   disclaimer: {
     footer:
-      "中立理财规划建议——最终决定由您做出。我们建议决策方向，不针对特定产品（仅收固定费用，不收佣金）。仅为估算，并非保证。不附属于 CPF Board 或 MAS。",
+      "教育性退休规划原型。估算基于既定假设，并非保证，亦非个性化财务建议。",
   },
+
+  resultsTabs: { overview: "概览", stress: "压力测试", actions: "行动计划", analytics: "分析" },
 } as const;
 
 export default zhSG;

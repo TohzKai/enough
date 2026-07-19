@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Card } from "../components/ui";
 import { useViewMode } from "../store/viewMode";
+import { usePlan } from "../store/planStore";
 
 const PILLARS = [
   { titleKey: "home.pillarNeutralTitle", bodyKey: "home.pillarNeutralBody" },
@@ -13,11 +14,19 @@ export function Home() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { mode } = useViewMode();
+  const { loadSample } = usePlan();
   const child = mode === "child";
   // Adult-child view cannot connect or set up the parent's plan — it is a
   // read-only shared view, so the main CTA in child mode lands on the result
   // page (the already-shared plan) instead of /plan.
   const startPlan = () => navigate(child ? "/result" : "/plan");
+  // "See a worked example" loads the calibrated Mr Tan demo BEFORE
+  // navigating to /result, so the Results page has a valid analysis to
+  // display. Without this the user lands on a "no plan" empty state.
+  const openWorkedExample = () => {
+    loadSample();
+    navigate("/result");
+  };
 
   return (
     <div className="space-y-12">
@@ -41,7 +50,7 @@ export function Home() {
             {child ? t("home.ctaChild") : t("home.ctaParent")}
           </button>
           <button
-            onClick={() => navigate("/result")}
+            onClick={openWorkedExample}
             className="btn-ghost text-lg !px-6 !py-4 min-h-[52px]"
           >
             {t("home.seeExample")}

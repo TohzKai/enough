@@ -20,6 +20,12 @@ interface SpendContextValue {
   setActual: (key: LifestyleBucketKey, amount: number) => void;
   setActuals: (a: SpendActuals) => void;
   clearActuals: () => void;
+  /**
+   * Reset actuals to the given "planned" baseline. Used by the "Reset to
+   * planned" button so the reset uses the CURRENT plan's lifestyle, not a
+   * hardcoded sample.
+   */
+  resetToPlanned: (planned: SpendActuals) => void;
 }
 
 const SpendContext = createContext<SpendContextValue | null>(null);
@@ -52,9 +58,11 @@ export function SpendProvider({ children }: { children: ReactNode }) {
 
   const setActuals = (a: SpendActuals) => setActualsState({ ...a });
   const clearActuals = () => setActualsState({ ...DEFAULT_LIFESTYLE });
+  const resetToPlanned = (planned: SpendActuals) =>
+    setActualsState({ ...planned });
 
   const value = useMemo<SpendContextValue>(
-    () => ({ actuals, setActual, setActuals, clearActuals }),
+    () => ({ actuals, setActual, setActuals, clearActuals, resetToPlanned }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [actuals],
   );

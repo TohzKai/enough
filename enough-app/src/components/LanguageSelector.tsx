@@ -1,5 +1,11 @@
 import { useTranslation } from "react-i18next";
-import { LOCALES, LOCALE_NAMES, changeLocale, type AppLocale } from "../i18n";
+import {
+  LOCALES,
+  LOCALE_NAMES,
+  LOCALE_SHORT_NAMES,
+  changeLocale,
+  type AppLocale,
+} from "../i18n";
 
 /**
  * Accessible language selector.
@@ -46,13 +52,15 @@ export function LanguageSelector({
         onChange={(e) => {
           void changeLocale(e.target.value as AppLocale);
         }}
-        className={`min-h-[44px] min-w-0 max-w-[6.5rem] truncate cursor-pointer appearance-none bg-transparent text-sm font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-1 focus-visible:ring-offset-enough-navy ${
+        className={`min-h-[44px] min-w-0 ${
+          compact ? "max-w-[5.5rem]" : "max-w-[6.5rem]"
+        } truncate cursor-pointer appearance-none bg-transparent text-sm font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-1 focus-visible:ring-offset-enough-navy ${
           compact ? "text-white py-1 pl-1 pr-1" : "text-white py-1.5 pl-1 pr-2"
         }`}
       >
         {LOCALES.map((l) => (
           <option key={l} value={l} className="bg-white text-enough-navy">
-            {LOCALE_NAMES[l]}
+            {compact ? LOCALE_SHORT_NAMES[l] : LOCALE_NAMES[l]}
           </option>
         ))}
       </select>

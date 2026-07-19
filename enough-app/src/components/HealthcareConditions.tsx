@@ -71,9 +71,12 @@ function StackRow({
 export function HealthcareConditions({
   inputs,
   baseSpend,
+  onAfterChange,
 }: {
   inputs: PlanInputs;
   baseSpend: number;
+  /** Optional callback fired when the rerun engine updates `after`. */
+  onAfterChange?: (after: number | null) => void;
 }) {
   const { t } = useTranslation();
   const [condKey, setCondKey] =
@@ -96,10 +99,12 @@ export function HealthcareConditions({
         healthcareSpend: inputs.healthcareSpend + cost.netMonthly,
         cash: Math.max(0, inputs.cash - cost.acuteNet),
       };
-      setAfter(saferSpendOf(recompute(inputs, override)));
+      const v = saferSpendOf(recompute(inputs, override));
+      setAfter(v);
+      onAfterChange?.(v);
     }, 30);
     return () => clearTimeout(id);
-  }, [inputs, cost.netMonthly, cost.acuteNet]);
+  }, [inputs, cost.netMonthly, cost.acuteNet, onAfterChange]);
 
   const impact = after === null ? 0 : after - baseSpend;
   const zone = after === null ? "green" : zoneForImpact(baseSpend, after);

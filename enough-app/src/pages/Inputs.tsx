@@ -512,6 +512,14 @@ export function Inputs() {
         subtitle={t("connect.subtitle")}
       />
 
+      {/* Prototype privacy notice: data is sample-only. */}
+      <div className="rounded-xl2 border border-enough-amber/30 bg-enough-amberSoft px-4 py-3 text-sm text-enough-ink leading-relaxed safe-break">
+        <strong className="text-enough-amber">
+          {t("connect.privacyTitle")}.
+        </strong>{" "}
+        {t("connect.privacyBody")}
+      </div>
+
       {/* Moat A — consented aggregation is the primary path */}
       <ConnectPanel />
 

@@ -4,14 +4,40 @@ import { useTranslation } from "react-i18next";
 import { useViewMode, type ViewMode } from "../store/viewMode";
 import { LanguageSelector } from "./LanguageSelector";
 import { LOCALE_NAMES, type AppLocale } from "../i18n";
+import { resetPresentationDemo } from "../lib/resetPresentationDemo";
 
 // Primary consumer navigation. "For partners" stays a secondary footer link.
 const NAV = [
-  { to: "/", key: "navigation.home", end: true },
-  { to: "/plan", key: "navigation.connect", end: false },
-  { to: "/result", key: "navigation.results", end: false },
-  { to: "/spend", key: "navigation.spendMonitor", end: false },
-  { to: "/family", key: "navigation.family", end: false },
+  {
+    to: "/",
+    key: "navigation.home",
+    shortKey: "navigationShort.home",
+    end: true,
+  },
+  {
+    to: "/plan",
+    key: "navigation.connect",
+    shortKey: "navigationShort.plan",
+    end: false,
+  },
+  {
+    to: "/result",
+    key: "navigation.results",
+    shortKey: "navigationShort.results",
+    end: false,
+  },
+  {
+    to: "/spend",
+    key: "navigation.spendMonitor",
+    shortKey: "navigationShort.monitor",
+    end: false,
+  },
+  {
+    to: "/family",
+    key: "navigation.family",
+    shortKey: "navigationShort.family",
+    end: false,
+  },
 ] as const;
 
 function navClass({ isActive }: { isActive: boolean }) {
@@ -32,9 +58,21 @@ const HIDDEN_IN_CHILD = new Set(["/plan"]);
  * financial content in child mode is gated behind explicit parent permission
  * (see the PermissionGate wrapper below).
  */
-function ViewToggle({ className = "" }: { className?: string }) {
+function ViewToggle({
+  className = "",
+  compact = false,
+}: {
+  className?: string;
+  compact?: boolean;
+}) {
   const { t } = useTranslation();
   const { mode, setMode } = useViewMode();
+  const parentLabel = compact
+    ? t("navigationShort.parent")
+    : t("navigation.parentView");
+  const childLabel = compact
+    ? t("navigationShort.child")
+    : t("navigation.adultChildView");
   const btn = (m: ViewMode, label: string) => (
     <button
       type="button"
@@ -55,8 +93,8 @@ function ViewToggle({ className = "" }: { className?: string }) {
       role="group"
       aria-label={t("accessibility.viewMode")}
     >
-      {btn("parent", t("navigation.parentView"))}
-      {btn("child", t("navigation.adultChildView"))}
+      {btn("parent", parentLabel)}
+      {btn("child", childLabel)}
     </div>
   );
 }
@@ -216,13 +254,17 @@ export function Layout() {
       </a>
       <LocaleAnnouncer />
 
-      {/* Header */}
+      {/* Header — strict one-row grid. Logo on the left, main nav in the
+          centre, controls on the right. The full nav + view toggle +
+          language switcher only show above ~1500px; below that the
+          hamburger menu takes over (no second-row wrapping in any
+          language). */}
       <header className="sticky top-0 z-30 bg-enough-navy text-white shadow-pop no-print">
-        <div className="mx-auto max-w-app px-4 md:px-6">
-          <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2 min-h-[4rem] py-2">
+        <div className="mx-auto max-w-[1440px] px-4 lg:px-6">
+          <div className="grid min-h-[68px] grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4">
             <Link
               to="/"
-              className="flex items-center gap-2.5 shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 rounded-xl2"
+              className="relative z-10 flex shrink-0 items-center gap-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 rounded-xl2"
             >
               <img
                 src="/enough-logo.png"
@@ -230,41 +272,39 @@ export function Layout() {
                 className="brand-icon block h-9 w-9 shrink-0 object-contain rounded-xl"
               />
               <div className="leading-tight min-w-0">
-                <div className="text-lg font-extrabold tracking-tight">
+                <div className="text-lg font-extrabold tracking-tight whitespace-nowrap">
                   {t("common.brand")}
                 </div>
-                <div className="text-[11px] text-white/55 -mt-0.5 hidden sm:block">
-                  {t("common.tagline")}
-                </div>
+                {/* Brand subtitle intentionally hidden in the header at all
+                    widths — it consumes unnecessary horizontal space. */}
               </div>
             </Link>
 
-            {/* Right group: desktop nav + view toggle + language + mobile menu.
-                Grouped (and the row is flex-wrap) so in long-script locales
-                (Tamil / Malay) the whole group wraps to a compact second row
-                instead of forcing a horizontal page scrollbar. */}
-            <div className="flex flex-wrap items-center justify-end gap-2 md:gap-3 min-w-0">
-              <nav
-                className="hidden xl:flex items-center gap-1"
-                aria-label={t("accessibility.primaryNav")}
-              >
-                {visibleNav.map((n) => (
-                  <NavLink
-                    key={n.to}
-                    to={n.to}
-                    end={n.end}
-                    className={navClass}
-                  >
-                    {t(n.key)}
-                  </NavLink>
-                ))}
-              </nav>
-              <ViewToggle className="hidden md:flex" />
-              <LanguageSelector compact />
+            <nav
+              className="hidden min-[1440px]:flex items-center justify-center gap-1 min-w-0"
+              aria-label={t("accessibility.primaryNav")}
+            >
+              {visibleNav.map((n) => (
+                <NavLink key={n.to} to={n.to} end={n.end} className={navClass}>
+                  {t(n.shortKey)}
+                </NavLink>
+              ))}
+            </nav>
+
+            {/* Right: view-mode toggle, language switcher, hamburger.
+                All three are flex-nowrap. The full nav is only shown above
+                1440px (the inner <nav>); below that the hamburger takes
+                over. Never wrap onto a second row. */}
+            <div className="relative z-10 flex shrink-0 flex-nowrap items-center justify-end gap-2">
+              <ViewToggle compact className="hidden min-[1440px]:flex" />
+              <LanguageSelector
+                compact
+                className="hidden min-[1440px]:inline-flex"
+              />
               <button
                 ref={menuBtnRef}
                 type="button"
-                className="xl:hidden min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-xl2 p-2 text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+                className="min-[1440px]:hidden min-h-[44px] min-w-[44px] inline-flex items-center justify-center rounded-xl2 p-2 text-white hover:bg-white/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
                 aria-label={t("accessibility.openMenu")}
                 aria-expanded={menuOpen}
                 aria-controls="mobile-menu"
@@ -300,7 +340,7 @@ export function Layout() {
 
         {/* Mobile / tablet navigation drawer */}
         {menuOpen && (
-          <div className="xl:hidden no-print">
+          <div className="min-[1440px]:hidden no-print">
             <div
               className="fixed inset-0 z-40 bg-enough-navy/50"
               onClick={() => setMenuOpen(false)}
@@ -392,12 +432,31 @@ export function Layout() {
           <p className="readable text-xs text-enough-slate text-center sm:text-left">
             {t("disclaimer.footer")}
           </p>
-          <Link
-            to="/partners"
-            className="text-xs font-semibold text-enough-navy hover:text-enough-emeraldDark whitespace-nowrap shrink-0"
-          >
-            {t("navigation.forPartners")}
-          </Link>
+          <div className="flex items-center gap-3">
+            {/* "Reset presentation demo" — clears the app's own versioned
+                localStorage keys and reloads the Mr Tan worked example.
+                Not visible in child view because the adult child should
+                not be able to wipe the parent's data. */}
+            {!child && (
+              <button
+                type="button"
+                onClick={() => {
+                  if (window.confirm(t("common.resetPresentationDemoBody"))) {
+                    resetPresentationDemo();
+                  }
+                }}
+                className="text-xs font-semibold text-enough-slate hover:text-enough-navy underline-offset-2 hover:underline whitespace-nowrap"
+              >
+                {t("common.resetPresentationDemo")}
+              </button>
+            )}
+            <Link
+              to="/partners"
+              className="text-xs font-semibold text-enough-navy hover:text-enough-emeraldDark whitespace-nowrap shrink-0"
+            >
+              {t("navigation.forPartners")}
+            </Link>
+          </div>
         </div>
       </footer>
     </div>

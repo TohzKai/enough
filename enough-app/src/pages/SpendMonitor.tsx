@@ -11,8 +11,6 @@ import { usePlan } from "../store/planStore";
 import { useSpend } from "../store/spendStore";
 import { useViewMode } from "../store/viewMode";
 import { LIFESTYLE_BUCKETS } from "../data/lifestyle";
-import { demoMrTan } from "../data/demoDataset";
-import { PlanProgress } from "../components/PlanProgress";
 import {
   formatMoneyMonth,
   formatRangeMonth,
@@ -27,14 +25,23 @@ type Zone = "green" | "amber" | "red";
  */
 export function SpendMonitor() {
   const { t } = useTranslation();
-  const { inputs, analysis } = usePlan();
-  const { actuals, setActual, clearActuals } = useSpend();
+  const { inputs, analysis, planMode } = usePlan();
+  const { actuals, setActual, resetToPlanned } = useSpend();
   const { mode } = useViewMode();
   const child = mode === "child";
 
-  // Safer range: live analysis if available, otherwise the Mr Tan demo range.
-  const saferLower = analysis?.safe.lowerSpend ?? demoMrTan.saferLower;
-  const saferUpper = analysis?.safe.upperSpend ?? demoMrTan.saferUpper;
+  // Custom-plan stale guard: do NOT silently fall back to the Mr Tan demo
+  // range if the user has edited inputs and not recalculated. Force them
+  // back to Plan Setup first.
+  if (planMode === "custom" && !analysis) {
+    return <SpendRecalculateRequired />;
+  }
+
+  // Safer range: live analysis (demo or custom) — never fall back to a
+  // static demo range when no analysis is present in demo mode either
+  // (the user must run the engine first in that case too).
+  const saferLower = analysis?.safe.lowerSpend ?? 0;
+  const saferUpper = analysis?.safe.upperSpend ?? 0;
 
   const rows = LIFESTYLE_BUCKETS.map((b) => {
     const planned = Number(inputs.lifestyle[b.key]) || 0;
@@ -69,9 +76,6 @@ export function SpendMonitor() {
         title={t("spendMonitor.title")}
         subtitle={t("spendMonitor.purposeSubtitle")}
       />
-
-      {/* Workflow indicator + helper navigation for the three-step flow. */}
-      <PlanProgress currentStep={3} hintKey="spendMonitor.workflowProgress" />
 
       <div className="no-print flex flex-wrap gap-2">
         <Link to="/result" className="btn-ghost min-h-[44px]">
@@ -207,7 +211,7 @@ export function SpendMonitor() {
             </Link>
             <button
               type="button"
-              onClick={clearActuals}
+              onClick={() => resetToPlanned(inputs.lifestyle)}
               className="btn-ghost text-sm min-h-[44px]"
             >
               {t("spendMonitor.resetToPlanned")}
@@ -217,6 +221,39 @@ export function SpendMonitor() {
       </Card>
 
       <Disclaimer tone="soft">{t("spendMonitor.disclaimer")}</Disclaimer>
+    </div>
+  );
+}
+
+/**
+ * Stale / no-analysis guard for Spend Monitor. We do NOT fall back to the
+ * Mr Tan demo range when a custom plan has no analysis — that would
+ * silently show wrong safer-band figures. The user must recalculate first.
+ */
+function SpendRecalculateRequired() {
+  const { t } = useTranslation();
+  return (
+    <div className="space-y-5">
+      <div className="mx-auto max-w-2xl rounded-xl2 border border-enough-amber/30 bg-enough-amberSoft p-6 shadow-card">
+        <div className="inline-flex items-center gap-2 rounded-full bg-white/70 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-enough-amber">
+          <span aria-hidden="true">⚠</span>
+          <span>{t("spendMonitor.recalcTitle")}</span>
+        </div>
+        <h1 className="mt-4 text-2xl md:text-3xl font-extrabold text-enough-navy leading-tight safe-break">
+          {t("spendMonitor.recalcTitle")}
+        </h1>
+        <p className="readable mt-3 text-base text-enough-ink leading-relaxed safe-break">
+          {t("spendMonitor.recalcBody")}
+        </p>
+        <div className="mt-5 flex flex-wrap gap-2">
+          <Link to="/plan" className="btn-emerald min-h-[44px]">
+            {t("spendMonitor.recalcCta")}
+          </Link>
+          <Link to="/result" className="btn-ghost min-h-[44px]">
+            {t("spendMonitor.backToResults")}
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
