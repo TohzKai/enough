@@ -23,6 +23,8 @@ interface Row {
   reversible: boolean;
   gapClosed: number; // S$/month of the gap this action closes (modelled)
   safeDelta: number; // S$/month change in the safer spend (modelled)
+  remainingGap: number; // S$/month of the gap that remains after this action
+  surplus: number; // S$/month the revised safer spend exceeds desired spend (0 if not)
 }
 
 interface Computed {
@@ -43,14 +45,18 @@ function compute(inputs: PlanInputs): Computed {
 
   const rows: Row[] = GAP_ACTIONS.map((a) => {
     const r = runFullAnalysisSync({ ...fast, ...a.buildOverride(fast) });
-    const newGap = gapOf(r.desiredSpend, r.safe.centralSpend);
+    const revisedSafeSpend = r.safe.centralSpend;
+    const newGap = gapOf(r.desiredSpend, revisedSafeSpend);
+    const surplus = Math.max(0, Math.round(revisedSafeSpend - r.desiredSpend));
     return {
       key: a.key,
       title: a.title,
       detail: a.detail,
       reversible: a.reversible,
       gapClosed: Math.max(0, Math.round(baselineGap - newGap)),
-      safeDelta: Math.round(r.safe.centralSpend - baseSafe),
+      safeDelta: Math.round(revisedSafeSpend - baseSafe),
+      remainingGap: Math.round(newGap),
+      surplus,
     };
   });
 
@@ -135,15 +141,47 @@ export function GapCloser({
                     </div>
                   </div>
                   <div className="text-right shrink-0">
-                    <div className="text-xs text-enough-slate">
-                      {t("common.closes")}
-                    </div>
-                    <div className="text-xl font-extrabold text-enough-emeraldDark whitespace-nowrap">
-                      {r.gapClosed > 0 ? formatMoneyMonth(r.gapClosed) : "—"}
-                    </div>
-                    <div className="text-xs text-enough-slate">
-                      {t("common.ofTheGap")}
-                    </div>
+                    {r.key === "cpf-floor" && r.remainingGap > 0 ? (
+                      <>
+                        <div className="text-xs text-enough-slate">
+                          {t("gapActions.gapReducedBy", {
+                            value: formatMoneyMonth(r.gapClosed),
+                          })}
+                        </div>
+                        <div className="text-xs text-enough-slate mt-1">
+                          {t("gapActions.amountRemains", {
+                            value: formatMoneyMonth(r.remainingGap),
+                          })}
+                        </div>
+                      </>
+                    ) : r.key === "cpf-floor" &&
+                      r.remainingGap === 0 &&
+                      r.surplus > 0 ? (
+                      <>
+                        <div className="text-xs text-enough-slate">
+                          {t("gapActions.desiredFullyCovered")}
+                        </div>
+                        <div className="text-xs text-enough-slate mt-1">
+                          {t("gapActions.estimatedSurplus", {
+                            value: formatMoneyMonth(r.surplus),
+                          })}
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="text-xs text-enough-slate">
+                          {t("common.closes")}
+                        </div>
+                        <div className="text-xl font-extrabold text-enough-emeraldDark whitespace-nowrap">
+                          {r.gapClosed > 0
+                            ? formatMoneyMonth(r.gapClosed)
+                            : "—"}
+                        </div>
+                        <div className="text-xs text-enough-slate">
+                          {t("common.ofTheGap")}
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

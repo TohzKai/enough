@@ -8,6 +8,7 @@ import {
 import type { FullAnalysis } from "../../engine";
 import type { PlanInputs } from "../../types";
 import { HealthcareConditions } from "../HealthcareConditions";
+import { formatMoney } from "../../lib/format";
 
 interface ScenarioLabProps {
   inputs: PlanInputs;
@@ -518,35 +519,7 @@ function HealthcareBridge({
 /* ---------- Module 3: Market sequence (uses engine) ---------- */
 function MarketSequenceModule(props: ScenarioModuleProps) {
   const { t } = useTranslation();
-  const { inputs, baseCentral, baseConfidence, baseGap, isOpen, onToggle } =
-    props;
-  const result = useMemo<ScenarioResult | null>(() => {
-    if (!isOpen) return null;
-    const seq = generateSequenceRiskScenario(inputs);
-    // Use the path with the largest impact to drive the safer-spend delta.
-    const min = seq.paths.reduce(
-      (acc, p) => Math.min(acc, p.balance[p.balance.length - 1] ?? 0),
-      Number.POSITIVE_INFINITY,
-    );
-    // An early bad market can deplete the portfolio faster, which the
-    // engine captures as a lower safer-spend or zero. For a directional
-    // indicator, we just describe the insight — we do NOT re-derive a fake
-    // safer-spend from the sequence result. The insight itself is the
-    // educational payload.
-    return {
-      label: t("results.scenarioMarket"),
-      baselineCentral: baseCentral,
-      afterCentral: baseCentral, // No fabricated number; show insight.
-      baseConfidence,
-      afterConfidence: baseConfidence,
-      baselineGap: baseGap,
-      afterGap: baseGap,
-      impact: 0,
-      body: t("results.scenarioMarketSub"),
-      applied: false,
-    };
-    void min; // not used; kept for future per-path safer-spend derivation.
-  }, [isOpen, inputs, baseCentral, baseConfidence, baseGap, t]);
+  const { inputs, isOpen, onToggle } = props;
 
   const seq = useMemo(
     () => (isOpen ? generateSequenceRiskScenario(inputs) : null),
@@ -566,34 +539,82 @@ function MarketSequenceModule(props: ScenarioModuleProps) {
           </div>
           {seq && (
             <div className="grid gap-2 sm:grid-cols-3">
-              {seq.paths.map((p) => (
-                <div
-                  key={p.label}
-                  className="rounded-xl2 border border-enough-line bg-white p-3"
-                >
-                  <div className="text-xs font-semibold text-enough-navy">
-                    {p.label === "steady"
-                      ? t("results.seqSteady")
-                      : p.label === "badEarly"
-                        ? t("results.seqBadEarly")
-                        : t("results.seqBadLate")}
+              {seq.paths.map((p) => {
+                const scenarioType =
+                  p.label === "Steady market"
+                    ? "steady"
+                    : p.label === "Bad market EARLY"
+                      ? "badEarly"
+                      : "badLate";
+
+                const titleKey =
+                  scenarioType === "steady"
+                    ? "results.sequenceRiskSteady"
+                    : scenarioType === "badEarly"
+                      ? "results.sequenceRiskBadEarly"
+                      : "results.sequenceRiskBadLate";
+
+                const depletedText =
+                  p.depletedAtYear === null
+                    ? t("results.sequenceRiskNotDepleted")
+                    : t("results.sequenceRiskDepletedAt", {
+                        year: p.depletedAtYear,
+                      });
+
+                return (
+                  <div
+                    key={p.label}
+                    className="rounded-xl2 border border-enough-line bg-white p-3"
+                  >
+                    <div className="text-xs font-semibold text-enough-navy">
+                      {t(titleKey)}
+                    </div>
+                    <dl className="mt-2 space-y-1 text-sm text-enough-ink">
+                      <div className="flex items-baseline justify-between gap-2">
+                        <dt className="text-xs text-enough-slate">
+                          {t("results.sequenceRiskEndingBalance")}
+                        </dt>
+                        <dd className="font-bold">
+                          {formatMoney(p.endingBalance)}
+                        </dd>
+                      </div>
+                      <div className="flex items-baseline justify-between gap-2">
+                        <dt className="text-xs text-enough-slate">
+                          {t("results.sequenceRiskLastsToAge", {
+                            age: inputs.horizonAge,
+                          })}
+                        </dt>
+                        <dd className="font-bold">
+                          {p.depletedAtYear === null
+                            ? t("results.sequenceRiskYes")
+                            : t("results.sequenceRiskNo")}
+                        </dd>
+                      </div>
+                      <div className="flex items-baseline justify-between gap-2">
+                        <dt className="text-xs text-enough-slate">
+                          {t("results.sequenceRiskDepletion")}
+                        </dt>
+                        <dd className="font-bold">{depletedText}</dd>
+                      </div>
+                      <div className="flex items-baseline justify-between gap-2">
+                        <dt className="text-xs text-enough-slate">
+                          {t("results.sequenceRiskAvgReturn")}
+                        </dt>
+                        <dd className="font-bold">
+                          {`${p.avgReturnPct.toFixed(1)}%`}
+                        </dd>
+                      </div>
+                    </dl>
                   </div>
-                  <div className="text-sm text-enough-ink mt-1">
-                    {t(
-                      p.label === "steady"
-                        ? "results.sequenceRiskSteady"
-                        : p.label === "badEarly"
-                          ? "results.sequenceRiskBadEarly"
-                          : "results.sequenceRiskBadLate",
-                    )}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
+          <p className="readable text-xs text-enough-slate leading-relaxed">
+            {t("results.sequenceRiskConclusion")}
+          </p>
         </div>
       }
-      result={result}
     />
   );
 }

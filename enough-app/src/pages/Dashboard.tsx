@@ -101,7 +101,12 @@ export function Dashboard() {
         className="space-y-6"
       >
         {activeSection === "overview" && (
-          <OverviewTab withdrawal={withdrawal} gap={gap} />
+          <OverviewTab
+            cpfFloor={inputs.cpfLifeMonthly}
+            withdrawal={withdrawal}
+            desiredSpend={inputs.desiredSpend}
+            gap={gap}
+          />
         )}
         {activeSection === "stress" && (
           <ScenarioLab
@@ -166,7 +171,17 @@ export function Dashboard() {
  * additional withdrawal, desired spend, gap) plus one compact
  * "Next steps" panel. Does NOT repeat the safer-spend hero.
  */
-function OverviewTab({ withdrawal, gap }: { withdrawal: number; gap: number }) {
+function OverviewTab({
+  cpfFloor,
+  withdrawal,
+  desiredSpend,
+  gap,
+}: {
+  cpfFloor: number;
+  withdrawal: number;
+  desiredSpend: number;
+  gap: number;
+}) {
   const { t } = useTranslation();
   return (
     <div className="space-y-4">
@@ -176,7 +191,7 @@ function OverviewTab({ withdrawal, gap }: { withdrawal: number; gap: number }) {
             {t("results.cpfFloorLabel")}
           </div>
           <div className="mt-1 text-lg font-extrabold text-enough-navy">
-            {formatMoneyMonth(0)}
+            {formatMoneyMonth(cpfFloor)}
           </div>
           <div className="text-[11px] text-enough-slate">
             {t("results.cpfFloorSub")}
@@ -198,7 +213,7 @@ function OverviewTab({ withdrawal, gap }: { withdrawal: number; gap: number }) {
             {t("results.desiredLabel")}
           </div>
           <div className="mt-1 text-lg font-extrabold text-enough-navy">
-            {formatMoneyMonth(0)}
+            {formatMoneyMonth(desiredSpend)}
           </div>
         </Card>
         <Card>

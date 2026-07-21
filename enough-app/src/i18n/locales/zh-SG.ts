@@ -39,9 +39,9 @@ const zhSG = {
     yrs: "年",
     eq: "等同",
     selected: "已选：{{value}}",
-  
+
     report: "家庭报告",
-  
+
     resetPresentationDemo: "重置演示",
     resetPresentationDemoBody: "重置示例规划、支出记录和家庭访问设置？",
   },
@@ -232,14 +232,14 @@ const zhSG = {
     kindProperty: "房产",
     // Actual input label (Spend Monitor share)
     fActual: "实际",
-  
+
     workflowStep1: "设置规划",
     workflowStep2: "查看安全支出",
     workflowStep3: "跟踪支出",
     workflowHintPlan: "第 1 步 / 共 3 步 — 收集您的假设。",
     workflowHintResult: "第 2 步 / 共 3 步 — 查看安全月支出。",
     workflowHintSpend: "第 3 步 / 共 3 步 — 将实际支出与安全区间对比。",
-  
+
     privacyTitle: "仅使用示例信息",
     privacyBody: "请勿在本教学原型中输入真实账户号码、身份证件信息或密码。",
   },
@@ -381,7 +381,7 @@ const zhSG = {
     seqSteady: "平稳市场",
     seqBadEarly: "早期市况不佳",
     seqBadLate: "晚期市况不佳",
-  
+
     tabOverview: "概览",
     tabStress: "压力测试",
     tabAction: "行动计划",
@@ -389,7 +389,8 @@ const zhSG = {
     analyticsTitle: "数字是如何算出的",
     analyticsSub: "深入了解安全月支出估算背后的取舍与假设。",
     curveTitleOverview: "支出与概率",
-    curveSubOverview: "更高的月支出改善今天的生活方式，但会降低规划维持的估算概率。",
+    curveSubOverview:
+      "更高的月支出改善今天的生活方式，但会降低规划维持的估算概率。",
     nextStepsTitle: "接下来您想做什么？",
     actionTrackSpending: "跟踪每月支出",
     actionTrackSpendingBody: "每月将实际支出与安全区间对比。",
@@ -398,12 +399,14 @@ const zhSG = {
     actionManageAccess: "管理家庭访问",
     actionManageAccessBody: "选择是否允许配偶或成年子女查看规划。",
     actionViewSpending: "查看共享支出",
-    actionViewSpendingBody: "查看 Mr Tan 分享的信息。成年子女视图下不可进行任何修改。",
+    actionViewSpendingBody:
+      "查看 Mr Tan 分享的信息。成年子女视图下不可进行任何修改。",
     actionOpenSharedReport: "打开共享的家庭报告",
     actionManageAccessChild: "查看家庭访问",
     illustrativeGuardrailPill: "示意性护栏情景",
     illustrativeGuardrailTitle: "示例：持续的投资组合增长可能支持更高的支出",
-    illustrativeGuardrailBody: "本示例展示一个预先约定的护栏如何在持续投资组合增长后调整支出。并非基于实时市场数据。",
+    illustrativeGuardrailBody:
+      "本示例展示一个预先约定的护栏如何在持续投资组合增长后调整支出。并非基于实时市场数据。",
     tabBackOverview: "返回概览",
     tabViewActionPlan: "查看行动计划",
     tabBackStress: "返回压力测试",
@@ -412,20 +415,23 @@ const zhSG = {
     nextStepsSecondaryLabel: "次要",
     nextStepsTertiaryLabel: "可选",
     illustrativeWorkedExampleLabel: "示意性示例",
-    illustrativeWorkedExampleNote: "以下数字为示意性演示示例，并非由实时引擎驱动。您自建的自定义规划由引擎计算。",
+    illustrativeWorkedExampleNote:
+      "以下数字为示意性演示示例，并非由实时引擎驱动。您自建的自定义规划由引擎计算。",
     optionsToExplore: "可探索的选项",
-    optionsToExploreNote: "Enough 仅模拟影响。您决定是否与相关机构或持牌顾问进一步了解该选项。",
+    optionsToExploreNote:
+      "Enough 仅模拟影响。您决定是否与相关机构或持牌顾问进一步了解该选项。",
     providersHeading: "示意性持牌提供商",
     providersNote: "所列提供商名称仅为示例，并非已确认的合作伙伴或推荐。",
     workflowProgress: "第 2 步 / 共 3 步",
     workflowHintResult: "第 2 步 / 共 3 步 — 查看安全月支出。",
-  
+
     closeSection: "关闭",
-  
+
     engineBadge: "蒙特卡罗去累积引擎",
     scenarioBaseline: "您当前的规划",
     safeSpendHero: "约 S${{value}}/月",
-    safeSpendRange: "估算区间 S${{lower}}–S${{upper}} · 约 {{confidence}}% 置信度",
+    safeSpendRange:
+      "估算区间 S${{lower}}–S${{upper}} · 约 {{confidence}}% 置信度",
     safeSpendPage: "您的安全月支出",
     explorePlan: "探索您的规划",
     testAScenario: "测试一个情景",
@@ -437,10 +443,12 @@ const zhSG = {
     yourCalculatedNote: "根据您输入的假设计算。估算并非保证。",
     engineExplainer: "引擎原理",
     scenarioLabTitle: "情景实验室",
-    scenarioLabSub: "改变一个假设，观察它如何影响安全月支出、置信度与资金缺口。",
-  
+    scenarioLabSub:
+      "改变一个假设，观察它如何影响安全月支出、置信度与资金缺口。",
+
     engineExplainerSub: "了解估算背后的假设、置信度曲线与风险。",
-    scenarioBaselineReminder: "当前基线：约 S${{value}}/月，{{confidence}}% 置信度",
+    scenarioBaselineReminder:
+      "当前基线：约 S${{value}}/月，{{confidence}}% 置信度",
     scenarioLongerLife: "更长的寿命",
     scenarioLongerLifeSub: "为更长的退休期做准备，看同样的资产需要撑多久。",
     scenarioLongerLifeAge: "规划至年龄",
@@ -465,7 +473,18 @@ const zhSG = {
     sequenceRiskSteady: "稳定市场",
     sequenceRiskBadEarly: "早期市场下跌",
     sequenceRiskBadLate: "晚期市场下跌",
-    sequenceRiskInsight: "相同的平均回报，在损失出现早或晚时可能产生截然不同的结果。",
+    sequenceRiskInsight:
+      "相同的平均回报，在损失出现早或晚时可能产生截然不同的结果。",
+    sequenceRiskEndingBalance: "期末余额：",
+    sequenceRiskLastsToAge: "投资组合是否持续至 {{age}} 岁：",
+    sequenceRiskYes: "是",
+    sequenceRiskNo: "否",
+    sequenceRiskDepletion: "耗尽：",
+    sequenceRiskNotDepleted: "未耗尽",
+    sequenceRiskDepletedAt: "第 {{year}} 年",
+    sequenceRiskAvgReturn: "平均年回报率：",
+    sequenceRiskConclusion:
+      "早期出现亏损通常更具破坏性，因为提取迫使退休者在低价时卖出更多资产。",
   },
 
   guardrails: {
@@ -576,7 +595,7 @@ const zhSG = {
   gapActions: {
     cpfFloorTitle: "假设更高的 CPF LIFE 保底",
     cpfFloorDetail:
-      "更高的保底收入（例如补足至 Enhanced Retirement Sum）意味着更多必需开支由终身收入覆盖，因此更少支出依赖市场。",
+      "本情景假设 CPF LIFE 月入增加约 S$400 的示意情况。更高的终身收入保底可减少对市场提取的依赖。实际所需补足金额与 CPF LIFE 发放额取决于会员年龄、退休户头余额、所选 CPF LIFE 计划及起领日期。",
     monetiseTitle: "出租 HDB 组屋的一个房间",
     monetiseDetail:
       "出租空房在 CPF LIFE 之外增加每月保底收入。提高收入保底是最大的杠杆，因为这笔钱永远不必从储蓄中支付。",
@@ -593,6 +612,10 @@ const zhSG = {
     allFour: "若同时采取全部四项（合并建模）",
     allFourNote:
       "各杠杆之间存在重叠，因此合并效果小于简单相加——引擎会一并建模。",
+    gapReducedBy: "缺口减少 {{value}}",
+    amountRemains: "仍剩余 {{value}}",
+    desiredFullyCovered: "理想支出已全部覆盖",
+    estimatedSurplus: "估计盈余：{{value}}",
     gapRemaining: "剩余缺口",
     fromToday: "目前为 {{value}}",
     closingFooter:
@@ -776,13 +799,14 @@ const zhSG = {
     readOnlyNotice: "只读共享视图。只有长辈才能更新支出记录。",
     disclaimer:
       "支出监控是手工规划工具。Enough 不连接您的银行、不导入交易、不自动分类支出。",
-  
+
     workflowProgress: "第 3 步 / 共 3 步",
     backToResults: "返回结果",
     openFamilyReport: "打开家庭报告",
     purposeSubtitle: "查看本月实际支出是否仍在安全区间内。",
-    explanatoryNote: "支出监控不会自动重新计算整个退休规划。如有长期变化，请更新规划假设。",
-  
+    explanatoryNote:
+      "支出监控不会自动重新计算整个退休规划。如有长期变化，请更新规划假设。",
+
     recalcTitle: "重新计算安全月支出",
     recalcBody: "您的规划已变更，之前的安区间已不再适用。",
     recalcCta: "重新计算结果",
@@ -820,9 +844,9 @@ const zhSG = {
       cannotEdit: "不可编辑财务信息或支出",
       cannotApprove: "不可批准、确认或代父母行事",
       canRevoke: "父母可随时撤回访问",
-    
-    openFamilyReport: "打开家庭报告",
-  },
+
+      openFamilyReport: "打开家庭报告",
+    },
     moatTitle: "家庭层级是不可争议的护城河",
     moatBody:
       "家庭访问基于授权，可随时撤回。只读共享视图在不放弃控制权的前提下维系家庭联系。",
@@ -836,7 +860,8 @@ const zhSG = {
     accessGrantedConfirmation: "已向 Wei Ling 授予只读访问权限。",
     accessGrantedHint: "成年子女视图现在可在导航栏中使用。",
     gateTitle: "需要长辈授权",
-    gateBody: "此退休规划尚未与成年子女分享。长辈必须授予只读访问权限，才能查看任何规划信息。",
+    gateBody:
+      "此退休规划尚未与成年子女分享。长辈必须授予只读访问权限，才能查看任何规划信息。",
     gatePrivacyNote: "分享是可选的。父母始终保持控制权，并可随时撤回访问。",
     gateReturnCta: "返回长辈视图",
     lockedUntilGranted: "已锁定，等待长辈授权",
@@ -859,7 +884,7 @@ const zhSG = {
     m3p1: "爸爸授权后可查看选定的规划信息",
     m3p2: "可接收选定的提醒",
     m3p3: "不可编辑、批准或代爸爸行事",
-  
+
     familyAccessTitle: "家庭访问",
     familyAccessSubtitle: "选择谁可以查看规划。分享是可选、只读且由父母控制。",
   },
@@ -907,16 +932,17 @@ const zhSG = {
     disclaimer:
       "中立理财规划建议（正在申请 MAS FA 牌照）。我们建议的是决策方向，不是特定产品。仅为估算，并非保证——基于既定假设的示意性结果。请仔细思量，再做出重大财务决策。",
     saveAsPdf: '使用浏览器的"打印"对话框，选择"另存为 PDF"即可分享本报告。',
-  
+
     actionPrint: "打印或另存为 PDF",
     actionBackToResults: "返回结果",
     actionOpenSpendMonitor: "打开支出监控",
     actionManageFamilyAccess: "管理家庭访问",
     newSubtitle: "一页摘要：安全支出规划、关键风险与当前支出位置。",
     sharedByParent: "由父母分享（只读）。",
-  
+
     recalcTitle: "重新计算您的规划",
-    recalcBody: "您的规划假设已变更。请重新计算安全月支出结果后再打开家庭报告。",
+    recalcBody:
+      "您的规划假设已变更。请重新计算安全月支出结果后再打开家庭报告。",
     recalcCta: "返回规划设置",
     usingDemoData: "由 Enough 引擎根据示意性示例档案计算得出。",
     usingCustomData: "根据您当前的计算规划生成报告。",
@@ -982,7 +1008,12 @@ const zhSG = {
       "教育性退休规划原型。估算基于既定假设，并非保证，亦非个性化财务建议。",
   },
 
-  resultsTabs: { overview: "概览", stress: "压力测试", actions: "行动计划", analytics: "分析" },
+  resultsTabs: {
+    overview: "概览",
+    stress: "压力测试",
+    actions: "行动计划",
+    analytics: "分析",
+  },
 } as const;
 
 export default zhSG;

@@ -43,11 +43,12 @@ const enSG = {
     yrs: "yrs",
     eq: "eq",
     selected: "Selected: {{value}}",
-  
+
     report: "Family report",
-  
+
     resetPresentationDemo: "Reset presentation demo",
-    resetPresentationDemoBody: "Reset the sample plan, spending records and family-access settings?",
+    resetPresentationDemoBody:
+      "Reset the sample plan, spending records and family-access settings?",
   },
 
   format: {
@@ -122,7 +123,7 @@ const enSG = {
     chipInvestments: "Investments",
     saferMonthlySpend: "→ safer monthly spend",
     trustStrip:
-      'Educational retirement-planning guidance · Enough models the impact; you make the decision.',
+      "Educational retirement-planning guidance · Enough models the impact; you make the decision.",
   },
 
   connect: {
@@ -240,16 +241,18 @@ const enSG = {
     kindProperty: "PROPERTY",
     // Actual input label (Spend Monitor share)
     fActual: "Actual",
-  
+
     workflowStep1: "Set up plan",
     workflowStep2: "See safer spend",
     workflowStep3: "Track spending",
     workflowHintPlan: "Step 1 of 3 — collect your assumptions.",
     workflowHintResult: "Step 2 of 3 — review the safer monthly spend.",
-    workflowHintSpend: "Step 3 of 3 — compare actual spending with the safer range.",
-  
+    workflowHintSpend:
+      "Step 3 of 3 — compare actual spending with the safer range.",
+
     privacyTitle: "Use sample information only",
-    privacyBody: "Do not enter real account numbers, identification details or passwords into this educational prototype.",
+    privacyBody:
+      "Do not enter real account numbers, identification details or passwords into this educational prototype.",
   },
 
   results: {
@@ -400,29 +403,37 @@ const enSG = {
     seqSteady: "Steady market",
     seqBadEarly: "Bad market EARLY",
     seqBadLate: "Bad market LATE",
-  
+
     tabOverview: "Overview",
     tabStress: "Stress Tests",
     tabAction: "Action Plan",
     tabAnalytics: "Analytics",
     analyticsTitle: "How the number was calculated",
-    analyticsSub: "Explore the trade-offs and assumptions behind the safer-spend estimate.",
+    analyticsSub:
+      "Explore the trade-offs and assumptions behind the safer-spend estimate.",
     curveTitleOverview: "Spend versus confidence",
-    curveSubOverview: "Higher monthly spending improves lifestyle today but lowers the estimated probability that the plan lasts.",
+    curveSubOverview:
+      "Higher monthly spending improves lifestyle today but lowers the estimated probability that the plan lasts.",
     nextStepsTitle: "What would you like to do next?",
     actionTrackSpending: "Track monthly spending",
-    actionTrackSpendingBody: "Compare actual spending with the safer range each month.",
+    actionTrackSpendingBody:
+      "Compare actual spending with the safer range each month.",
     actionOpenReport: "Open family report",
-    actionOpenReportBody: "Open a calm one-page summary to print or save as PDF.",
+    actionOpenReportBody:
+      "Open a calm one-page summary to print or save as PDF.",
     actionManageAccess: "Manage family access",
-    actionManageAccessBody: "Choose whether a spouse or adult child may view the plan.",
+    actionManageAccessBody:
+      "Choose whether a spouse or adult child may view the plan.",
     actionViewSpending: "View shared spending",
-    actionViewSpendingBody: "View the information Mr Tan has shared. No changes can be made from adult-child view.",
+    actionViewSpendingBody:
+      "View the information Mr Tan has shared. No changes can be made from adult-child view.",
     actionOpenSharedReport: "Open shared family report",
     actionManageAccessChild: "View family access",
     illustrativeGuardrailPill: "Illustrative guardrail scenario",
-    illustrativeGuardrailTitle: "Example: sustained portfolio growth may support a higher spend",
-    illustrativeGuardrailBody: "This demonstrates how a pre-agreed guardrail could adjust spending after sustained portfolio growth. It is not based on live market data.",
+    illustrativeGuardrailTitle:
+      "Example: sustained portfolio growth may support a higher spend",
+    illustrativeGuardrailBody:
+      "This demonstrates how a pre-agreed guardrail could adjust spending after sustained portfolio growth. It is not based on live market data.",
     tabBackOverview: "Back to Overview",
     tabViewActionPlan: "View action plan",
     tabBackStress: "Back to Stress Tests",
@@ -431,20 +442,24 @@ const enSG = {
     nextStepsSecondaryLabel: "Secondary",
     nextStepsTertiaryLabel: "Optional",
     illustrativeWorkedExampleLabel: "Illustrative worked example",
-    illustrativeWorkedExampleNote: "The figures below are an illustrative presentation worked example, not driven by the live engine. Custom plans you build yourself are calculated by the engine.",
+    illustrativeWorkedExampleNote:
+      "The figures below are an illustrative presentation worked example, not driven by the live engine. Custom plans you build yourself are calculated by the engine.",
     optionsToExplore: "Options to explore",
-    optionsToExploreNote: "Enough models the impact. You decide whether to explore the option with the relevant agency or a licensed adviser.",
+    optionsToExploreNote:
+      "Enough models the impact. You decide whether to explore the option with the relevant agency or a licensed adviser.",
     providersHeading: "Illustrative licensed providers",
-    providersNote: "Provider names shown are examples only and are not confirmed partners or recommendations.",
+    providersNote:
+      "Provider names shown are examples only and are not confirmed partners or recommendations.",
     workflowProgress: "Step 2 of 3",
     workflowHintResult: "Step 2 of 3 — review the safer monthly spend.",
-  
+
     closeSection: "Close",
-  
+
     engineBadge: "Monte Carlo decumulation engine",
     scenarioBaseline: "Your current plan",
     safeSpendHero: "About S${{value}}/month",
-    safeSpendRange: "Estimated range S${{lower}}–S${{upper}} · about {{confidence}}% confidence",
+    safeSpendRange:
+      "Estimated range S${{lower}}–S${{upper}} · about {{confidence}}% confidence",
     safeSpendPage: "Your safer monthly spend",
     explorePlan: "Explore your plan",
     testAScenario: "Test a scenario",
@@ -453,23 +468,31 @@ const enSG = {
     manageFamilyAccess: "Manage family access",
     howWasThisCalculated: "How was this calculated?",
     yourCalculatedResult: "Your calculated plan",
-    yourCalculatedNote: "Calculated from the assumptions entered. Estimates are not guarantees.",
+    yourCalculatedNote:
+      "Calculated from the assumptions entered. Estimates are not guarantees.",
     engineExplainer: "How the engine works",
     scenarioLabTitle: "Scenario Lab",
-    scenarioLabSub: "Change one assumption and see how it affects the safer monthly spend, confidence and funding gap.",
-  
-    engineExplainerSub: "See the assumptions, confidence curve and risks behind the estimate.",
-    scenarioBaselineReminder: "Current baseline: about S${{value}}/month at {{confidence}}% confidence",
+    scenarioLabSub:
+      "Change one assumption and see how it affects the safer monthly spend, confidence and funding gap.",
+
+    engineExplainerSub:
+      "See the assumptions, confidence curve and risks behind the estimate.",
+    scenarioBaselineReminder:
+      "Current baseline: about S${{value}}/month at {{confidence}}% confidence",
     scenarioLongerLife: "Longer life",
-    scenarioLongerLifeSub: "Plan for a longer retirement and see how the same assets must last longer.",
+    scenarioLongerLifeSub:
+      "Plan for a longer retirement and see how the same assets must last longer.",
     scenarioLongerLifeAge: "Plan to age",
     scenarioLongerLifeQuick: "Quick choices",
     scenarioHealthcare: "Healthcare and long-term care",
-    scenarioHealthcareSub: "Test the effect of a health event and ongoing care costs.",
+    scenarioHealthcareSub:
+      "Test the effect of a health event and ongoing care costs.",
     scenarioMarket: "Market sequence risk",
-    scenarioMarketSub: "Compare an early market fall with the same fall later in retirement.",
+    scenarioMarketSub:
+      "Compare an early market fall with the same fall later in retirement.",
     scenarioTripLegacy: "Trip and legacy",
-    scenarioTripLegacySub: "See how a one-off trip and a legacy target change the safer spend.",
+    scenarioTripLegacySub:
+      "See how a one-off trip and a legacy target change the safer spend.",
     scenarioAfter: "After scenario",
     scenarioImpact: "Monthly impact",
     scenarioConfidence: "Confidence",
@@ -484,7 +507,18 @@ const enSG = {
     sequenceRiskSteady: "Steady market",
     sequenceRiskBadEarly: "Bad market early",
     sequenceRiskBadLate: "Bad market late",
-    sequenceRiskInsight: "The same average return can produce very different outcomes when losses arrive early.",
+    sequenceRiskInsight:
+      "The same average return can produce very different outcomes when losses arrive early.",
+    sequenceRiskEndingBalance: "Ending balance:",
+    sequenceRiskLastsToAge: "Portfolio lasts to age {{age}}:",
+    sequenceRiskYes: "Yes",
+    sequenceRiskNo: "No",
+    sequenceRiskDepletion: "Depletion:",
+    sequenceRiskNotDepleted: "Not depleted",
+    sequenceRiskDepletedAt: "Year {{year}}",
+    sequenceRiskAvgReturn: "Average annual return:",
+    sequenceRiskConclusion:
+      "An early loss is usually more damaging because withdrawals force the retiree to sell more assets while prices are low.",
   },
 
   guardrails: {
@@ -610,7 +644,7 @@ const enSG = {
   gapActions: {
     cpfFloorTitle: "Model a higher CPF LIFE floor",
     cpfFloorDetail:
-      "A larger guaranteed floor (e.g. topping up towards the Enhanced Retirement Sum) means more of your essentials are covered for life, so less of your spending depends on markets.",
+      "This scenario models an illustrative S$400/month increase in CPF LIFE income. A higher lifelong income floor reduces reliance on market withdrawals. Actual top-up requirements and payouts depend on the member’s age, Retirement Account balance, CPF LIFE plan and payout start date.",
     monetiseTitle: "Rent out a room in the HDB flat",
     monetiseDetail:
       "Renting a spare room adds guaranteed monthly income on top of CPF LIFE. Raising the income floor is the biggest lever of all, because it is money you never have to fund from savings.",
@@ -627,6 +661,10 @@ const enSG = {
     allFour: "If you did all four (modelled together)",
     allFourNote:
       "The levers overlap, so the combined effect is less than the sum — the engine models them together.",
+    gapReducedBy: "Gap reduced by {{value}}",
+    amountRemains: "{{value}} remains",
+    desiredFullyCovered: "Desired spend fully covered",
+    estimatedSurplus: "Estimated surplus: {{value}}",
     gapRemaining: "gap remaining",
     fromToday: "from {{value}} today",
     closingFooter:
@@ -827,15 +865,18 @@ const enSG = {
       "Read-only shared view. Only the parent can update spending records.",
     disclaimer:
       "Spend Monitor is a manual planning tool. Enough does not connect to your bank, import transactions, or categorise spending automatically.",
-  
+
     workflowProgress: "Step 3 of 3",
     backToResults: "Back to results",
     openFamilyReport: "Open family report",
-    purposeSubtitle: "Check whether this month’s actual spending remains within the safer range.",
-    explanatoryNote: "The Spend Monitor does not recalculate the full retirement plan automatically. Update the plan assumptions when there is a lasting change.",
-  
+    purposeSubtitle:
+      "Check whether this month’s actual spending remains within the safer range.",
+    explanatoryNote:
+      "The Spend Monitor does not recalculate the full retirement plan automatically. Update the plan assumptions when there is a lasting change.",
+
     recalcTitle: "Recalculate your safer spend",
-    recalcBody: "Your plan has changed, so the previous safer range is no longer current.",
+    recalcBody:
+      "Your plan has changed, so the previous safer range is no longer current.",
     recalcCta: "Calculate updated result",
   },
 
@@ -872,9 +913,9 @@ const enSG = {
       cannotEdit: "Cannot edit financial information or spending",
       cannotApprove: "Cannot approve, confirm or act on the parent's behalf",
       canRevoke: "Access can be revoked by the parent at any time",
-    
-    openFamilyReport: "Open family report",
-  },
+
+      openFamilyReport: "Open family report",
+    },
     moatTitle: "The family layer is the uncontested ground",
     moatBody:
       "Family access is permission-based and revocable. A read-only shared view keeps the family loop without giving up control.",
@@ -889,8 +930,10 @@ const enSG = {
     accessGrantedConfirmation: "Read-only access granted to Wei Ling.",
     accessGrantedHint: "The Adult-child view is now available in the navbar.",
     gateTitle: "Parent permission required",
-    gateBody: "This retirement plan has not been shared with the adult child. The parent must grant read-only access before any plan information can be viewed.",
-    gatePrivacyNote: "Sharing is optional. The parent remains in control and may revoke access at any time.",
+    gateBody:
+      "This retirement plan has not been shared with the adult child. The parent must grant read-only access before any plan information can be viewed.",
+    gatePrivacyNote:
+      "Sharing is optional. The parent remains in control and may revoke access at any time.",
     gateReturnCta: "Return to Parent view",
     lockedUntilGranted: "Locked until parent grants permission",
     // member labels
@@ -912,9 +955,10 @@ const enSG = {
     m3p1: "Can view selected plan information after Dad grants access",
     m3p2: "Can receive selected alerts",
     m3p3: "Cannot edit, approve or act on Dad's behalf",
-  
+
     familyAccessTitle: "Family Access",
-    familyAccessSubtitle: "Choose who may view the plan. Sharing is optional, read-only and controlled by the parent.",
+    familyAccessSubtitle:
+      "Choose who may view the plan. Sharing is optional, read-only and controlled by the parent.",
   },
 
   familyPlane: {
@@ -966,18 +1010,21 @@ const enSG = {
       "Educational retirement-planning prototype. Estimates are based on stated assumptions and are not guarantees or personalised financial advice. Think it through and make your own call before major financial decisions.",
     saveAsPdf:
       'Use your browser\'s Print dialog and choose "Save as PDF" to share this report.',
-  
+
     actionPrint: "Print or save as PDF",
     actionBackToResults: "Back to results",
     actionOpenSpendMonitor: "Open Spend Monitor",
     actionManageFamilyAccess: "Manage family access",
-    newSubtitle: "A one-page summary of the safer-spend plan, key risks and current spending position.",
+    newSubtitle:
+      "A one-page summary of the safer-spend plan, key risks and current spending position.",
     sharedByParent: "Shared by the parent (read-only).",
-  
+
     recalcTitle: "Recalculate your plan",
-    recalcBody: "Your plan assumptions have changed. Calculate a new safer-spend result before opening the family report.",
+    recalcBody:
+      "Your plan assumptions have changed. Calculate a new safer-spend result before opening the family report.",
     recalcCta: "Return to Plan Setup",
-    usingDemoData: "Illustrative worked example calculated by the Enough engine.",
+    usingDemoData:
+      "Illustrative worked example calculated by the Enough engine.",
     usingCustomData: "Report generated from your current calculated plan.",
   },
 
@@ -1042,7 +1089,12 @@ const enSG = {
       "Educational retirement-planning prototype. Estimates are based on stated assumptions and are not guarantees or personalised financial advice.",
   },
 
-  resultsTabs: { overview: "Overview", stress: "Stress Tests", actions: "Action Plan", analytics: "Analytics" },
+  resultsTabs: {
+    overview: "Overview",
+    stress: "Stress Tests",
+    actions: "Action Plan",
+    analytics: "Analytics",
+  },
 } as const;
 
 export default enSG;
