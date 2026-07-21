@@ -39,6 +39,7 @@ const zhSG = {
     yrs: "年",
     eq: "等同",
     selected: "已选：{{value}}",
+    none: "无",
 
     report: "家庭报告",
 
@@ -278,9 +279,12 @@ const zhSG = {
     cpfFloorSub: "/月 · 终身收入",
     withdrawalLabel: "额外提取",
     withdrawalSub: "/月 · {{rate}} 比率",
+    withdrawalSource: "来自现金、SRS 与投资",
     desiredLabel: "理想支出",
+    desiredSub: "/月 · 您的目标",
     gapLabel: "与理想的差距",
     gapLabelShort: "差距",
+    gapSub: "/月 · 理想减去安全支出",
     // Warnings
     cpfFloorWarningDemo:
       "CPF LIFE 是长寿保底，不一定是通胀对冲。Standard 领取额为名义金额固定；支出会随时间通胀。结果仅为估算，并非保证。",
@@ -381,6 +385,18 @@ const zhSG = {
     seqSteady: "平稳市场",
     seqBadEarly: "早期市况不佳",
     seqBadLate: "晚期市况不佳",
+    // Sequence-of-returns card descriptions (Analytics tab)
+    seqDescSteady: "退休期内回报相对平稳地出现。",
+    seqDescBadEarly: "在退休最初的几年发生重大亏损，而提取已经开始。",
+    seqDescBadLate: "同样的亏损发生在后期——此时投资组合已获得更多时间增长。",
+    sequenceEndingBalance: "期末余额：{{value}}",
+    sequenceLasts: "投资组合可持续至 {{age}} 岁",
+    sequenceDepletes: "投资组合约在第 {{year}} 年耗尽",
+    seqWhyTitle: "为何时机重要",
+    seqWhyBody:
+      "早期亏损更具破坏性，因为提取迫使退休者在低价时卖出更多投资，可用于恢复的资产更少。",
+    seqAllDepleteBody:
+      "在此提取水平下，三条路径最终都会耗尽。早期下行会让耗尽提前约两年，因为在投资价格偏低时仍在进行提取。",
 
     tabOverview: "概览",
     tabStress: "压力测试",
@@ -429,9 +445,8 @@ const zhSG = {
 
     engineBadge: "蒙特卡罗去累积引擎",
     scenarioBaseline: "您当前的规划",
-    safeSpendHero: "约 S${{value}}/月",
-    safeSpendRange:
-      "估算区间 S${{lower}}–S${{upper}} · 约 {{confidence}}% 置信度",
+    safeSpendHero: "约 {{value}}/月",
+    safeSpendRange: "估算区间 {{lower}}–{{upper}} · 约 {{confidence}}% 置信度",
     safeSpendPage: "您的安全月支出",
     explorePlan: "探索您的规划",
     testAScenario: "测试一个情景",
@@ -625,7 +640,7 @@ const zhSG = {
   fundingPlan: {
     title: "用哪个账户支出——以及支多少",
     intro:
-      "跨现金、SRS、投资和 CPF 进行具备税务与长寿意识的提取顺序规划——金额根据您自己的余额计算。每月约 {{value}} 来自您在 CPF 保底之上的资产。这是任何单一产品提供商都无法中立地给出的建议。",
+      "CPF LIFE 每月提供 S$1,550 的终身收入。其余约每月 {{value}} 由现金、SRS 与投资支应。这是任何单一产品提供商都无法中立地给出的建议。",
     residualTitle: "约 {{value}} 无法从您自有资产中安全支应",
     residualNote:
       "我们建议您了解的方向——决策由您，且以下均非资格承诺。这些是真实存在的新加坡计划，可能对您有帮助；请向相关机构核实每项。",
@@ -645,10 +660,10 @@ const zhSG = {
     stepInvestRationale:
       "从投资支应每年提取额的余下部分（先债券后股票），并用护栏下调，以保持组合持续复利。",
     stepInvestNuance: "在提款时再平衡；好年份让股票奔跑，持续下行时再削减。",
-    stepCpfTitle: "CPF LIFE——保底终身，保留至最后",
+    stepCpfTitle: "CPF LIFE——终身每月收入保底",
     stepCpfRationale:
-      "CPF LIFE 已支付终身保底收入；规划将其保留为长寿后盾，您永远不会耗尽。",
-    stepCpfNuance: "有意最后才动用——它是其他一切之下的根基。",
+      "CPF LIFE 提供终身保底收入；规划将其视为每月最先到账的资金，在任何资产提取之前先覆盖一部分必需品开支。",
+    stepCpfNuance: "S$1,550/月 首先到账，并覆盖部分每月开支。",
     schemeSilverName: "Silver Support 计划",
     schemeSilverDetail:
       "为较低收入年长者提供的季度现金补助——符合资格者自动发放（CPF Board）。",

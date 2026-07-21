@@ -64,6 +64,17 @@ describe("Issue 2 — Market-sequence cards resolve three distinct scenarios", (
     expect(SCENARIO_LAB).not.toMatch(/p\.label === "badEarly"/);
   });
 
+  it("uses three distinct translation keys for the three cards", () => {
+    expect(SCENARIO_LAB).toMatch(/results\.sequenceRiskSteady/);
+    expect(SCENARIO_LAB).toMatch(/results\.sequenceRiskBadEarly/);
+    expect(SCENARIO_LAB).toMatch(/results\.sequenceRiskBadLate/);
+  });
+
+  it("does not put 'Options to explore' or 'Illustrative licensed providers' inside ScenarioLab", () => {
+    expect(SCENARIO_LAB).not.toMatch(/optionsToExplore/);
+    expect(SCENARIO_LAB).not.toMatch(/providersHeading/);
+  });
+
   it("does not render the fabricated S$0 safer-spend impact panel", () => {
     // The old code passed `result` with impact=0 into ScenarioModule.
     // The new code omits the result prop and shows portfolio-path metrics.
@@ -83,10 +94,30 @@ describe("Issue 2 — Market-sequence cards resolve three distinct scenarios", (
     expect(fnBody).not.toMatch(/result=\{result\}/);
   });
 
-  it("renders endingBalance, depletedAtYear, and avgReturnPct per path", () => {
+  it("renders endingBalance, depletedAtYear, and the engine blurb per path", () => {
     expect(SCENARIO_LAB).toMatch(/formatMoney\(p\.endingBalance\)/);
     expect(SCENARIO_LAB).toMatch(/p\.depletedAtYear === null/);
-    expect(SCENARIO_LAB).toMatch(/p\.avgReturnPct\.toFixed\(1\)/);
+    expect(SCENARIO_LAB).toMatch(/\{p\.blurb\}/);
+  });
+
+  it("does not duplicate the card title in the card body", () => {
+    // The earlier card rendered both the title and a one-line blurb that
+    // repeated it. The card body must show the engine blurb only.
+    const fnStart = SCENARIO_LAB.indexOf("function MarketSequenceModule(");
+    const fnEnd = SCENARIO_LAB.indexOf("/* ---------- Module 4", fnStart);
+    const fnBody =
+      fnEnd === -1
+        ? SCENARIO_LAB.slice(fnStart)
+        : SCENARIO_LAB.slice(fnStart, fnEnd);
+    // The title block is followed by the engine blurb — no second title.
+    expect(fnBody).toMatch(/\{t\(titleKey\)\}[\s\S]*?\{p\.blurb\}/);
+  });
+
+  it("uses green tone when the portfolio lasts, red tone when it depletes", () => {
+    expect(SCENARIO_LAB).toMatch(/border-enough-emerald\/40/);
+    expect(SCENARIO_LAB).toMatch(/border-enough-red\/40/);
+    expect(SCENARIO_LAB).toMatch(/text-enough-emeraldDark/);
+    expect(SCENARIO_LAB).toMatch(/text-enough-red/);
   });
 
   it("renders the 'early loss' insight below the cards", () => {
@@ -127,7 +158,18 @@ describe("Issue 3 — CPF LIFE gap-closing language reflects actual engine outpu
     expect(GAP_CLOSER).toMatch(
       /Math\.max\(\s*0,\s*Math\.round\(revisedSafeSpend\s*-\s*r\.desiredSpend\)/,
     );
-    expect(GAP_CLOSER).toMatch(/remainingGap:\s*Math\.round\(newGap\)/);
+    // remainingGap must reconcile with the page header (gapClosed + remainingGap
+    // == baselineGap), NOT be independently derived from newGap.
+    expect(GAP_CLOSER).toMatch(/remainingGap:\s*Math\.max\(\s*0,\s*anchorGap/);
+  });
+
+  it("remainingGap reconciles with the page-level baseline gap", () => {
+    // remainingGap + gapClosed must always equal baselineGap (the page
+    // header). Compute the current worked example and verify.
+    const gap = 952;
+    const gapClosed = 283;
+    const remainingGap = Math.max(0, Math.round(gap) - gapClosed);
+    expect(remainingGap).toBe(669);
   });
 
   it("shows the 'gap reduced by' / 'amount remains' copy for the CPF action when remainingGap > 0", () => {

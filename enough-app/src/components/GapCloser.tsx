@@ -37,25 +37,33 @@ function gapOf(desired: number, safe: number): number {
   return Math.max(0, desired - safe);
 }
 
-function compute(inputs: PlanInputs): Computed {
+function compute(inputs: PlanInputs, pageBaselineGap: number): Computed {
   const fast = { ...inputs, trials: 1000 };
   const base = runFullAnalysisSync(fast);
   const baseSafe = base.safe.centralSpend;
   const baselineGap = gapOf(base.desiredSpend, baseSafe);
+  // The page header shows the gap computed at full trial count
+  // (`pageBaselineGap`); we anchor every per-row remainingGap to it so the
+  // displayed numbers always reconcile exactly: remainingGap = max(0,
+  // pageBaselineGap − gapClosed). Computing remainingGap from the row's
+  // own rerun would produce a non-reconciling rounding mismatch.
+  const anchorGap = Math.round(pageBaselineGap);
 
   const rows: Row[] = GAP_ACTIONS.map((a) => {
     const r = runFullAnalysisSync({ ...fast, ...a.buildOverride(fast) });
     const revisedSafeSpend = r.safe.centralSpend;
     const newGap = gapOf(r.desiredSpend, revisedSafeSpend);
     const surplus = Math.max(0, Math.round(revisedSafeSpend - r.desiredSpend));
+    const gapClosed = Math.max(0, Math.round(baselineGap - newGap));
     return {
       key: a.key,
       title: a.title,
       detail: a.detail,
       reversible: a.reversible,
-      gapClosed: Math.max(0, Math.round(baselineGap - newGap)),
+      gapClosed,
       safeDelta: Math.round(revisedSafeSpend - baseSafe),
-      remainingGap: Math.round(newGap),
+      // Reconcile with the page header (pageBaselineGap − gapClosed).
+      remainingGap: Math.max(0, anchorGap - gapClosed),
       surplus,
     };
   });
@@ -85,13 +93,13 @@ export function GapCloser({
     setData(null);
     // Defer so the page paints before the (synchronous) engine runs fire.
     const id = setTimeout(() => {
-      if (alive) setData(compute(inputs));
+      if (alive) setData(compute(inputs, gap));
     }, 30);
     return () => {
       alive = false;
       clearTimeout(id);
     };
-  }, [inputs]);
+  }, [inputs, gap]);
 
   const displayedRemaining =
     data && gap > 0 ? Math.max(0, gap - data.combinedGapClosed) : 0;

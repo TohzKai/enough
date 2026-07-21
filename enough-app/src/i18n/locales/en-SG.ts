@@ -43,6 +43,7 @@ const enSG = {
     yrs: "yrs",
     eq: "eq",
     selected: "Selected: {{value}}",
+    none: "None",
 
     report: "Family report",
 
@@ -292,9 +293,12 @@ const enSG = {
     cpfFloorSub: "/month · income for life",
     withdrawalLabel: "Extra withdrawal",
     withdrawalSub: "/month · {{rate}} rate",
+    withdrawalSource: "From cash, SRS and investments",
     desiredLabel: "Desired spend",
+    desiredSub: "/month · your target",
     gapLabel: "Gap vs desired",
     gapLabelShort: "Gap",
+    gapSub: "/month · desired minus safer",
     // Warnings
     cpfFloorWarningDemo:
       "CPF LIFE is a longevity floor, not necessarily an inflation hedge. Standard payouts are level nominal; spending is inflated over time. Results are estimates, not guarantees.",
@@ -401,8 +405,22 @@ const enSG = {
     sensImproveCpf: "Model a higher CPF LIFE floor",
     // Sequence-of-returns chart series labels
     seqSteady: "Steady market",
-    seqBadEarly: "Bad market EARLY",
-    seqBadLate: "Bad market LATE",
+    seqBadEarly: "Bad market early",
+    seqBadLate: "Bad market late",
+    // Sequence-of-returns card descriptions (Analytics tab)
+    seqDescSteady: "Returns occur relatively smoothly throughout retirement.",
+    seqDescBadEarly:
+      "Major losses occur during the first few years of retirement while withdrawals are already being made.",
+    seqDescBadLate:
+      "The same losses occur later, after the portfolio has had more time to grow.",
+    sequenceEndingBalance: "Ending balance: {{value}}",
+    sequenceLasts: "Portfolio lasts to age {{age}}",
+    sequenceDepletes: "Portfolio depletes around Year {{year}}",
+    seqWhyTitle: "Why timing matters",
+    seqWhyBody:
+      "Early losses are more damaging because withdrawals force the retiree to sell more investments while prices are low, leaving fewer assets available to recover.",
+    seqAllDepleteBody:
+      "At this withdrawal level, all three paths eventually run out. An early downturn brings depletion forward by about two years because withdrawals are made while investment prices are low.",
 
     tabOverview: "Overview",
     tabStress: "Stress Tests",
@@ -457,9 +475,9 @@ const enSG = {
 
     engineBadge: "Monte Carlo decumulation engine",
     scenarioBaseline: "Your current plan",
-    safeSpendHero: "About S${{value}}/month",
+    safeSpendHero: "About {{value}}/month",
     safeSpendRange:
-      "Estimated range S${{lower}}–S${{upper}} · about {{confidence}}% confidence",
+      "Estimated range {{lower}}–{{upper}} · about {{confidence}}% confidence",
     safeSpendPage: "Your safer monthly spend",
     explorePlan: "Explore your plan",
     testAScenario: "Test a scenario",
@@ -674,7 +692,7 @@ const enSG = {
   fundingPlan: {
     title: "Which account to spend — and how much",
     intro:
-      "Tax- and longevity-aware sequencing across cash, SRS, investments and CPF — with the amounts worked out from your own balances. About {{value}} a month comes from your assets above the CPF floor. This is the advice no single product provider can give you neutrally.",
+      "CPF LIFE provides S$1,550/month for life. The remaining approximately {{value}} a month is funded from cash, SRS and investments. This is the advice no single product provider can give you neutrally.",
     residualTitle:
       "About {{value}} the plan can't safely fund from your own assets",
     residualNote:
@@ -698,11 +716,11 @@ const enSG = {
       "Fund the rest of each year's draw from investments (bonds first, then equity), trimming with guardrails so the portfolio keeps compounding.",
     stepInvestNuance:
       "Rebalance on withdrawal; let equity ride in good years, trim in sustained drops.",
-    stepCpfTitle: "CPF LIFE — the guaranteed floor, kept for life",
+    stepCpfTitle: "CPF LIFE — lifelong monthly income floor",
     stepCpfRationale:
-      "CPF LIFE already pays a guaranteed income floor for life; the plan preserves it as the longevity backstop you can never outlive.",
+      "CPF LIFE provides a guaranteed income floor for life; the plan treats it as the first money in each month, covering part of essentials before any withdrawals are made.",
     stepCpfNuance:
-      "Spend it down last, on purpose — it is the base under everything else.",
+      "S$1,550/month is received first and covers part of monthly spending.",
     schemeSilverName: "Silver Support Scheme",
     schemeSilverDetail:
       "Quarterly cash for lower-income seniors — paid automatically if eligible (CPF Board).",

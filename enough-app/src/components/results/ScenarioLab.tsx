@@ -423,95 +423,21 @@ function HealthcareModule(props: ScenarioModuleProps) {
     isOpen,
     onToggle,
   } = props;
-  const [result, setResult] = useState<ScenarioResult | null>(null);
-
+  // HealthcareConditions owns the full result UI (3-card engine impact +
+  // funding options). We do NOT pass a result into ScenarioModule — that
+  // would render a duplicate generic ScenarioResultPanel with the
+  // "illustrative guardrail" prefix, which is wrong for healthcare.
+  void baseAnalysis;
+  void baseCentral;
+  void baseConfidence;
+  void baseGap;
   return (
     <ScenarioModule
       isOpen={isOpen}
       onToggle={onToggle}
       title={t("results.scenarioHealthcare")}
       subtitle={t("results.scenarioHealthcareSub")}
-      result={result}
-      reset={() => setResult(null)}
-      appliedKey="healthcare"
-      appliedBody={
-        result
-          ? t("results.scenarioAppliedHealthcare", {
-              baseline: Math.round(baseCentral),
-              after: Math.round(result.afterCentral),
-            })
-          : undefined
-      }
-      body={
-        // HealthcareConditions manages its own picker + 250ms debounced
-        // engine rerun. We bridge its result into our ScenarioResult.
-        <HealthcareBridge
-          inputs={inputs}
-          baseAnalysis={baseAnalysis}
-          baseCentral={baseCentral}
-          baseConfidence={baseConfidence}
-          baseGap={baseGap}
-          isOpen={isOpen}
-          onResult={setResult}
-        />
-      }
-    />
-  );
-}
-
-function HealthcareBridge({
-  inputs,
-  baseCentral,
-  baseConfidence,
-  baseGap,
-  isOpen,
-  onResult,
-}: {
-  inputs: PlanInputs;
-  baseAnalysis: FullAnalysis;
-  baseCentral: number;
-  baseConfidence: number;
-  baseGap: number;
-  isOpen: boolean;
-  onResult: (r: ScenarioResult | null) => void;
-}) {
-  const { t } = useTranslation();
-  const [local, setLocal] = useState<number | null>(null);
-  useEffect(() => {
-    if (!isOpen) {
-      setLocal(null);
-      onResult(null);
-    }
-  }, [isOpen, onResult]);
-  useEffect(() => {
-    if (local == null) {
-      onResult(null);
-      return;
-    }
-    const impact = local - baseCentral;
-    const after = runFullAnalysisSync({ ...inputs });
-    // We do not have per-scenario healthcare rerun in this bridge; instead
-    // we show the impact on baseline as a directional indicator. The
-    // HealthcareConditions component below does the per-scenario rerun.
-    void after;
-    onResult({
-      label: t("results.scenarioHealthcare"),
-      baselineCentral: baseCentral,
-      afterCentral: baseCentral + impact,
-      baseConfidence,
-      afterConfidence: Math.max(0, baseConfidence + impact / 50),
-      baselineGap: baseGap,
-      afterGap: baseGap - impact,
-      impact,
-      body: t("results.scenarioHealthcareSub"),
-      applied: false,
-    });
-  }, [local, baseCentral, baseConfidence, baseGap, inputs, t, onResult]);
-  return (
-    <HealthcareConditions
-      inputs={inputs}
-      baseSpend={baseCentral}
-      onAfterChange={setLocal}
+      body={<HealthcareConditions inputs={inputs} baseSpend={baseCentral} />}
     />
   );
 }
@@ -540,35 +466,30 @@ function MarketSequenceModule(props: ScenarioModuleProps) {
           {seq && (
             <div className="grid gap-2 sm:grid-cols-3">
               {seq.paths.map((p) => {
-                const scenarioType =
-                  p.label === "Steady market"
-                    ? "steady"
-                    : p.label === "Bad market EARLY"
-                      ? "badEarly"
-                      : "badLate";
-
                 const titleKey =
-                  scenarioType === "steady"
+                  p.label === "Steady market"
                     ? "results.sequenceRiskSteady"
-                    : scenarioType === "badEarly"
+                    : p.label === "Bad market EARLY"
                       ? "results.sequenceRiskBadEarly"
                       : "results.sequenceRiskBadLate";
-
-                const depletedText =
-                  p.depletedAtYear === null
-                    ? t("results.sequenceRiskNotDepleted")
-                    : t("results.sequenceRiskDepletedAt", {
-                        year: p.depletedAtYear,
-                      });
-
+                const outcomeOk = p.depletedAtYear === null;
+                const headerTone = outcomeOk
+                  ? "border-enough-emerald/40 bg-enough-emerald/5 text-enough-emeraldDark"
+                  : "border-enough-red/40 bg-enough-red/5 text-enough-red";
+                const lastsTone = outcomeOk
+                  ? "text-enough-emeraldDark"
+                  : "text-enough-red";
                 return (
                   <div
                     key={p.label}
-                    className="rounded-xl2 border border-enough-line bg-white p-3"
+                    className={`rounded-xl2 border ${headerTone} p-3 space-y-2`}
                   >
-                    <div className="text-xs font-semibold text-enough-navy">
+                    <div className="text-sm font-bold leading-snug">
                       {t(titleKey)}
                     </div>
+                    <p className="text-xs text-enough-slate leading-snug safe-break">
+                      {p.blurb}
+                    </p>
                     <dl className="mt-2 space-y-1 text-sm text-enough-ink">
                       <div className="flex items-baseline justify-between gap-2">
                         <dt className="text-xs text-enough-slate">
@@ -584,8 +505,8 @@ function MarketSequenceModule(props: ScenarioModuleProps) {
                             age: inputs.horizonAge,
                           })}
                         </dt>
-                        <dd className="font-bold">
-                          {p.depletedAtYear === null
+                        <dd className={`font-bold ${lastsTone}`}>
+                          {outcomeOk
                             ? t("results.sequenceRiskYes")
                             : t("results.sequenceRiskNo")}
                         </dd>
@@ -594,14 +515,12 @@ function MarketSequenceModule(props: ScenarioModuleProps) {
                         <dt className="text-xs text-enough-slate">
                           {t("results.sequenceRiskDepletion")}
                         </dt>
-                        <dd className="font-bold">{depletedText}</dd>
-                      </div>
-                      <div className="flex items-baseline justify-between gap-2">
-                        <dt className="text-xs text-enough-slate">
-                          {t("results.sequenceRiskAvgReturn")}
-                        </dt>
                         <dd className="font-bold">
-                          {`${p.avgReturnPct.toFixed(1)}%`}
+                          {outcomeOk
+                            ? t("results.sequenceRiskNotDepleted")
+                            : t("results.sequenceRiskDepletedAt", {
+                                year: p.depletedAtYear,
+                              })}
                         </dd>
                       </div>
                     </dl>
@@ -714,9 +633,6 @@ function TripLegacyModule(props: ScenarioModuleProps) {
       body={
         <div className="space-y-4">
           <div>
-            <div className="text-sm font-semibold text-enough-navy">
-              {t("results.scenarioTripLegacy")}
-            </div>
             <p className="text-xs text-enough-slate mt-1">
               {t("results.scenarioTripAsCash")}
             </p>
@@ -730,7 +646,7 @@ function TripLegacyModule(props: ScenarioModuleProps) {
                     tripAmount === a ? "ring-2 ring-enough-emerald" : ""
                   }`}
                 >
-                  {a === 0 ? "—" : `S$${a.toLocaleString()}`}
+                  {a === 0 ? t("common.none") : formatMoney(a)}
                 </button>
               ))}
             </div>
@@ -749,7 +665,7 @@ function TripLegacyModule(props: ScenarioModuleProps) {
                     legacyTarget === a ? "ring-2 ring-enough-emerald" : ""
                   }`}
                 >
-                  {a === 0 ? "—" : `S$${a.toLocaleString()}`}
+                  {a === 0 ? t("common.none") : formatMoney(a)}
                 </button>
               ))}
             </div>

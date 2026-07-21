@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { Card } from "../ui";
 import { GapCloser } from "../GapCloser";
 import { FundingSequence } from "../FundingSequence";
 import { ProtectionReferral } from "../ProtectionReferral";
@@ -27,6 +28,22 @@ export function WithdrawalPlan({ vm }: WithdrawalPlanProps) {
       <GapCloser inputs={vm.inputs} gap={vm.gap} />
       <FundingSequence inputs={vm.inputs} centralSpend={vm.saferCentral} />
       <ProtectionReferral inputs={vm.inputs} />
+      <Card>
+        <h3 className="text-base font-bold text-enough-navy mb-2">
+          {t("results.optionsToExplore")}
+        </h3>
+        <p className="text-sm text-enough-slate">
+          {t("results.optionsToExploreNote")}
+        </p>
+        <details className="mt-3">
+          <summary className="cursor-pointer text-sm font-semibold text-enough-navy">
+            {t("results.providersHeading")}
+          </summary>
+          <p className="text-xs text-enough-slate mt-1">
+            {t("results.providersNote")}
+          </p>
+        </details>
+      </Card>
     </section>
   );
 }

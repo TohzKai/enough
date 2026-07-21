@@ -79,7 +79,7 @@ export function Dashboard() {
           {t("results.scenarioBaseline")}
         </div>
         <div className="mt-2 text-4xl md:text-5xl font-extrabold leading-tight">
-          {t("results.safeSpendHero", { value: heroCentral })}
+          {t("results.safeSpendHero", { value: formatMoney(heroCentral) })}
         </div>
         <div className="mt-2 text-base text-white/85 safe-break">
           {t("results.safeSpendRange", {
@@ -202,10 +202,10 @@ function OverviewTab({
             {t("results.withdrawalLabel")}
           </div>
           <div className="mt-1 text-lg font-extrabold text-enough-navy">
-            {formatMoney(withdrawal)}
+            {formatMoneyMonth(withdrawal)}
           </div>
           <div className="text-[11px] text-enough-slate">
-            {t("results.withdrawalSub", { rate: "—" })}
+            {t("results.withdrawalSource")}
           </div>
         </Card>
         <Card>
@@ -215,13 +215,19 @@ function OverviewTab({
           <div className="mt-1 text-lg font-extrabold text-enough-navy">
             {formatMoneyMonth(desiredSpend)}
           </div>
+          <div className="text-[11px] text-enough-slate">
+            {t("results.desiredSub")}
+          </div>
         </Card>
         <Card>
           <div className="text-xs text-enough-slate">
             {t("results.gapLabel")}
           </div>
           <div className="mt-1 text-lg font-extrabold text-enough-navy">
-            {formatMoney(Math.max(0, gap))}
+            {formatMoneyMonth(Math.max(0, gap))}
+          </div>
+          <div className="text-[11px] text-enough-slate">
+            {t("results.gapSub")}
           </div>
         </Card>
       </div>

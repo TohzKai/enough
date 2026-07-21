@@ -38,6 +38,7 @@ const msSG = {
     yrs: "thn",
     eq: "sama",
     selected: "Dipilih: {{value}}",
+    none: "Tiada",
 
     report: "Laporan keluarga",
 
@@ -281,9 +282,12 @@ const msSG = {
     cpfFloorSub: "/bulan · pendapatan seumur hidup",
     withdrawalLabel: "Pengeluaran tambahan",
     withdrawalSub: "/bulan · kadar {{rate}}",
+    withdrawalSource: "Daripada tunai, SRS dan pelaburan",
     desiredLabel: "Perbelanjaan diingini",
+    desiredSub: "/bulan · sasaran anda",
     gapLabel: "Jurang vs diingini",
     gapLabelShort: "Jurang",
+    gapSub: "/bulan · diingini tolak lebih selamat",
     cpfFloorWarningDemo:
       "CPF LIFE adalah lantai jangka hayat, belum tentu lindung nilai inflasi. Bayaran Standard adalah nominal tetap; perbelanjaan dinaikkan dari semasa ke semasa. Keputusan adalah anggaran, bukan jaminan.",
     cpfFloorWarningCustom:
@@ -377,8 +381,22 @@ const msSG = {
     sensImproveFlex: "Fleksibiliti perbelanjaan 15% (pelindung)",
     sensImproveCpf: "Modelkan lantai CPF LIFE yang lebih tinggi",
     seqSteady: "Pasaran stabil",
-    seqBadEarly: "Pasaran buruk AWAL",
-    seqBadLate: "Pasaran buruk AKHIR",
+    seqBadEarly: "Pasaran buruk awal",
+    seqBadLate: "Pasaran buruk lewat",
+    // Sequence-of-returns card descriptions (Analytics tab)
+    seqDescSteady: "Pulangan berlaku agak lancar sepanjang persaraan.",
+    seqDescBadEarly:
+      "Kerugian besar berlaku pada tahun-tahun pertama persaraan apabila pengeluaran sudah pun dibuat.",
+    seqDescBadLate:
+      "Kerugian yang sama berlaku kemudian, selepas portfolio mempunyai lebih masa untuk berkembang.",
+    sequenceEndingBalance: "Baki akhir: {{value}}",
+    sequenceLasts: "Portfolio tahan sehingga umur {{age}}",
+    sequenceDepletes: "Portfolio susut sekitar Tahun {{year}}",
+    seqWhyTitle: "Mengapa masa penting",
+    seqWhyBody:
+      "Kerugian awal lebih merosakkan kerana pengeluaran memaksa pesara menjual lebih pelaburan ketika harga rendah, meninggalkan lebih sedikit aset untuk pulih.",
+    seqAllDepleteBody:
+      "Pada tahap pengeluaran ini, ketiga-tiga laluan akhirnya habis. Penurunan awal membawa kehabisan ke hadapan kira-kira dua tahun kerana pengeluaran dibuat ketika harga pelaburan rendah.",
 
     tabOverview: "Gambaran",
     tabStress: "Ujian Tekanan",
@@ -434,9 +452,9 @@ const msSG = {
 
     engineBadge: "Enjin dekumulasi Monte Carlo",
     scenarioBaseline: "Pelan semasa anda",
-    safeSpendHero: "Lebih kurang S${{value}}/bulan",
+    safeSpendHero: "Lebih kurang {{value}}/bulan",
     safeSpendRange:
-      "Julat anggaran S${{lower}}–S${{upper}} · lebih kurang {{confidence}}% keyakinan",
+      "Julat anggaran {{lower}}–{{upper}} · lebih kurang {{confidence}}% keyakinan",
     safeSpendPage: "Perbelanjaan bulanan lebih selamat anda",
     explorePlan: "Terokai pelan anda",
     testAScenario: "Uji senario",
@@ -658,7 +676,7 @@ const msSG = {
   fundingPlan: {
     title: "Akaun mana untuk dibelanjakan — dan berapa banyak",
     intro:
-      "Penjujukan sedar akan cukai dan jangka hayat merentas tunai, SRS, pelaburan dan CPF — dengan jumlah dikira daripada baki anda sendiri. Kira-kira {{value}} sebulan datang daripada aset anda di atas lantai CPF. Ini nasihat yang tiada penyedia produk tunggal boleh beri secara neutral.",
+      "CPF LIFE menyediakan S$1,550 sebulan untuk seumur hidup. Baki kira-kira {{value}} sebulan dibiayai daripada tunai, SRS dan pelaburan. Ini nasihat yang tiada penyedia produk tunggal boleh beri secara neutral.",
     residualTitle:
       "Kira-kira {{value}} pelan tidak dapat membiayai dengan selamat daripada aset anda sendiri",
     residualNote:
@@ -682,11 +700,11 @@ const msSG = {
       "Biayai baki tarikan setiap tahun daripada pelaburan (bon dahulu, kemudian ekuiti), memotong dengan pelindung supaya portfolio terus mengkompaun.",
     stepInvestNuance:
       "Imbang semula pada pengeluaran; biarkan ekuiti berjalan dalam tahun baik, potong dalam penurunan berterusan.",
-    stepCpfTitle: "CPF LIFE — lantai dijamin, disimpan seumur hidup",
+    stepCpfTitle: "CPF LIFE — lantai pendapatan bulanan seumur hidup",
     stepCpfRationale:
-      "CPF LIFE sudah membayar lantai pendapatan dijamin seumur hidup; pelan memeliharanya sebagai sandaran jangka hayat yang tidak akan anda tempoh.",
+      "CPF LIFE menyediakan lantai pendapatan dijamin seumur hidup; pelan merawatnya sebagai wang pertama setiap bulan, menampung sebahagian keperluan sebelum sebarang pengeluaran dibuat.",
     stepCpfNuance:
-      "Belanjakan terakhir, dengan sengaja — ia adalah asas di bawah semua yang lain.",
+      "S$1,550/bulan diterima dahulu dan menampung sebahagian daripada perbelanjaan bulanan.",
     schemeSilverName: "Silver Support Scheme",
     schemeSilverDetail:
       "Tunai suku tahunan untuk warga emas berpendapatan rendah — dibayar secara automatik jika layak (CPF Board).",

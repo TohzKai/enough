@@ -1,6 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { Card } from "../ui";
-import { s$ } from "../../lib/format";
+import { formatMoney, s$ } from "../../lib/format";
 import {
   ResponsiveContainer,
   AreaChart,
@@ -11,7 +11,9 @@ import {
   Tooltip,
   ReferenceLine,
 } from "recharts";
-import { demoSensitivity, demoSequence } from "../../data/demoDataset";
+import { useMemo } from "react";
+import { demoSensitivity } from "../../data/demoDataset";
+import { generateSequenceRiskScenario } from "../../engine";
 import type { ResultViewModel } from "./resultModel";
 
 interface EngineExplainerProps {
@@ -116,24 +118,7 @@ export function EngineExplainer({ vm }: EngineExplainerProps) {
       </div>
 
       <SensitivityPanel />
-      <SequencePanel />
-
-      <Card>
-        <h3 className="text-base font-bold text-enough-navy mb-2">
-          {t("results.optionsToExplore")}
-        </h3>
-        <p className="text-sm text-enough-slate">
-          {t("results.optionsToExploreNote")}
-        </p>
-        <details className="mt-3">
-          <summary className="cursor-pointer text-sm font-semibold text-enough-navy">
-            {t("results.providersHeading")}
-          </summary>
-          <p className="text-xs text-enough-slate mt-1">
-            {t("results.providersNote")}
-          </p>
-        </details>
-      </Card>
+      <SequencePanel vm={vm} />
     </section>
   );
 }
@@ -192,8 +177,26 @@ function BarRow({ factor, impact }: { factor: string; impact: number }) {
   );
 }
 
-function SequencePanel() {
+function SequencePanel({ vm }: { vm: ResultViewModel }) {
   const { t } = useTranslation();
+  // Use the real sequence-risk engine output rather than the demo dataset,
+  // so the three cards reflect the user's actual plan inputs.
+  const seq = useMemo(
+    () => generateSequenceRiskScenario(vm.inputs),
+    [vm.inputs],
+  );
+  const titleKey = (label: string) =>
+    label === "Steady market"
+      ? "results.seqSteady"
+      : label === "Bad market EARLY"
+        ? "results.seqBadEarly"
+        : "results.seqBadLate";
+  const descKey = (label: string) =>
+    label === "Steady market"
+      ? "results.seqDescSteady"
+      : label === "Bad market EARLY"
+        ? "results.seqDescBadEarly"
+        : "results.seqDescBadLate";
   return (
     <Card>
       <h3 className="text-base font-bold text-enough-navy mb-2">
@@ -206,33 +209,49 @@ function SequencePanel() {
         {t("results.sequenceRiskLabel")}
       </div>
       <div className="grid md:grid-cols-3 gap-3 mt-3">
-        {demoSequence.paths.map((p) => (
-          <div
-            key={p.label}
-            className="rounded-xl2 border border-enough-line bg-white p-3"
-          >
-            <div className="text-xs font-semibold text-enough-navy">
-              {p.label === "steady"
-                ? t("results.seqSteady")
-                : p.label === "badEarly"
-                  ? t("results.seqBadEarly")
-                  : t("results.seqBadLate")}
-            </div>
-            <div className="text-sm text-enough-ink mt-1">
-              {p.label === "steady"
-                ? t("results.sequenceRiskSteady")
-                : p.label === "badEarly"
-                  ? t("results.sequenceRiskBadEarly")
-                  : t("results.sequenceRiskBadLate")}
-            </div>
-            {p.depletedYear != null && (
-              <div className="text-xs text-enough-red mt-1">
-                Depletes ~Year {p.depletedYear}
+        {seq.paths.map((p) => {
+          const depleted = p.depletedAtYear !== null;
+          const outcome = depleted
+            ? t("results.sequenceDepletes", { year: p.depletedAtYear })
+            : t("results.sequenceLasts", { age: vm.inputs.horizonAge });
+          const balanceText = formatMoney(Math.max(0, p.endingBalance));
+          const outcomeTone = depleted
+            ? "text-enough-red"
+            : "text-enough-emeraldDark";
+          return (
+            <div
+              key={p.label}
+              className="rounded-xl2 border border-enough-line bg-white p-3 space-y-2"
+            >
+              <div className="text-sm font-bold text-enough-navy leading-snug">
+                {t(titleKey(p.label))}
               </div>
-            )}
-          </div>
-        ))}
+              <p className="text-xs text-enough-slate leading-snug safe-break">
+                {t(descKey(p.label))}
+              </p>
+              <div className="text-xs text-enough-slate">
+                {t("results.sequenceEndingBalance", {
+                  value: balanceText,
+                })}
+              </div>
+              <div className={`text-xs font-semibold ${outcomeTone}`}>
+                {outcome}
+              </div>
+            </div>
+          );
+        })}
       </div>
+      <div className="mt-3 rounded-xl2 border border-enough-line bg-enough-navy/5 p-3">
+        <div className="text-sm font-bold text-enough-navy">
+          {t("results.seqWhyTitle")}
+        </div>
+        <p className="text-xs text-enough-slate leading-relaxed mt-1 safe-break">
+          {t("results.seqWhyBody")}
+        </p>
+      </div>
+      <p className="readable mt-3 text-xs text-enough-slate leading-relaxed safe-break">
+        {t("results.seqAllDepleteBody")}
+      </p>
     </Card>
   );
 }

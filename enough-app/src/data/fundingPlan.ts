@@ -62,6 +62,15 @@ export function buildFundingPlan(
 
   const steps: FundingStep[] = [
     {
+      account: "cpf",
+      title: "fundingPlan.stepCpfTitle",
+      amount: cpfFloor,
+      amountKind: "preserved",
+      rationale: "fundingPlan.stepCpfRationale",
+      nuance: "fundingPlan.stepCpfNuance",
+      tone: "slate",
+    },
+    {
       account: "cash",
       title: "fundingPlan.stepCashTitle",
       amount: cashBuffer,
@@ -87,15 +96,6 @@ export function buildFundingPlan(
       rationale: "fundingPlan.stepInvestRationale",
       nuance: "fundingPlan.stepInvestNuance",
       tone: "navy",
-    },
-    {
-      account: "cpf",
-      title: "fundingPlan.stepCpfTitle",
-      amount: cpfFloor,
-      amountKind: "preserved",
-      rationale: "fundingPlan.stepCpfRationale",
-      nuance: "fundingPlan.stepCpfNuance",
-      tone: "slate",
     },
   ];
 
